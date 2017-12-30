@@ -1,6 +1,6 @@
-\documentclass[british,english]{amsart}
+\documentclass[british]{amsart}
 \usepackage{lmodern}
-\usepackage{biblatex}
+\usepackage[backend=biber]{biblatex}
 \addbibresource{spt.bib}
 \renewcommand{\sfdefault}{lmss}
 \renewcommand{\ttdefault}{lmtt}
@@ -17,14 +17,14 @@
 \numberwithin{figure}{section}
 \theoremstyle{plain}
 \newtheorem{thm}{\protect\theoremname}[section]
-  \theoremstyle{definition}
-  \newtheorem{defn}[thm]{\protect\definitionname}
-  \theoremstyle{plain}
-  \newtheorem{assumption}[thm]{\protect\assumptionname}
-  \theoremstyle{plain}
-  \newtheorem{lem}[thm]{\protect\lemmaname}
-  \theoremstyle{plain}
-  \newtheorem{prop}[thm]{\protect\propositionname}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{\protect\definitionname}
+\theoremstyle{plain}
+\newtheorem{assumption}[thm]{\protect\assumptionname}
+\theoremstyle{plain}
+\newtheorem{lem}[thm]{\protect\lemmaname}
+\theoremstyle{plain}
+\newtheorem{prop}[thm]{\protect\propositionname}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{color}
@@ -35,26 +35,23 @@
 
 \makeatother
 
-\usepackage{babel}
-  \addto\captionsbritish{\renewcommand{\assumptionname}{Assumption}}
-  \addto\captionsbritish{\renewcommand{\definitionname}{Definition}}
-  \addto\captionsbritish{\renewcommand{\lemmaname}{Lemma}}
-  \addto\captionsbritish{\renewcommand{\propositionname}{Proposition}}
-  \addto\captionsbritish{\renewcommand{\theoremname}{Theorem}}
-  \addto\captionsenglish{\renewcommand{\assumptionname}{Assumption}}
-  \addto\captionsenglish{\renewcommand{\definitionname}{Definition}}
-  \addto\captionsenglish{\renewcommand{\lemmaname}{Lemma}}
-  \addto\captionsenglish{\renewcommand{\propositionname}{Proposition}}
-  \addto\captionsenglish{\renewcommand{\theoremname}{Theorem}}
-  \providecommand{\assumptionname}{Assumption}
-  \providecommand{\definitionname}{Definition}
-  \providecommand{\lemmaname}{Lemma}
-  \providecommand{\propositionname}{Proposition}
+\usepackage[british]{babel}
+\usepackage[babel]{csquotes}
+\addto\captionsbritish{\renewcommand{\assumptionname}{Assumption}}
+\addto\captionsbritish{\renewcommand{\definitionname}{Definition}}
+\addto\captionsbritish{\renewcommand{\lemmaname}{Lemma}}
+\addto\captionsbritish{\renewcommand{\propositionname}{Proposition}}
+\addto\captionsbritish{\renewcommand{\theoremname}{Theorem}}
+\addto\captionsenglish{\renewcommand{\assumptionname}{Assumption}}
+\addto\captionsenglish{\renewcommand{\definitionname}{Definition}}
+\addto\captionsenglish{\renewcommand{\lemmaname}{Lemma}}
+\addto\captionsenglish{\renewcommand{\propositionname}{Proposition}}
+\addto\captionsenglish{\renewcommand{\theoremname}{Theorem}}
+\providecommand{\assumptionname}{Assumption}
+\providecommand{\definitionname}{Definition}
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\propositionname}{Proposition}
 \providecommand{\theoremname}{Theorem}
-
-% ------ DEFINITIONS -----
-% Define the set of progressively measurable processes L
-\renewcommand{\L}{\mathcal{L}}
 
 \begin{document}
 \title{Examination of practical applications of Functionally Generated 
@@ -65,51 +62,134 @@ Portfolios in Stochastic Portfolio Theory}
 \tableofcontents{}
 
 \section{Introduction}
+Stochastic Portfolio Theory (\textbf{SPT}) was first introduced by Fernholz and 
+Shay (1982) \cite{fernholz1982}, formalised in Fernholz (1999) 
+\cite{fernholz1999} and was further developed by Fernholz (2002) 
+\cite{fernholz2002}. It has evolved into a flexible framework for analyzing 
+portfolio behavior and equity market structure that has both theoretical and 
+practical applications.
 
-Stochastic Portfolio Theory was first introduced by Fernholz and Shay in 
-\cite{fernholz1982} and further developed by Fernolz in \cite{fernholz2002}.
+From a theoretical standpoint, the framework provides insight into questions 
+regarding the behaviour of the market as well as arbitrage, and can be used to 
+construct portfolios with controlled behavior under quite general assumptions. 
 
-\section{Notation}
+The framework does not assume the existence of equivalent local martingale
+measures (equivalent to the assumption of \textbf{No Free Lunch with Vanishing 
+Risk} (NFLVR)), detailed by Delbaen and Schachermayer \cite{delbaen1994}. In 
+fact, most models developed in the framework satisfy only the weaker \textbf{No 
+Unbounded Profit with Bounded Risk assumption} (NUPBR), which holds if and only 
+if a local martingale deflator exists, which was shown by Kardaras 
+\cite{kardaras2012}. 
 
-From talk by Ruf \cite{karatzas2017}.
+NUPBR plays the role of Radon-Nikodym derivative in the case that an equivalent
+local martingale measure does exist.  Karatzas and Kardaras (2007) proved that 
+NUPBR is a necessary and sufficient condition for the log-utility maximization 
+problem to have a solution. For an overview of these different notions of 
+arbitrage, and their relation to the existence of deflators and equivalent 
+measures, we refer the reader to Fontana (2015).
 
-A standard probability space $(\Omega,\mathcal{F},P)$ equipped with a 
-right-continuous filtration $\mathfrak{F}$.
+As a practical tool, SPT has been applied to the analysis and optimization of 
+portfolio performance and has been the basis of successful equity investment 
+strategies for over a decade.
 
+* importance of portfolio construction in finance
+* proportion of the market that is passively investing wealth in financial 
+market has been growing
+* a relatively recent approach to creating portfolios
 
-$\L(X)$: denotes the set of all progressively measurable processes, 
-integrable with respect to some semimartingale $X(\cdot)$.
+A thorough survey in Fernholz and Karatzas \cite{karatzas2009} and recently
+by Vervuurt \cite{vervuurt2015}.
 
-$d\in\mathbb{N}:$ number of assets at time zero.
+* relatively general market model is assumed
+* continuous-time model with weak no-arbitrage assumptions
+* portfolio selection criteria is to outperform a benchmark with probability 1
+* relies on a method of \textit{functional generation} to constructs portfolios
+that rely deterministically only on the market capitalisation (or equivalently 
+prices)
 
-\textit{Nonnegative} continuous $P$-semimartingales, representing the relative market 
-weights of each asset:
+An example is the Diversity weighted portfolios (DWP)
+* builds on the concept of diversification leading to superior returns
+* we present the in-depth theoretical basis showing that the DWP outperforms the 
+market index, including recent enhancements by \cite{vervuurt2016} that
+extend the basic formulation to include negative-weighted parameters.
+* We also provide an empirical study of the European market that confirms this.
+
+\section{Preliminaries}
+\subsection{Diffusion Processes}
+
+We introduce the stochastic process known as a Brownian motion (also sometimes 
+referred to as a Weiner process).
+
+\begin{defn}[Standard Brownian Motion]
+A Standard Brownian motion $W$ is a stochastic process which is a mapping 
+$W:[0,\infty)\times\Omega\to\mathbb{R}$ for a probability
+space $(\Omega,\mathcal{F},P)$ which has the properties:
+
+\begin{enumerate}
+	\item $W(0)=0$, a.s.,
+	\item $W(t)$ has \textbf{independent increments,}
+	\item $W(t)$ has \textbf{stationary increments} 
+		$W(t)-W(s)\thicksim\mathcal{N}(0,t-s)$for $0\le s<t<\infty,$
+	\item the sample trajectories for almost all $\omega\in\Omega$ the paths 
+		$t\to W(t,\omega)$ are \textbf{almost surely continuous.}
+\end{enumerate}
+\end{defn}
+
+\subsection{It\^{o} Calculus}
+
+\section{Stochastic Portfolio Theory}
+
+\subsection{It\^{o} Market Model}
+
+We proceed as in \cite{karatzas2009} and place ourselves in a continuous-time, 
+classical market model of Stochastic Portfolio Theory, where stock 
+capitalisations are modelled as It\^{o} processes.
+
+\renewcommand{\d}[1]{\mathrm{d}{#1}}
+\newcommand{\realnumbers}{\mathbb{R}}
 
 \begin{equation}
-	\mu(\cdot) = \left( \mu_{1}(\cdot),\ldots,\mu_{d} \right)^{T}
+\d{X_{i}(t)} = X_{i}(t) \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} 
+\sigma_{i\nu}(t){\d{W_{\nu}(t)}} \right), 
+\;i=1,\cdots,n,\;X_{i}(0)=x_{i}\in\realnumbers^{+}
 \end{equation}
-
-taking values in the unit simplex, i.e. all market weights are positive and sum 
-up to $1$.
 
 \begin{equation}
-\triangle^{d}=\left\{(x_{1}(\cdot),\ldots,x_{d})\in[0,1]^{d}:\sum_{i=1}^{d}x_{i}=1\right\}.
+	\mathrm{d}{\log X_{i}(t)}=\gamma_{i}(t)\mathrm{d}t
 \end{equation}
 
-Note that we immediately place ourselves into the price process expressed as the 
-total market capitalisation.
+\subsection{Portfolios and Wealth}
 
+\subsubsection{The Market Portfolio}
+One of the most researched applications of Stochastic Portfolio Theory is that 
+of portfolio construction. Here the objective of portfolio construction is to 
+selection a portfolios is to exploit arbitrages that may be present in the 
+market. Typically this performance is measured with respect to a benchmark, as 
+in the Benchmark Approach of Platen and Heath \cite{platen2006}.
+
+\begin{defn}[Market Portfolio]
+We introduce the Market Portfolio, as the process of market weights 
+$\mu(\centerdot)$ defined by \begin{equation}
+	\mu_{i}(t)\triangleq\frac{X_{i}(t)}{X(t)},\;\;\;\;X(t)\triangleq\sum_{i=1}^{n}X_{i}(t).
+\end{equation}
+\end{defn}
+
+\subsection{Relative Arbitrage}
+\subsection{Functionally Generated Portfolios}
+\subsection{Rank-based Portfolios}
 \subsection{Trading Strategies}
 
-\newcommand{\V}{\mathcal{V}}
+\section{Diversity Weighted Portfolios}
 
-Given: $\V\in\L(\mu)$.
+Diversity is clearly observed in real markets, and its validity is guaranteed by 
+the fact that anti-trust regulations are typically in place. This assumption was 
+first studied in detail in the context of SPT by Fernholz, Karatzas and Kardaras 
+\cite{fernholz2005}, who defined and studied different forms of diversity, and 
+proved that under an additional nondegeneracy condition on the stock 
+volatilities, relative arbitrages exist in such markets - both over sufficiently 
+long time horizons, as well as over arbitrarily short time horizons.
 
-Define:
 
-\begin{equation}
-	V^{\V}(\cdot)=\sum_{i=1}^{d}\V_{i}(\cdot)\mu_{i}(\cdot)
-\end{equation}
 
 \printbibliography
 \end{document}
