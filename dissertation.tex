@@ -1,0 +1,115 @@
+\documentclass[british,english]{amsart}
+\usepackage{lmodern}
+\usepackage{biblatex}
+\addbibresource{spt.bib}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{verbatim}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\theoremstyle{plain}
+\newtheorem{thm}{\protect\theoremname}[section]
+  \theoremstyle{definition}
+  \newtheorem{defn}[thm]{\protect\definitionname}
+  \theoremstyle{plain}
+  \newtheorem{assumption}[thm]{\protect\assumptionname}
+  \theoremstyle{plain}
+  \newtheorem{lem}[thm]{\protect\lemmaname}
+  \theoremstyle{plain}
+  \newtheorem{prop}[thm]{\protect\propositionname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{color}
+\usepackage[colorlinks=true,linkcolor={blue}]{hyperref}
+
+\usepackage{amsfonts}
+%\renewenvironment{lyxgreyedout}{\color{red}\bgroup}{\egroup}
+
+\makeatother
+
+\usepackage{babel}
+  \addto\captionsbritish{\renewcommand{\assumptionname}{Assumption}}
+  \addto\captionsbritish{\renewcommand{\definitionname}{Definition}}
+  \addto\captionsbritish{\renewcommand{\lemmaname}{Lemma}}
+  \addto\captionsbritish{\renewcommand{\propositionname}{Proposition}}
+  \addto\captionsbritish{\renewcommand{\theoremname}{Theorem}}
+  \addto\captionsenglish{\renewcommand{\assumptionname}{Assumption}}
+  \addto\captionsenglish{\renewcommand{\definitionname}{Definition}}
+  \addto\captionsenglish{\renewcommand{\lemmaname}{Lemma}}
+  \addto\captionsenglish{\renewcommand{\propositionname}{Proposition}}
+  \addto\captionsenglish{\renewcommand{\theoremname}{Theorem}}
+  \providecommand{\assumptionname}{Assumption}
+  \providecommand{\definitionname}{Definition}
+  \providecommand{\lemmaname}{Lemma}
+  \providecommand{\propositionname}{Proposition}
+\providecommand{\theoremname}{Theorem}
+
+% ------ DEFINITIONS -----
+% Define the set of progressively measurable processes L
+\renewcommand{\L}{\mathcal{L}}
+
+\begin{document}
+\title{Examination of practical applications of Functionally Generated 
+Portfolios in Stochastic Portfolio Theory}
+\author{Lawrence Edwards}
+\maketitle
+
+\tableofcontents{}
+
+\section{Introduction}
+
+Stochastic Portfolio Theory was first introduced by Fernholz and Shay in 
+\cite{fernholz1982} and further developed by Fernolz in \cite{fernholz2002}.
+
+\section{Notation}
+
+From talk by Ruf \cite{karatzas2017}.
+
+A standard probability space $(\Omega,\mathcal{F},P)$ equipped with a 
+right-continuous filtration $\mathfrak{F}$.
+
+
+$\L(X)$: denotes the set of all progressively measurable processes, 
+integrable with respect to some semimartingale $X(\cdot)$.
+
+$d\in\mathbb{N}:$ number of assets at time zero.
+
+\textit{Nonnegative} continuous $P$-semimartingales, representing the relative market 
+weights of each asset:
+
+\begin{equation}
+	\mu(\cdot) = \left( \mu_{1}(\cdot),\ldots,\mu_{d} \right)^{T}
+\end{equation}
+
+taking values in the unit simplex, i.e. all market weights are positive and sum 
+up to $1$.
+
+\begin{equation}
+\triangle^{d}=\left\{(x_{1}(\cdot),\ldots,x_{d})\in[0,1]^{d}:\sum_{i=1}^{d}x_{i}=1\right\}.
+\end{equation}
+
+Note that we immediately place ourselves into the price process expressed as the 
+total market capitalisation.
+
+\subsection{Trading Strategies}
+
+\newcommand{\V}{\mathcal{V}}
+
+Given: $\V\in\L(\mu)$.
+
+Define:
+
+\begin{equation}
+	V^{\V}(\cdot)=\sum_{i=1}^{d}\V_{i}(\cdot)\mu_{i}(\cdot)
+\end{equation}
+
+\printbibliography
+\end{document}
