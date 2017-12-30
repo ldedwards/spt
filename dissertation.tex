@@ -25,6 +25,8 @@
 \newtheorem{lem}[thm]{\protect\lemmaname}
 \theoremstyle{plain}
 \newtheorem{prop}[thm]{\protect\propositionname}
+\theoremstyle{remark}
+\newtheorem{rem}[thm]{\protect\remarkname}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{color}
@@ -37,21 +39,34 @@
 
 \usepackage[british]{babel}
 \usepackage[babel]{csquotes}
+
 \addto\captionsbritish{\renewcommand{\assumptionname}{Assumption}}
 \addto\captionsbritish{\renewcommand{\definitionname}{Definition}}
 \addto\captionsbritish{\renewcommand{\lemmaname}{Lemma}}
 \addto\captionsbritish{\renewcommand{\propositionname}{Proposition}}
+\addto\captionsbritish{\renewcommand{\remarkname}{Remark}}
 \addto\captionsbritish{\renewcommand{\theoremname}{Theorem}}
 \addto\captionsenglish{\renewcommand{\assumptionname}{Assumption}}
 \addto\captionsenglish{\renewcommand{\definitionname}{Definition}}
 \addto\captionsenglish{\renewcommand{\lemmaname}{Lemma}}
 \addto\captionsenglish{\renewcommand{\propositionname}{Proposition}}
+\addto\captionsenglish{\renewcommand{\remarkname}{Remark}}
 \addto\captionsenglish{\renewcommand{\theoremname}{Theorem}}
 \providecommand{\assumptionname}{Assumption}
 \providecommand{\definitionname}{Definition}
 \providecommand{\lemmaname}{Lemma}
 \providecommand{\propositionname}{Proposition}
+\providecommand{\remarkname}{Remark}
 \providecommand{\theoremname}{Theorem}
+
+%%%%%%%%%%%%%%%%%%%
+\renewcommand{\d}[1]{\mathop{\mathrm{d}{#1}}}
+\newcommand{\realnumbers}{\mathbb{R}}
+\newcommand{\ranget}{t\in[0,\infty)}
+\newcommand{\filtration}[1]{\mathcal{#1}}
+\newcommand{\defeq}{\mathop{\triangleq}}
+\newcommand{\almostsurely}{\text{a.s.}}
+%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 \title{Examination of practical applications of Functionally Generated 
@@ -71,7 +86,7 @@ practical applications.
 
 From a theoretical standpoint, the framework provides insight into questions 
 regarding the behaviour of the market as well as arbitrage, and can be used to 
-construct portfolios with controlled behavior under quite general assumptions. 
+construct portfolios with controlled behaviour under quite general assumptions. 
 
 The framework does not assume the existence of equivalent local martingale
 measures (equivalent to the assumption of \textbf{No Free Lunch with Vanishing 
@@ -112,7 +127,19 @@ An example is the Diversity weighted portfolios (DWP)
 * we present the in-depth theoretical basis showing that the DWP outperforms the 
 market index, including recent enhancements by \cite{vervuurt2016} that
 extend the basic formulation to include negative-weighted parameters.
-* We also provide an empirical study of the European market that confirms this.
+
+Vervuurt \cite{vervuurt2015} notes in his survey that hardly any of the 
+theoretical results in SPT have been tested using real market data. We aim as 
+part of this dissertation to provide an in-depth empirical study of the European 
+equity market, examining the assumptions and the real world implementation of
+such strategies, including frictions such as:
+\begin{description}
+	\item [Corporate actions] including splits
+	\item [Transaction costs] realistic trading costs based on an accurate 
+		market impact model
+	\item [Market imperfections] including indivisibility of shares, entries 
+		and exits from the universe etc.
+\end{description}
 
 \section{Preliminaries}
 \subsection{Diffusion Processes}
@@ -126,7 +153,7 @@ $W:[0,\infty)\times\Omega\to\mathbb{R}$ for a probability
 space $(\Omega,\mathcal{F},P)$ which has the properties:
 
 \begin{enumerate}
-	\item $W(0)=0$, a.s.,
+	\item $W(0)=0 \quad \almostsurely$,
 	\item $W(t)$ has \textbf{independent increments,}
 	\item $W(t)$ has \textbf{stationary increments} 
 		$W(t)-W(s)\thicksim\mathcal{N}(0,t-s)$for $0\le s<t<\infty,$
@@ -141,22 +168,64 @@ space $(\Omega,\mathcal{F},P)$ which has the properties:
 
 \subsection{It\^{o} Market Model}
 
-We proceed as in \cite{karatzas2009} and place ourselves in a continuous-time, 
-classical market model of Stochastic Portfolio Theory, where stock 
-capitalisations are modelled as It\^{o} processes.
-
-\renewcommand{\d}[1]{\mathrm{d}{#1}}
-\newcommand{\realnumbers}{\mathbb{R}}
+We proceed as in Karatzas (2009) \cite{karatzas2009} and Vervuurt 2015 
+\cite{vervuurt2015} and place ourselves in a continuous-time market with $n$ 
+stocks with capitalisations $X_{i}(\cdot)$, where $ X_{i}(0) \defeq 
+x_{i} \in \realnumbers^{+} $ are the (positive) initial values of the market 
+capitalisations. The stock capitalisations $X_{i}(\cdot)$, satisfy the 
+stochastic differential equation:
 
 \begin{equation}
 \d{X_{i}(t)} = X_{i}(t) \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} 
-\sigma_{i\nu}(t){\d{W_{\nu}(t)}} \right), 
-\;i=1,\cdots,n,\;X_{i}(0)=x_{i}\in\realnumbers^{+}
-\end{equation}
+\sigma_{i\nu}(t){\d{W_{\nu}(t)}} \right), \end{equation}
+
+where $W(\cdot)=(W_{1}(\cdot),\dots,W_{d}(\cdot))$ is a $d$-dimensional Brownian 
+motion under $P$, with $d\ge n$. We assume the filtration $\filtration{F}$ 
+contains the filtration $\filtration{F}^{W}$ generated by $W(\cdot)$. We also 
+define the growth rate process $b_{i}(\cdot)$ and the ($n \times d$) volatility 
+process $\sigma(\cdot)$ to be $\filtration{F}$ - progressively measurable and 
+satisfy the integrability condition
 
 \begin{equation}
-	\mathrm{d}{\log X_{i}(t)}=\gamma_{i}(t)\mathrm{d}t
+	\sum_{i=1}^{n}\int_{0}^{T}
+	\left(
+		\left| b_{i}(t) \right| + 
+		\sum_{\nu=1}^{d}(\sigma_{i\nu}(t))^{2}i
+	\right)
+	\d{t} < \infty,\quad \forall T \in (0,\infty), \quad \almostsurely,
 \end{equation}
+
+\begin{rem} [Existence of Riskless Asset]
+	Note that we implicitly assume the existence of a riskless asset 
+	$X_{0}(t)\defeq 1,\ranget$, and without loss of generality we assume a zero 
+	interest rate by discounting the stock prices by the bond price.
+\end{rem}
+
+
+\begin{equation}
+	\d{\log X_{i}(t)}=\gamma_{i}(t)\d{t} + \sum_{\nu=1}^{d} 
+	\sigma_{i\nu}(t){\d{W_{\nu}(t)}}, \quad \ranget
+	\label{eq:logmarketmodel}
+\end{equation}
+
+Integrating \ref{eq:logmarketmodel} we get
+
+\begin{equation}
+	\log X_{i}(t) = \log X_{i}(0) + \int_{0}^{t} \gamma_{i}(s)\d{s} + 
+	\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s){\d{W_{\nu}(s)}}, \quad 
+	\ranget
+\end{equation}
+
+Which can be written in exponential form, as follows
+
+\begin{equation}
+	X_{i}(t) = x_{i} \exp{ \left(
+			\int_{0}^{t} \gamma_{i}(s)\d{s} + \int_{0}^{t} 
+			\sum_{\nu=1}^{d} \sigma_{i\nu}(s){\d{W_{\nu}(s)}} 
+			\right)
+		}, \quad \ranget
+\end{equation}
+
 
 \subsection{Portfolios and Wealth}
 
@@ -168,8 +237,8 @@ market. Typically this performance is measured with respect to a benchmark, as
 in the Benchmark Approach of Platen and Heath \cite{platen2006}.
 
 \begin{defn}[Market Portfolio]
-We introduce the Market Portfolio, as the process of market weights 
-$\mu(\centerdot)$ defined by \begin{equation}
+We introduce the Market Portfolio, as the process of market weights $\mu(\cdot)$ 
+defined by \begin{equation}
 	\mu_{i}(t)\triangleq\frac{X_{i}(t)}{X(t)},\;\;\;\;X(t)\triangleq\sum_{i=1}^{n}X_{i}(t).
 \end{equation}
 \end{defn}
@@ -185,11 +254,10 @@ Diversity is clearly observed in real markets, and its validity is guaranteed by
 the fact that anti-trust regulations are typically in place. This assumption was 
 first studied in detail in the context of SPT by Fernholz, Karatzas and Kardaras 
 \cite{fernholz2005}, who defined and studied different forms of diversity, and 
-proved that under an additional nondegeneracy condition on the stock 
+proved that under an additional non-degeneracy condition on the stock 
 volatilities, relative arbitrages exist in such markets - both over sufficiently 
 long time horizons, as well as over arbitrarily short time horizons.
 
-
-
 \printbibliography
+
 \end{document}
