@@ -27,6 +27,8 @@
 \newtheorem{prop}[thm]{\protect\propositionname}
 \theoremstyle{remark}
 \newtheorem{rem}[thm]{\protect\remarkname}
+\theoremstyle{plain}
+\newtheorem{cor}[thm]{\protect\corollaryname}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{color}
@@ -39,7 +41,6 @@
 
 \usepackage[british]{babel}
 \usepackage[babel]{csquotes}
-
 \addto\captionsbritish{\renewcommand{\assumptionname}{Assumption}}
 \addto\captionsbritish{\renewcommand{\definitionname}{Definition}}
 \addto\captionsbritish{\renewcommand{\lemmaname}{Lemma}}
@@ -52,12 +53,14 @@
 \addto\captionsenglish{\renewcommand{\propositionname}{Proposition}}
 \addto\captionsenglish{\renewcommand{\remarkname}{Remark}}
 \addto\captionsenglish{\renewcommand{\theoremname}{Theorem}}
+\addto\captionsenglish{\renewcommand{\corollaryname}{Corollary}}
 \providecommand{\assumptionname}{Assumption}
 \providecommand{\definitionname}{Definition}
 \providecommand{\lemmaname}{Lemma}
 \providecommand{\propositionname}{Proposition}
 \providecommand{\remarkname}{Remark}
 \providecommand{\theoremname}{Theorem}
+\providecommand{\corollaryname}{Corollary}
 
 %%%%%%%%%%%%%%%%%%%
 \renewcommand{\d}[1]{\mathop{\mathrm{d}{#1}}}
@@ -112,7 +115,7 @@ strategies for over a decade.
 market has been growing
 * a relatively recent approach to creating portfolios
 
-A thorough survey in Fernholz and Karatzas \cite{karatzas2009} and recently
+A thorough survey in Fernholz and Karatzas \cite{fernholz2009} and recently
 by Vervuurt \cite{vervuurt2015}.
 
 * relatively general market model is assumed
@@ -147,7 +150,7 @@ such strategies, including frictions such as:
 We introduce the stochastic process known as a Brownian motion (also sometimes 
 referred to as a Weiner process).
 
-\begin{defn}[Standard Brownian Motion]
+\begin{defn} [Standard Brownian Motion]
 A Standard Brownian motion $W$ is a stochastic process which is a mapping 
 $W:[0,\infty)\times\Omega\to\mathbb{R}$ for a probability
 space $(\Omega,\mathcal{F},P)$ which has the properties:
@@ -162,70 +165,231 @@ space $(\Omega,\mathcal{F},P)$ which has the properties:
 \end{enumerate}
 \end{defn}
 
+\begin{defn} [Variation]
+	\label{def:variation}
+	For a stochastic process $X(\cdot)$ we write
+	\begin{equation*}
+		\left< X \right>_{t} \defeq i
+			\lim_{\max{(t_{n+1}-t_{n}}\to0}
+			\sum \left| \right|
+	\end{equation*}
+\end{defn}
+
+\begin{thm} [Quadratic variation of Brownian motion]
+	\label{thm:quadraticvariationofbrownianmotion}
+	\begin{equation}
+	\left<W(t)\right>_{t} = t \quad \almostsurely.
+	\end{equation}
+\end{thm}
+
 \subsection{It\^{o} Calculus}
+
+\newcommand{\msquared}{\mathcal{M}^{2}_{0,T}}
+
+\begin{thm} 
+	[Quadratic variation of It\^{o} processes]
+	\label{thm:quadraticvariationofitoprocess}
+	For an It\^{o} process $X(\cdot)$ 
+	\begin{equation*}
+		\d{X(t)} = a(t)\d{t} + b(t)\d{W(t)}
+	\end{equation*}
+	then the quadratic variation of $X$ is
+	\begin{equation*}
+		\left< X \right>_{t} = \int_{0}^{t} b^2(s)\d{s}.
+	\end{equation*}
+\end{thm}
+
+\begin{proof}
+	We start with the result for continuous, \textit{square-integrable} martingale 
+	$I(X) \in \msquared$ given in \cite{shreve2012} (Equation 2.19).
+	\begin{equation*}
+		\left<I(X)\right>_{t} = \int_{0}^{t} X_{M}^2 d\left<M\right>_{M}.
+	\end{equation*}
+	and note that since 
+\end{proof}
 
 \section{Stochastic Portfolio Theory}
 
-\subsection{It\^{o} Market Model}
+\section{The Market Model}
 
-We proceed as in Karatzas (2009) \cite{karatzas2009} and Vervuurt 2015 
-\cite{vervuurt2015} and place ourselves in a continuous-time market with $n$ 
-stocks with capitalisations $X_{i}(\cdot)$, where $ X_{i}(0) \defeq 
-x_{i} \in \realnumbers^{+} $ are the (positive) initial values of the market 
-capitalisations. The stock capitalisations $X_{i}(\cdot)$, satisfy the 
-stochastic differential equation:
+This section introduces the basic definitions and results that will be used 
+throughout the rest of the dissertation.
+
+\subsection{Stocks and Portfolios}
+
+We assume the number of companies in the market is finite and fixed,
+the total number of shares of each company is constant, companies
+do not merge or break up and trading is continuous in time. In addition
+we assume there are no dividends, transaction costs or taxes, as well as there
+being no issues with the indivisibility of shares. 
+
+We present the \textit{logarithmic model} from Fernholz (2002) 
+\cite{fernholz2002}, Karatzas (2009) \cite{fernholz2009} and Vervuurt (2015)
+\cite{vervuurt2015}. We start by defining the stock price process $X(t)$
+which represents the price of the stock. To simplify further, we assume that
+each company has a single share of stock outstanding. In this case $X(t)$ also
+represents the total capitalisation of the company at time $t$.
+
+\begin{defn} [Stock Price Process] 
+	\label{def:logpriceprocess}
+	A (logarithmic) stock price process is a process that satisfies the stochastic 
+	differential equation
+	\begin{equation} 
+		\label{eq:stockpriceprocess}
+		\d{\log{X(t)}} = 
+			\gamma(t)\d{t} + 
+			\sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}, 
+		\quad \ranget
+		\quad \almostsurely,
+	\end{equation}
+\end{defn}
+
+Integrating (\ref{eq:stockpriceprocess}) we get
 
 \begin{equation}
-\d{X_{i}(t)} = X_{i}(t) \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} 
-\sigma_{i\nu}(t){\d{W_{\nu}(t)}} \right), \end{equation}
-
-where $W(\cdot)=(W_{1}(\cdot),\dots,W_{d}(\cdot))$ is a $d$-dimensional Brownian 
-motion under $P$, with $d\ge n$. We assume the filtration $\filtration{F}$ 
-contains the filtration $\filtration{F}^{W}$ generated by $W(\cdot)$. We also 
-define the growth rate process $b_{i}(\cdot)$ and the ($n \times d$) volatility 
-process $\sigma(\cdot)$ to be $\filtration{F}$ - progressively measurable and 
-satisfy the integrability condition
-
-\begin{equation}
-	\sum_{i=1}^{n}\int_{0}^{T}
-	\left(
-		\left| b_{i}(t) \right| + 
-		\sum_{\nu=1}^{d}(\sigma_{i\nu}(t))^{2}i
-	\right)
-	\d{t} < \infty,\quad \forall T \in (0,\infty), \quad \almostsurely,
+	\log X(t) = \log X(0) + \int_{0}^{t} \gamma(s)\d{s} + 
+	\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s){\d{W_{\nu}(s)}}, \quad 
+	\ranget,
 \end{equation}
+
+where the positive constant $X(0)$ represents the initial value of the stock. 
+This can then easily be written in exponential form as
+
+\begin{equation}
+	X(t) = X(0) \exp{ \left(
+			\int_{0}^{t} \gamma(s)\d{s} + \int_{0}^{t} 
+			\sum_{\nu=1}^{d} \sigma_{\nu}(s){\d{W_{\nu}(s)}} 
+			\right)
+		}, \quad \ranget.
+\end{equation}
+
+The process $\gamma(t)$ is called the \textit{growth rate process} of $X(\cdot)$ 
+and the process $\sigma_{\nu}(t)$ are called the \textit{volatility processes} of 
+$X(\cdot)$.
+
+\begin{prop} 
+	\label{prop:crossvarlogX}
+	\cite{fernholz2002} The quadratic variation of 
+	the logarithmic stock price process $\log{X(\cdot)}$ satisfies
+	\begin{equation}
+		\d{\langle \log{X} \rangle_{t}} = \sum_{\nu=1}^{d} \sigma_{\nu}^2\d{t},
+		\quad \ranget,
+		\quad \almostsurely
+	\end{equation}
+\end{prop}
+
+\begin{proof}
+	From the definition of cross-variation (?? add reference)
+	\begin{gather}
+		\begin{split} 
+			\label{eq:crossvarlogX}
+			\langle \log{X} \rangle_{t} 
+			 & = \left< \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \left< \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \sum_{\nu=1}^{d} \left< \int_{0}^{t} \sigma_{\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{\nu}^{2}(s) \d{\langle W_{\nu}(s) \rangle } \\
+			 & = \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(s) \d{s}.
+		\end{split}
+	\end{gather}
+	Then from (\ref{eq:crossvarlogX}) we have
+	\begin{gather}
+		\begin{split}
+			\d{\langle \log{X} \rangle_{t}}
+				& = \d{\left<\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s) \d{W_{\nu}(s)}\right>_{t}}\\
+				& = \d{\left(\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(s) \d{s}\right)} \\
+				& = \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(t) \d{t}.
+		\end{split}
+	\end{gather}
+\end{proof}
+
+We examine the relationship between the standard model of a price process 
+$X(\cdot)$ and the logarithmic processes defined above 
+(\ref{def:logpriceprocess}). 
+
+\begin{thm} \cite{fernholz2002} The stock price process $X(\cdot)$ satisfies
+	\begin{gather}
+		\begin{split}
+			\d{X(t)}
+				& = \alpha(t)X(t)\d{t} + X(t)\sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}, \quad \ranget, \\
+				& = X(t) \left( \alpha(t)\d{t} + \sum_{\nu=1}^{d} 
+							\sigma_{\nu}(t){\d{W_{\nu}(t)}} \right), \quad \ranget,
+		\end{split}
+	\end{gather}
+	where $W(\cdot)=(W_{1}(\cdot),\dots,W_{d}(\cdot))$ is a $d$-dimensional 
+	standard Brownian motion and here we define $\alpha(t)$, a 	measurable and 
+	adapted process called the \textit{rate of return process} that satisfies 
+	\begin{equation}
+		\label{eq:alpha}
+		\alpha(t) = \gamma(t) + \frac{1}{2} \sum_{\nu=1}^{d} \sigma_{\nu}^2(t),
+		\quad \ranget.
+	\end{equation}
+\end{thm}
+
+\begin{proof}
+	The proof involves an application of It\^{o} formula (?? definition), where we 
+	define $Y(t) \defeq \log{X(t)}$ and apply the formula.
+	We note the expressions:
+	\begin{align*}
+		\frac{\partial F}{\partial t}(t,y) &= 0, \\
+		\frac{\partial F}{\partial y}(t,y) &= \exp(Y(t)), \\
+		\frac{\partial^2 F}{\partial y^2}(t,y) &= \exp(Y(t)).
+	\end{align*}
+	Using the above expressions in the formula yields
+	\begin{equation*}
+		\d{F(t,Y(t))} = \exp(Y(t))\d{Y(t)} 
+				+ \frac{1}{2}\exp(Y(t))\d{\langle Y \rangle_{t}},
+	\end{equation*}
+	Therefore since $Y(t) \defeq \log{X(t)}$ 
+	\begin{align*}
+		\d{X(t)} 
+		& = 
+						\exp(\log{X(t)})\d{\log{X(t)}} + 
+						\frac{1}{2}\exp(\log{X(t)})\d{\langle \log{X} \rangle_{t}} \\
+		& = X(t)\d{\log{X(t)}} + \frac{1}{2}X(t)\d{\langle \log{X} \rangle_{t}}.
+	\end{align*}
+	Recalling the definition of the \textit{log price process} $\log{X(t)}$ 
+	(\ref{def:logpriceprocess}) and the \textit{rate of return} process 
+	$\alpha(t)$ (\ref{eq:alpha}), and using the result of the proposition 
+	(\ref{prop:crossvarlogX}), we get
+	\begin{align*}
+		\d{X(t)} 
+					& = X(t)
+					\left( 
+						\gamma(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}, 
+					\right) + 
+					\frac{1}{2} X(t) \sum_{\nu=1}^{d} \sigma_{\nu}^2\d{t} \\
+					& =
+					X(t)
+						\left(
+						\left( 
+							\gamma(t) + \frac{1}{2} X(t) \sum_{\nu=1}^{d} \sigma_{\nu}^2
+						\right)\d{t} + 
+					  \sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}
+						\right) \\
+					& =	X(t) \left(\alpha(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{\nu}(t) \d{W_{\nu}(t)} \right)
+	\end{align*}
+
+\end{proof}
+
+\begin{cor} 
+	[Instantaneous Rate of Return]
+	The instantaneous rate of return (or, arithmetic return) for the 
+	classical equity market model is given by
+\begin{equation}
+	\frac{\d{X(t)}}{X(t)} = \alpha(t)\d{t} + \sum_{\nu=1}^{d}\sigma_{\nu}(t){\d{W_{\nu}(t)}},
+	\quad \ranget.
+\end{equation}
+\end{cor}
+
+\begin{proof}
+
+\end{proof}
 
 \begin{rem} [Existence of Riskless Asset]
 	Note that we implicitly assume the existence of a riskless asset 
 	$X_{0}(t)\defeq 1,\ranget$, and without loss of generality we assume a zero 
 	interest rate by discounting the stock prices by the bond price.
 \end{rem}
-
-
-\begin{equation}
-	\d{\log X_{i}(t)}=\gamma_{i}(t)\d{t} + \sum_{\nu=1}^{d} 
-	\sigma_{i\nu}(t){\d{W_{\nu}(t)}}, \quad \ranget
-	\label{eq:logmarketmodel}
-\end{equation}
-
-Integrating \ref{eq:logmarketmodel} we get
-
-\begin{equation}
-	\log X_{i}(t) = \log X_{i}(0) + \int_{0}^{t} \gamma_{i}(s)\d{s} + 
-	\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s){\d{W_{\nu}(s)}}, \quad 
-	\ranget
-\end{equation}
-
-Which can be written in exponential form, as follows
-
-\begin{equation}
-	X_{i}(t) = x_{i} \exp{ \left(
-			\int_{0}^{t} \gamma_{i}(s)\d{s} + \int_{0}^{t} 
-			\sum_{\nu=1}^{d} \sigma_{i\nu}(s){\d{W_{\nu}(s)}} 
-			\right)
-		}, \quad \ranget
-\end{equation}
-
 
 \subsection{Portfolios and Wealth}
 
