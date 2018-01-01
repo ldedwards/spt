@@ -64,11 +64,13 @@
 
 %%%%%%%%%%%%%%%%%%%
 \renewcommand{\d}[1]{\mathop{\mathrm{d}{#1}}}
+\newcommand{\msquared}{\mathcal{M}^{2}_{0,T}}
 \newcommand{\realnumbers}{\mathbb{R}}
 \newcommand{\ranget}{t\in[0,\infty)}
-\newcommand{\filtration}[1]{\mathcal{#1}}
+\newcommand{\filtration}[1]{\mathcal{F_{#1}}}
 \newcommand{\defeq}{\mathop{\triangleq}}
 \newcommand{\almostsurely}{\text{a.s.}}
+\newcommand{\E}[1]{\mathbb{#1}}
 %%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -80,62 +82,63 @@ Portfolios in Stochastic Portfolio Theory}
 \tableofcontents{}
 
 \section{Introduction}
-Stochastic Portfolio Theory (\textbf{SPT}) was first introduced by Fernholz and 
-Shay (1982) \cite{fernholz1982}, formalised in Fernholz (1999) 
-\cite{fernholz1999} and was further developed by Fernholz (2002) 
-\cite{fernholz2002}. It has evolved into a flexible framework for analyzing 
-portfolio behavior and equity market structure that has both theoretical and 
-practical applications.
+% Stochastic Portfolio Theory (\textbf{SPT}) was first introduced by Fernholz and 
+% Shay (1982) \cite{fernholz1982}, formalised in Fernholz (1999) 
+% \cite{fernholz1999} and was further developed by Fernholz (2002) 
+% \cite{fernholz2002}. It has evolved into a flexible framework for analysing 
+% portfolio behaviour and equity market structure that has both theoretical and 
+% practical applications.
+% 
+% From a theoretical standpoint, the framework provides insight into questions 
+% regarding the behaviour of the market as well as arbitrage, and can be used to 
+% construct portfolios with controlled behaviour under quite general assumptions. 
+% 
+% The framework does not assume the existence of equivalent local martingale
+% measures (equivalent to the assumption of \textbf{No Free Lunch with Vanishing 
+% Risk} (NFLVR)), detailed by Delbaen and Schachermayer \cite{delbaen1994}. In 
+% fact, most models developed in the framework satisfy only the weaker \textbf{No 
+% Unbounded Profit with Bounded Risk assumption} (NUPBR), which holds if and only 
+% if a local martingale deflator exists, which was shown by Kardaras 
+% \cite{kardaras2012}. 
+% 
+% NUPBR plays the role of Radon-Nikodym derivative in the case that an equivalent
+% local martingale measure does exist.  Karatzas and Kardaras (2007) proved that 
+% NUPBR is a necessary and sufficient condition for the log-utility maximization 
+% problem to have a solution. For an overview of these different notions of 
+% arbitrage, and their relation to the existence of deflators and equivalent 
+% measures, we refer the reader to Fontana (2015).
+% 
+% As a practical tool, SPT has been applied to the analysis and optimization of 
+% portfolio performance and has been the basis of successful equity investment 
+% strategies for over a decade.
+% 
+% * importance of portfolio construction in finance
+% * proportion of the market that is passively investing wealth in financial 
+% market has been growing
+% * a relatively recent approach to creating portfolios
+% 
+% A thorough survey in Fernholz and Karatzas \cite{fernholz2009} and recently
+% by Vervuurt \cite{vervuurt2015}.
+% 
+% * relatively general market model is assumed
+% * continuous-time model with weak no-arbitrage assumptions
+% * portfolio selection criteria is to outperform a benchmark with probability 1
+% * relies on a method of \textit{functional generation} to constructs portfolios
+% that rely deterministically only on the market capitalisation (or equivalently 
+% prices)
+% 
+% An example is the Diversity weighted portfolios (DWP)
+% * builds on the concept of diversification leading to superior returns
+% * we present the in-depth theoretical basis showing that the DWP outperforms the 
+% market index, including recent enhancements by \cite{vervuurt2016} that
+% extend the basic formulation to include negative-weighted parameters.
+% 
+% Vervuurt \cite{vervuurt2015} notes in his survey that hardly any of the 
+% theoretical results in SPT have been tested using real market data. We aim as 
+% part of this dissertation to provide an in-depth empirical study of the European 
+% equity market, examining the assumptions and the real world implementation of
+% such strategies, including frictions such as:
 
-From a theoretical standpoint, the framework provides insight into questions 
-regarding the behaviour of the market as well as arbitrage, and can be used to 
-construct portfolios with controlled behaviour under quite general assumptions. 
-
-The framework does not assume the existence of equivalent local martingale
-measures (equivalent to the assumption of \textbf{No Free Lunch with Vanishing 
-Risk} (NFLVR)), detailed by Delbaen and Schachermayer \cite{delbaen1994}. In 
-fact, most models developed in the framework satisfy only the weaker \textbf{No 
-Unbounded Profit with Bounded Risk assumption} (NUPBR), which holds if and only 
-if a local martingale deflator exists, which was shown by Kardaras 
-\cite{kardaras2012}. 
-
-NUPBR plays the role of Radon-Nikodym derivative in the case that an equivalent
-local martingale measure does exist.  Karatzas and Kardaras (2007) proved that 
-NUPBR is a necessary and sufficient condition for the log-utility maximization 
-problem to have a solution. For an overview of these different notions of 
-arbitrage, and their relation to the existence of deflators and equivalent 
-measures, we refer the reader to Fontana (2015).
-
-As a practical tool, SPT has been applied to the analysis and optimization of 
-portfolio performance and has been the basis of successful equity investment 
-strategies for over a decade.
-
-* importance of portfolio construction in finance
-* proportion of the market that is passively investing wealth in financial 
-market has been growing
-* a relatively recent approach to creating portfolios
-
-A thorough survey in Fernholz and Karatzas \cite{fernholz2009} and recently
-by Vervuurt \cite{vervuurt2015}.
-
-* relatively general market model is assumed
-* continuous-time model with weak no-arbitrage assumptions
-* portfolio selection criteria is to outperform a benchmark with probability 1
-* relies on a method of \textit{functional generation} to constructs portfolios
-that rely deterministically only on the market capitalisation (or equivalently 
-prices)
-
-An example is the Diversity weighted portfolios (DWP)
-* builds on the concept of diversification leading to superior returns
-* we present the in-depth theoretical basis showing that the DWP outperforms the 
-market index, including recent enhancements by \cite{vervuurt2016} that
-extend the basic formulation to include negative-weighted parameters.
-
-Vervuurt \cite{vervuurt2015} notes in his survey that hardly any of the 
-theoretical results in SPT have been tested using real market data. We aim as 
-part of this dissertation to provide an in-depth empirical study of the European 
-equity market, examining the assumptions and the real world implementation of
-such strategies, including frictions such as:
 \begin{description}
 	\item [Corporate actions] including splits
 	\item [Transaction costs] realistic trading costs based on an accurate 
@@ -145,153 +148,251 @@ such strategies, including frictions such as:
 \end{description}
 
 \section{Preliminaries}
-\subsection{Diffusion Processes}
 
-We introduce the stochastic process known as a Brownian motion (also sometimes 
-referred to as a Weiner process).
+% This section provides a concise overview of stochastic calculus for
+% diffusion processes. The model for continuous stock prices presented
+% here has an extensive literature can be found in \cite{shreve2012}.
+% Throughout, we work on a \textbf{filtered probability space} denoted
+% by $(\Omega,\filtration,\left\{ \filtration{t}\right\} ,P)$
+% where:
 
-\begin{defn} [Standard Brownian Motion]
-A Standard Brownian motion $W$ is a stochastic process which is a mapping 
-$W:[0,\infty)\times\Omega\to\mathbb{R}$ for a probability
-space $(\Omega,\mathcal{F},P)$ which has the properties:
+\begin{itemize}
+	\item $\Omega$ denotes the space of all events,
+	\item $\mathcal{F}$ denotes the set of all measurable events,
+	\item ${ \mathcal{F}_{t}} _{t\ge0}$ denotes the filtration
+		- a family of $\sigma$-algebras contained in $\mathcal{F}$ with
+		the property that if $s<t$ then $\mathcal{F}_{s}\subset\mathcal{F}_{t}$. 
+\end{itemize}
 
-\begin{enumerate}
-	\item $W(0)=0 \quad \almostsurely$,
-	\item $W(t)$ has \textbf{independent increments,}
-	\item $W(t)$ has \textbf{stationary increments} 
-		$W(t)-W(s)\thicksim\mathcal{N}(0,t-s)$for $0\le s<t<\infty,$
-	\item the sample trajectories for almost all $\omega\in\Omega$ the paths 
-		$t\to W(t,\omega)$ are \textbf{almost surely continuous.}
-\end{enumerate}
+\begin{defn} [Stochastic Processes]
+	\label{def:stochasticprocesses}
+
+	The modelling of random assets in finance is based on \textbf{stochastic
+	processes}, which are families $X(t)$  of random variables $X(t):\Omega\to\mathbb{R}$
+	for $t\in[0,T]$, where $X(0)$ is constant.
+
 \end{defn}
 
-\begin{defn} [Variation]
-	\label{def:variation}
-	For a stochastic process $X(\cdot)$ we write
+\subsection{Diffusion Processes}
+
+% We introduce the stochastic process known as a Brownian motion (also sometimes 
+% referred to as a Weiner process).
+
+\begin{defn} [Standard Brownian Motion]
+	\label{def:brownianmotion}
+
+	A Standard Brownian motion $W(\cdot)$ is a stochastic process 
+	(Definition \ref{def:stockpriceprocess})  which is a 	mapping 
+	$W:[0,\infty)\times\Omega\to\mathbb{R}$ for a probability	space 
+	$(\Omega,\mathcal{F},P)$ which has the properties: 
+
+	\begin{enumerate}
+		\item $W(0)=0 \quad \almostsurely$,
+		\item $W(t)$ has \textbf{independent increments,}
+		\item $W(t)$ has \textbf{stationary increments} 
+			$W(t)-W(s)\thicksim\mathcal{N}(0,t-s)$for $0\le s<t<\infty,$
+		\item the sample trajectories for almost all $\omega\in\Omega$ the paths 
+			$t\to W(t,\omega)$ are \textbf{almost surely continuous.}
+	\end{enumerate}
+
+\end{defn}
+
+\begin{thm} [Martingale property of Brownian motion]
+	\label{tmh:brownianmotionmartingaleproperty}
+
+	(Definition \ref{def:brownianmotion})
+	(Definition \ref{def:martingale})
+
+	\begin{equation*}
+		\E{W(t) \mid \filtration{s}} = W_{s}
+	\end{equation*}
+
+\end{thm}
+
+\begin{defn} [Quadratic Variation]
+	\label{def:quadraticvariation}
+
+	For a stochastic process (Definition \ref{def:stochasticprocesses}) $X(\cdot)$ we write
+
 	\begin{equation*}
 		\left< X \right>_{t} \defeq i
 			\lim_{\max{(t_{n+1}-t_{n}}\to0}
 			\sum \left| \right|
 	\end{equation*}
+
 \end{defn}
 
 \begin{thm} [Quadratic variation of Brownian motion]
 	\label{thm:quadraticvariationofbrownianmotion}
+
+	(\ref{def:quadraticvariation})
+	(\ref{def:brownianmotion})
+
 	\begin{equation}
-	\left<W(t)\right>_{t} = t \quad \almostsurely.
+		\left<W(t)\right>_{t} = t \quad \almostsurely.
 	\end{equation}
+
 \end{thm}
 
 \subsection{It\^{o} Calculus}
 
-\newcommand{\msquared}{\mathcal{M}^{2}_{0,T}}
+\begin{defn} [It\^{o} Process]
+	\label{def:itoprocess}
+	TODO: write
+\end{defn}
 
-\begin{thm} 
-	[Quadratic variation of It\^{o} processes]
+\begin{defn} [It\^{o} Formula]
+	\label{def:itoformula}
+	TODO: flesh out
+\end{defn}
+
+\begin{thm} [Quadratic variation of It\^{o} processes]
 	\label{thm:quadraticvariationofitoprocess}
+
 	For an It\^{o} process $X(\cdot)$ 
+	
 	\begin{equation*}
 		\d{X(t)} = a(t)\d{t} + b(t)\d{W(t)}
 	\end{equation*}
+	
 	then the quadratic variation of $X$ is
+	
 	\begin{equation*}
 		\left< X \right>_{t} = \int_{0}^{t} b^2(s)\d{s}.
 	\end{equation*}
+
 \end{thm}
 
 \begin{proof}
 	We start with the result for continuous, \textit{square-integrable} martingale 
 	$I(X) \in \msquared$ given in \cite{shreve2012} (Equation 2.19).
+
 	\begin{equation*}
 		\left<I(X)\right>_{t} = \int_{0}^{t} X_{M}^2 d\left<M\right>_{M}.
 	\end{equation*}
-	and note that since 
+
+	and note that since (TODO: compete)
 \end{proof}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% SPT DEFINITIONS
+\newcommand{\abs}[1]{\mathop{|{#1}|}}
+\newcommand{\market}{\mathcal{M}}
+\newcommand{\rangei}{i=1,\dots,n}
+\newcommand{\measure}{\mathbb{P}}
+\newcommand{\probabilityspace}{(\Omega,\filtration,\measure)}
 
 \section{Stochastic Portfolio Theory}
 
-\section{The Market Model}
 
-This section introduces the basic definitions and results that will be used 
-throughout the rest of the dissertation.
+\subsection{Market Model}
 
-\subsection{Stocks and Portfolios}
+Assumptions:
+\begin{itemize}
+	\item number of companies is fixed and finite
+	\item number of shares of each company is constant
+	\item each company has a single share of stock outstanding
+	\item no issues with indivisibility of shares (i.e. fractional share 
+				quantities are allowed)
+	\item no mergers or splits
+	\item continuous trading
+	\item no dividends
+	\item no taxes
+	\item no transaction costs
+\end{itemize}
 
-We assume the number of companies in the market is finite and fixed,
-the total number of shares of each company is constant, companies
-do not merge or break up and trading is continuous in time. In addition
-we assume there are no dividends, transaction costs or taxes, as well as there
-being no issues with the indivisibility of shares. 
+\begin{defn} [The Equity Market Model]
+	\label{def:marketmodel}
+ 	\cite{fernholz2009} 
+	We define market $\market$, with $n$ stocks, and $d$-dimensional independent Brownian 
+	motion $W(\cdot)$ (with $d \ge n$), defined on a probability space 
+	$\probabilityspace$ as
 
-We present the \textit{logarithmic model} from Fernholz (2002) 
-\cite{fernholz2002}, Karatzas (2009) \cite{fernholz2009} and Vervuurt (2015)
-\cite{vervuurt2015}. We start by defining the stock price process $X(t)$
-which represents the price of the stock. To simplify further, we assume that
-each company has a single share of stock outstanding. In this case $X(t)$ also
-represents the total capitalisation of the company at time $t$.
-
-\begin{defn} [Stock Price Process] 
-	\label{def:logpriceprocess}
-	A (logarithmic) stock price process is a process that satisfies the stochastic 
-	differential equation
-	\begin{equation} 
-		\label{eq:stockpriceprocess}
-		\d{\log{X(t)}} = 
-			\gamma(t)\d{t} + 
-			\sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}, 
+	\begin{equation*}
+		\label{eq:equitymarketmodelriskfree}
+		\d{B(t)} = B(t)r(t)\d{t},
 		\quad \ranget
-		\quad \almostsurely,
+	\end{equation*}
+
+	\begin{equation}
+		\label{eq:stockpriceprocess}
+		\d{X_{i}(t)} = X_{i}(t) 
+				\left[
+					b_{i}(t)dt + 
+					\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+				\right],
+				\quad \rangei,
+				\quad \ranget
 	\end{equation}
+
+	Where $W = \left\{ W(t)=(W_{1}(t),...,W_{n}(t)),\filtration{t},\ranget 
+\right\}$.
+
+	Where $B(0)=1$ and $r(\cdot)$ is the interest-rate process for the money-market.
+
+	Stock price process $X_{i}(t)$ which represents the price of the $i$th stock, where $X_{i}(0) = x_{i} > 0$ are the (strictly positive) initial values of the stock prices.
+
+	We also assume the $\filtration{t}$-progressively measurable processes (Definition: 
+	\ref{def:progressivelymeasureable)} $(n \times 1)$ process $b(\cdot)$ the 
+	\textit{rates of return}, and $(n \times d)$ process $\sigma_{i\nu}(t)$ of the 
+	\textit{volatilities} satisfy the integrability conditions (Definition: 
+	\ref{def:itointegrabilityconditions})
+
+	\begin{equation*}
+		\int_{0}^{T} 
+		\abs{r(t)} 
+		\d{t} +
+		\sum_{i=1}^{n} \int_{0}^{T} 
+			\left( 
+					\abs{b_{i}(t)} +
+					\sum_{\nu=1}^{d} ( \sigma_{i\nu}(t)^2  ) 
+					\right) \d{t} < \infty,
+		\quad
+		T \in [0, \infty),
+		\almostsurely
+	\end{equation*}
+
 \end{defn}
 
-Integrating (\ref{eq:stockpriceprocess}) we get
+\subsection{Stock Price Process}
 
-\begin{equation}
-	\log X(t) = \log X(0) + \int_{0}^{t} \gamma(s)\d{s} + 
-	\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s){\d{W_{\nu}(s)}}, \quad 
-	\ranget,
-\end{equation}
-
-where the positive constant $X(0)$ represents the initial value of the stock. 
-This can then easily be written in exponential form as
-
-\begin{equation}
-	X(t) = X(0) \exp{ \left(
-			\int_{0}^{t} \gamma(s)\d{s} + \int_{0}^{t} 
-			\sum_{\nu=1}^{d} \sigma_{\nu}(s){\d{W_{\nu}(s)}} 
-			\right)
-		}, \quad \ranget.
-\end{equation}
-
-The process $\gamma(t)$ is called the \textit{growth rate process} of $X(\cdot)$ 
-and the process $\sigma_{\nu}(t)$ are called the \textit{volatility processes} of 
-$X(\cdot)$.
-
-\begin{prop} 
+\begin{prop} [Quadratic Variation of Logarithmic Stock Price Process]
 	\label{prop:crossvarlogX}
-	\cite{fernholz2002} The quadratic variation of 
-	the logarithmic stock price process $\log{X(\cdot)}$ satisfies
+
+	Let $X_{i}(\cdot)$ be a stock prices process defined as in (\ref{eq:stockpriceprocess}), 
+	then the quadratic variation (Definition: \ref{def:quadraticvariation}) of
+	$\log{X_{i}(\cdot)}$ satisfies
+
 	\begin{equation}
-		\d{\langle \log{X} \rangle_{t}} = \sum_{\nu=1}^{d} \sigma_{\nu}^2\d{t},
+		\d{\langle \log{X_{i}} \rangle_{t}} = \sum_{\nu=1}^{d} \sigma_{i\nu}^2\d{t},
 		\quad \ranget,
+		\quad \rangei,
 		\quad \almostsurely
 	\end{equation}
+
 \end{prop}
 
-\begin{proof}
-	From the definition of cross-variation (?? add reference)
+\begin{proof} 
+
+	From (Definition: \ref{def:quadraticvariation}), (Theorem: 
+	\ref{thm:quadraticvariationofbrownianmotion}) and (Theorem: 
+	\ref{thm:quadraticvariationofitoprocess}), for $\rangei$
+
 	\begin{gather}
 		\begin{split} 
-			\label{eq:crossvarlogX}
-			\langle \log{X} \rangle_{t} 
-			 & = \left< \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
-			 & = \left< \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
-			 & = \sum_{\nu=1}^{d} \left< \int_{0}^{t} \sigma_{\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
-			 & = \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{\nu}^{2}(s) \d{\langle W_{\nu}(s) \rangle } \\
-			 & = \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(s) \d{s}.
+			\label{eq:quadraticvariationlogX}
+			\langle \log{X_{i}} \rangle_{t} 
+			 & = \left< \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \left< \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \sum_{\nu=1}^{d} \left< \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}^{2}(s) \d{\langle W_{\nu}(s) \rangle } \\
+			 & = \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}^{2}(s) \d{s}.
 		\end{split}
 	\end{gather}
-	Then from (\ref{eq:crossvarlogX}) we have
+	
+	Then from (\ref{eq:quadraticvariationlogX}) we have
+	
 	\begin{gather}
 		\begin{split}
 			\d{\langle \log{X} \rangle_{t}}
@@ -300,127 +401,231 @@ $X(\cdot)$.
 				& = \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(t) \d{t}.
 		\end{split}
 	\end{gather}
+
 \end{proof}
 
-We examine the relationship between the standard model of a price process 
-$X(\cdot)$ and the logarithmic processes defined above 
-(\ref{def:logpriceprocess}). 
+\begin{thm} [Logarithmic Representation of Stock Price Process]
+	\label{thm:logarithmicrepresentation}
 
-\begin{thm} \cite{fernholz2002} The stock price process $X(\cdot)$ satisfies
+	Let $X_{i}(\cdot)$ be a stock prices process defined as in 
+	(\ref{eq:stockpriceprocess}), then 
+
+	\begin{equation} 
+		\d{\log{X_{i}(t)}} = 
+			\gamma_{i}(t)\d{t} + 
+			\sum_{\nu=1}^{d} \sigma_{i\nu}(t){\d{W_{\nu}(t)}}, 
+		\quad \rangei,
+	\end{equation}
+
+	or, equivalently in exponential form as
+
+	\begin{equation*}
+		X_{i}(t) = X_{i}(0) 
+				\exp{ 
+					\left(
+						\int_{0}^{t} \gamma_{i}(s)\d{s} + \int_{0}^{t} 
+						\sum_{\nu=1}^{d} \sigma_{i\nu}(s){\d{W_{\nu}(s)}} 
+					\right)
+				}, 
+		\quad \ranget.
+	\end{equation*}
+
+	Where the (non-negative definite matrix-valued) \textit{covariance process} 
+	$a_{i,j}(t)$ is defined as
+	
 	\begin{gather}
+		\label{eq:covarianceprocess}
 		\begin{split}
-			\d{X(t)}
-				& = \alpha(t)X(t)\d{t} + X(t)\sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}, \quad \ranget, \\
-				& = X(t) \left( \alpha(t)\d{t} + \sum_{\nu=1}^{d} 
-							\sigma_{\nu}(t){\d{W_{\nu}(t)}} \right), \quad \ranget,
+			a_{ij}(t)  
+				& \defeq \sum_{\nu=1}^{d}\sigma_{i\nu}(t)\sigma_{j\nu}(t) \\ 
+				& = \left( \sigma(t)\sigma'(t) \right)_{ij} \\
+				& = \frac{d}{dt}\left\langle \log X_{i},\log X_{j}\right\rangle(t)
 		\end{split}
 	\end{gather}
-	where $W(\cdot)=(W_{1}(\cdot),\dots,W_{d}(\cdot))$ is a $d$-dimensional 
-	standard Brownian motion and here we define $\alpha(t)$, a 	measurable and 
-	adapted process called the \textit{rate of return process} that satisfies 
+
+	with ' denoting vector transposition, and the process $\gamma_{i}(t)$ called 
+	the \textit{growth rate} is	defined as
+
 	\begin{equation}
-		\label{eq:alpha}
-		\alpha(t) = \gamma(t) + \frac{1}{2} \sum_{\nu=1}^{d} \sigma_{\nu}^2(t),
-		\quad \ranget.
+		\label{eq:gamma}
+		\gamma_{i}(t)\defeq b_{i}(t)-\frac{1}{2}a_{ii}(t)
+		\quad \rangei
 	\end{equation}
+
 \end{thm}
 
 \begin{proof}
-	The proof involves an application of It\^{o} formula (?? definition), where we 
-	define $Y(t) \defeq \log{X(t)}$ and apply the formula.
-	We note the expressions:
-	\begin{align*}
-		\frac{\partial F}{\partial t}(t,y) &= 0, \\
-		\frac{\partial F}{\partial y}(t,y) &= \exp(Y(t)), \\
-		\frac{\partial^2 F}{\partial y^2}(t,y) &= \exp(Y(t)).
-	\end{align*}
-	Using the above expressions in the formula yields
-	\begin{equation*}
-		\d{F(t,Y(t))} = \exp(Y(t))\d{Y(t)} 
-				+ \frac{1}{2}\exp(Y(t))\d{\langle Y \rangle_{t}},
-	\end{equation*}
-	Therefore since $Y(t) \defeq \log{X(t)}$ 
-	\begin{align*}
-		\d{X(t)} 
-		& = 
-						\exp(\log{X(t)})\d{\log{X(t)}} + 
-						\frac{1}{2}\exp(\log{X(t)})\d{\langle \log{X} \rangle_{t}} \\
-		& = X(t)\d{\log{X(t)}} + \frac{1}{2}X(t)\d{\langle \log{X} \rangle_{t}}.
-	\end{align*}
-	Recalling the definition of the \textit{log price process} $\log{X(t)}$ 
-	(\ref{def:logpriceprocess}) and the \textit{rate of return} process 
-	$\alpha(t)$ (\ref{eq:alpha}), and using the result of the proposition 
-	(\ref{prop:crossvarlogX}), we get
-	\begin{align*}
-		\d{X(t)} 
-					& = X(t)
-					\left( 
-						\gamma(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}, 
-					\right) + 
-					\frac{1}{2} X(t) \sum_{\nu=1}^{d} \sigma_{\nu}^2\d{t} \\
-					& =
-					X(t)
-						\left(
-						\left( 
-							\gamma(t) + \frac{1}{2} X(t) \sum_{\nu=1}^{d} \sigma_{\nu}^2
-						\right)\d{t} + 
-					  \sum_{\nu=1}^{d} \sigma_{\nu}(t){\d{W_{\nu}(t)}}
-						\right) \\
-					& =	X(t) \left(\alpha(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{\nu}(t) \d{W_{\nu}(t)} \right)
-	\end{align*}
+	We apply It\^{o}s formula (\ref{def:itoformula}) to the function $f(x)=\exp{x}$ with the argument $\log{X_{i}(t)}$, so for $\ranget$, $\rangei$
+
+	\begin{gather*}
+		\begin{split}
+			\d{\log{X_{i}(t)}} 
+			 	& = 
+					\frac{\d{X_{i}(t)}}{X_{i}(t)} - 
+						\frac{1}{2} \frac{d}{dt}\left\langle \log X_{i},\log X_{i}\right\rangle(t)
+					\\
+				& = 
+					\left(
+						b_{i}(t)\d{t} + 
+						\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+					\right)- 
+					\frac{1}{2} \frac{d}{dt}\left\langle \log X_{i},\log X_{i}\right\rangle(t)
+					\\
+				& = 
+					\left(
+						b_{i}(t)\d{t} + 
+						\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+					\right)- 
+					\frac{1}{2} \frac{d}{dt}\left\langle \log X_{i},\log X_{i}\right\rangle(t)
+					\\
+				& = 
+					\left(
+						b_{i}(t)\d{t} + 
+						\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+					\right)- 
+					\frac{1}{2} a_{ii}(t)\d{t}
+					\\
+				& = 
+					\left(
+						b_{i}(t) -
+						\frac{1}{2} a_{ii}(t)
+					\right) \d{t} +
+					\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+					\\
+				& = 
+					\gamma_{i}(t) +
+					\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+				\quad \almostsurely
+		\end{split}
+	\end{gather*}
+
 
 \end{proof}
 
-\begin{cor} 
-	[Instantaneous Rate of Return]
-	The instantaneous rate of return (or, arithmetic return) for the 
-	classical equity market model is given by
-\begin{equation}
-	\frac{\d{X(t)}}{X(t)} = \alpha(t)\d{t} + \sum_{\nu=1}^{d}\sigma_{\nu}(t){\d{W_{\nu}(t)}},
-	\quad \ranget.
-\end{equation}
-\end{cor}
+\begin{thm} [Growth Rate]
+	\label{thm:growthrate}
+
+
+	The justification for the quantity (\ref{eq:gamma}) being called the 
+	\textit{growth rate} is	because of the following relationship
+
+	\begin{equation}
+		\lim_{T \to \infty} 
+			\left( 
+			\log{X_{i}(T)} - \int_{0}^{T} \gamma_{i}(t)\d{t} 
+			\right) = 0
+		\quad \almostsurely
+	\end{equation}
+
+	See also Equation 1.6 of \cite{fernholz2009}.
+
+\end{thm}
 
 \begin{proof}
-
+	Build on Corollary 2.2 of \cite{fernholz1999}.
 \end{proof}
 
-\begin{rem} [Existence of Riskless Asset]
-	Note that we implicitly assume the existence of a riskless asset 
-	$X_{0}(t)\defeq 1,\ranget$, and without loss of generality we assume a zero 
-	interest rate by discounting the stock prices by the bond price.
-\end{rem}
+\subsection{Strategies and Portfolios}
 
-\subsection{Portfolios and Wealth}
+\begin{defn} [Trading Strategy]
+	\label{def:tradingstrategy}
 
-\subsubsection{The Market Portfolio}
-One of the most researched applications of Stochastic Portfolio Theory is that 
-of portfolio construction. Here the objective of portfolio construction is to 
-selection a portfolios is to exploit arbitrages that may be present in the 
-market. Typically this performance is measured with respect to a benchmark, as 
-in the Benchmark Approach of Platen and Heath \cite{platen2006}.
+	A \textit{trading strategy} is a progressively measurable process $h(\cdot)$ 
+	takes values in $\mathbb{R}^{n}$ with a wealth process $V^{w,h}(\cdot)$ 
 
-\begin{defn}[Market Portfolio]
-We introduce the Market Portfolio, as the process of market weights $\mu(\cdot)$ 
-defined by \begin{equation}
-	\mu_{i}(t)\triangleq\frac{X_{i}(t)}{X(t)},\;\;\;\;X(t)\triangleq\sum_{i=1}^{n}X_{i}(t).
-\end{equation}
+	\begin{equation*}
+		V^{w,h}(t) = \sum_{i=1}^{n} h_{i}(t) X_{i}(t) 
+		\quad \ranget
+	\end{equation*}
+
+	with $V^{w,h}(0)=w$ for $w > 0$. We also assume a trading strategy $h(\cdot)$  
+	satisfies the integrability condition
+
+	\begin{equation*}
+		\sum_{i=1}^{n} \int_{0}^{T} 
+		\left(
+		\abs{(h_{i}(t)b_{i}(t)} + h_{i}^2(t)a_{ii}(t)
+			\right) \d{t} < \infty
+		\quad	\almostsurely
+	\end{equation*}
+
 \end{defn}
 
-\subsection{Relative Arbitrage}
-\subsection{Functionally Generated Portfolios}
-\subsection{Rank-based Portfolios}
-\subsection{Trading Strategies}
+\begin{defn} [Admissible Strategies]
 
-\section{Diversity Weighted Portfolios}
+	A trading strategy is called $x$-\textit{admissible} if for some $x \ge 0$
 
-Diversity is clearly observed in real markets, and its validity is guaranteed by 
-the fact that anti-trust regulations are typically in place. This assumption was 
-first studied in detail in the context of SPT by Fernholz, Karatzas and Kardaras 
-\cite{fernholz2005}, who defined and studied different forms of diversity, and 
-proved that under an additional non-degeneracy condition on the stock 
-volatilities, relative arbitrages exist in such markets - both over sufficiently 
-long time horizons, as well as over arbitrarily short time horizons.
+	\begin{equation*}
+		V^{w,h}(t) \ge -x
+		\quad \ranget
+		\quad \almostsurely
+	\end{equation*}
+
+	We write this as $h(\cdot) \in \mathcal(A)_{x}$, and we define 
+	$\mathcal{A} \defeq \mathcal{A}_{0}$.
+
+\end{defn}
+
+\begin{defn} [Portfolio]
+	\label{def:portfolio}
+
+	A portfolio is a progressively measurable process $\pi(\cdot)$ uniformly bounded in 
+	$(t,\omega)$,	where $\pi_{i}(t)$ represents the proportion of wealth invested in stock 
+	$i$ at time $t$, with values is the set
+
+	\begin{equation}
+		\bigcup_{\kappa \in \mathbb{N}} 
+		\left\{ 
+			x \in \mathbb{R}^{n} \mid 
+			\sum_{i=1}^{n} x_{i}^2 \le \kappa^2 \mid
+			\sum_{i=1}^{n} x_{i} = 1
+		\right\} 
+	\end{equation}
+\end{defn}
+
+\begin{defn} [Long-Only Portfolio]
+	\label{def:longonlyportfolio}
+
+	We say that a portfolio $\pi(\cdot)$ is \textit{long only} if 
+	$\pi_{i}(t) \ge 0$ $\forall \rangei$. We also introduce the set 
+
+	\begin{equation}
+		\triangle_{+}^{n} \defeq 
+		\left\{ x\in\mathbb{R}^{n}:x_{i}\ge0\;\forall \rangei \right\} 
+	\end{equation}
+
+\end{defn}
+
+
+\begin{defn} [Wealth Process]
+	
+	We denote \textit{the wealth process} of a portfolio $\pi(\cdot)$ with initial 
+	wealth $w > 0$, by $V^{w,\pi}(\cdot)$.
+
+\end{defn}
+
+\begin{defn} [Self Financing Condition]
+	
+	A portfolio $\pi(\centerdot)$ is called \textit{self-financing} if 
+	
+	\begin{equation}
+		V^{w,\pi}(T) = V^{w,\pi}(0) + \int_{0}^{T} \sum_{i=1}^{n} \pi_{i}(t) dX_{i}(t)
+		\quad T \in [0, \infty)
+	\end{equation}
+
+\end{defn}
+
+\begin{rem} [Self Financing of Portfolio]
+	Note that by definition portfolios are self-financing.
+\end{rem}
+
+\subsection{Arbitrage}
+
+\begin{defn} [Arbitrage]
+	\label{def:portfolio}
+\end{defn}
+
+
 
 \printbibliography
 
