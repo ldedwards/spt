@@ -1,7 +1,10 @@
 \documentclass[british]{amsart}
 \usepackage{lmodern}
-\usepackage[backend=biber]{biblatex}
+
+% Bibliography
+\usepackage[backend=biber,style=alphabetic]{biblatex}
 \addbibresource{spt.bib}
+
 \renewcommand{\sfdefault}{lmss}
 \renewcommand{\ttdefault}{lmtt}
 \usepackage[T1]{fontenc}
@@ -353,6 +356,19 @@ Assumptions:
 
 \end{defn}
 
+The Equation (\ref{eq:stockpriceprocess}) can also be written as 
+
+\begin{equation}
+	\label{eq:stockpriceprocessdiff}
+		\frac{\d{X_{i}(t)}}{X_{i}(t)} = 
+				b_{i}(t)dt + 
+				\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+			\quad \rangei,
+			\quad \ranget
+\end{equation}
+
+and is often referred to as the "instantaneous" return on the stock.
+
 \subsection{Stock Price Process}
 
 \begin{prop} [Quadratic Variation of Logarithmic Stock Price Process]
@@ -596,6 +612,7 @@ Assumptions:
 Note that every portfolio generates a strategy by setting 
 
 \begin{equation}
+	\label{eq:wealthinvestedbyportfolio}
 	h_i(t) = \pi_{i}(t)V^{w,\pi}(t),
 	\quad \rangei
 \end{equation}
@@ -632,18 +649,82 @@ TODO: This should be a lemma
 	\begin{gather}
 		\label{eq:wealthprocess}
 		\begin{split}
-			\frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)} &=
-				\sum_{i=1}^{n}\pi_{i}(t)\frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+			\frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)} 
+				&= \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+				&= b_{\pi}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)}
 		\end{split}
 	\end{gather}
 
+	where we define the $b(\cdot)$, called the rate-of-return of portfolio $\pi(\cdot)$ as
+
+	\begin{equation}
+		\label{eq:bpi}
+		b_{\pi}(t) \defeq \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)
+	\end{equation}
+
+	and the volatility coefficients $\sigma_{\pi\nu}(\cdot)$ as
+
+	\begin{equation}
+		\label{eq:sigmapi}
+		\sigma_{\pi\nu}(\cdot) \defeq \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t)
+		\quad \nu=1,\dots,d
+	\end{equation}
+
 \end{thm}
 
+\begin{proof}
+	The proof (in a heuristic	fashion), suppose we denote the change in the portfolio
+	value $V^{w,\pi}(t)$ caused by the change in the $i$th stock as $V_{i}^{w,\pi}(t)$,
+	then
+
+	\begin{equation*}
+		\d{V_{i}^{w,\pi}(t)} = h_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)}
+		\quad \rangei
+	\end{equation*}
+
+	then the total change in portfolio value across all stocks is
+
+	\begin{gather*}
+		\begin{split}
+			\d{V^{w,\pi}(t)} 
+					& = \sum_{i=1}^{n} h_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\ 
+					& = \sum_{i=1}^{n} \pi_{i}(t) V^{w,\pi}(t) \frac{\d{X_i(t)}}{X_i(t)} 
+					\quad \text{From} (\ref{eq:wealthinvestedbyportfolio}) \\
+					& = V^{w,\pi}(t) \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_i(t)}}{X_i(t)} 
+		\end{split}
+	\end{gather*}
+
+	which completes the proof for the first part of (\ref{eq:wealthprocess}). We
+	prove the second equality by using (\ref{eq:stockpriceprocessdiff}), so that
+
+	\begin{gather*}
+		\begin{split}
+			\frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)}
+					& = \sum_{i=1}^{n} \pi_{i}(t) 
+					\left(
+						b_{i}(t)dt + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+					\right) \\
+					& = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)dt + 
+							\sum_{i=1}^{n} \sum_{\nu=1}^{d} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
+					& = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)dt + 
+							\sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
+					& = b_{\pi}(t)dt + 
+							\sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) 
+					\quad (\ref{eq:bpi}) \\
+					& = b_{\pi}(t)dt + 
+							\sum_{\nu=1}^{d} \sum_{i=1}^{n} \sigma_{\pi\nu}(t) dW_{\nu}(t) 
+					\quad (\ref{eq:sigmapi}) \\
+		\end{split}
+	\end{gather*}
+
+\end{proof}
+
 \begin{prop} [Strong Solution of Wealth Process]
+	\label{prop:solutionofwealthprocess}
 
 	Originally proved in \cite{fernholz1999}. 
 
-	Let $\pi(\centerdot)$ be a portfolio, then the solution of (\ref{eq:wealthprocess} is
+	Let $\pi(\centerdot)$ be a portfolio, then the solution of (\ref{eq:wealthprocess}) is
 
 	\begin{equation}
 		\d{V^{w,\pi}(t)} =  
@@ -704,7 +785,80 @@ TODO: This should be a lemma
 \begin{proof}
 	See also Equation 1.14 of \cite{fernholz2009}.
 	Build on Corollary 2.2 of \cite{fernholz1999}.
+
+	TODO: Proof.
 \end{proof}
+
+\section{The Market Portfolio}
+
+\begin{defn} [Market Portfolio]
+	\label{def:marketportfolio}
+
+	We define the process $\mu(\cdot)$ as a portfolio that invests the proportion
+	$\mu_{i}(t)$ of current wealth in the $i$th asset at all times
+
+	\begin{equation}
+		\label{eq:marketportfolio}
+		\mu_{i}(t) \defeq \frac{X_{i}(t)}{X(t)},
+		\quad \rangei	
+	\end{equation}
+
+	where we define $X(t)$, as the total market capitalisation at time $t$ by
+
+	\begin{equation}
+		\label{eq:totalmarketcapitalisation}
+		X(t) \defeq \sum_{i=1}^{n} X_{i}(t)	
+	\end{equation}
+
+  Due to the	assumption (ref???) that each stock has only one share outstanding the portfolio
+	holds the same, constant number of shares at all times.
+
+\end{defn}
+
+\begin{thm} [Wealth Process of Market Portfolio]
+
+	The wealth process of the Market Portfolio (Definition \ref{def:marketportfolio}) satisfies
+
+	\begin{equation}
+		\label{eq:wealthprocessofmarketportfolio}
+			\frac{d{V^{w,\mu}(t)}}{V^{w,\mu}(t)} = \frac{d{X(t)}}{X(t)}  
+	\end{equation}
+
+\end{thm}
+
+\begin{proof}
+
+	From (\ref{eq:wealthprocess})
+
+	\begin{gather}
+		\begin{split}
+			\frac{d{V^{w,\mu}(t)}}{V^{w,\mu}(t)} 
+				& = \sum_{i=1}^{n} \mu_{i}(t) \frac{d{X_{i}(t)}}{X_{i}(t)} \\ 
+				& = \sum_{i=1}^{n} \frac{X_{i}(t)}{X(t)} \frac{d{X_{i}(t)}}{X_{i}(t)} 
+					\quad \text{using} (\ref{eq:marketportfolio}) \\ 
+				& = \sum_{i=1}^{n} \frac{d{X_{i}(t)}}{X(t)} 
+					\quad \text{using } (\ref{eq:totalmarketcapitalisation}) \\ 
+				& = \frac{d{X(t)}}{X(t)}  
+		\end{split}
+	\end{gather}
+
+\end{proof}
+
+This means that investing in the portfolio $\mu(\cdot)$ is equivalent to ownership of
+the entire market in proportion to the initial investment, so therefore
+
+\begin{equation}
+		V^{w,\mu}(t) = \frac{w}{X(0)}X(t)	
+\end{equation}
+
+From (Proposition \ref{prop:solutionofwealthprocess}) we can write, for the market portfolio
+$\mu(\cdot)$
+
+\begin{equation}
+	\d{V^{w,\mu}(t)} =  
+			\gamma_{\mu}(t) \d{t} +
+			\sum_{\nu=1}^{d} \sigma_{\mu\nu}(t) \d{W_{\nu}(t)}
+\end{equation}
 
 
 
@@ -714,8 +868,6 @@ TODO: This should be a lemma
 \begin{defn} [Arbitrage]
 	\label{def:portfolio}
 \end{defn}
-
-
 
 \printbibliography
 
