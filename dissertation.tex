@@ -74,8 +74,7 @@
 %%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\title{Examination of practical applications of Functionally Generated 
-Portfolios in Stochastic Portfolio Theory}
+\title{Functionally Generated Portfolios in Stochastic Portfolio Theory}
 \author{Lawrence Edwards}
 \maketitle
 
@@ -127,7 +126,7 @@ Portfolios in Stochastic Portfolio Theory}
 % that rely deterministically only on the market capitalisation (or equivalently 
 % prices)
 % 
-% An example is the Diversity weighted portfolios (DWP)
+% An example is the Diversity weighted ortfolios (DWP)
 % * builds on the concept of diversification leading to superior returns
 % * we present the in-depth theoretical basis showing that the DWP outperforms the 
 % market index, including recent enhancements by \cite{vervuurt2016} that
@@ -285,7 +284,6 @@ Portfolios in Stochastic Portfolio Theory}
 
 \section{Stochastic Portfolio Theory}
 
-
 \subsection{Market Model}
 
 Assumptions:
@@ -326,12 +324,12 @@ Assumptions:
 				\quad \ranget
 	\end{equation}
 
-	Where $W = \left\{ W(t)=(W_{1}(t),...,W_{n}(t)),\filtration{t},\ranget 
-\right\}$.
+	Where $W = \left\{ W(t)=(W_{1}(t),...,W_{n}(t)),\filtration{t},\ranget \right\}$.
 
 	Where $B(0)=1$ and $r(\cdot)$ is the interest-rate process for the money-market.
 
-	Stock price process $X_{i}(t)$ which represents the price of the $i$th stock, where $X_{i}(0) = x_{i} > 0$ are the (strictly positive) initial values of the stock prices.
+	Stock price process $X_{i}(t)$ which represents the price of the $i$th stock, where 
+	$X_{i}(0) = x_{i} > 0$ are the (strictly positive) initial values of the stock prices.
 
 	We also assume the $\filtration{t}$-progressively measurable processes (Definition: 
 	\ref{def:progressivelymeasureable)} $(n \times 1)$ process $b(\cdot)$ the 
@@ -351,7 +349,7 @@ Assumptions:
 		\quad
 		T \in [0, \infty),
 		\almostsurely
-	\end{equation*}
+	 \end{equation*}
 
 \end{defn}
 
@@ -499,12 +497,10 @@ Assumptions:
 		\end{split}
 	\end{gather*}
 
-
 \end{proof}
 
-\begin{thm} [Growth Rate]
+\begin{thm} [Growth Rate of Stock Price Process]
 	\label{thm:growthrate}
-
 
 	The justification for the quantity (\ref{eq:gamma}) being called the 
 	\textit{growth rate} is	because of the following relationship
@@ -517,6 +513,7 @@ Assumptions:
 		\quad \almostsurely
 	\end{equation}
 
+	TODO: Add the condition this is valid under.
 	See also Equation 1.6 of \cite{fernholz2009}.
 
 \end{thm}
@@ -533,7 +530,7 @@ Assumptions:
 	A \textit{trading strategy} is a progressively measurable process $h(\cdot)$ 
 	takes values in $\mathbb{R}^{n}$ with a wealth process $V^{w,h}(\cdot)$ 
 
-	\begin{equation*}
+ 	\begin{equation*}
 		V^{w,h}(t) = \sum_{i=1}^{n} h_{i}(t) X_{i}(t) 
 		\quad \ranget
 	\end{equation*}
@@ -541,7 +538,7 @@ Assumptions:
 	with $V^{w,h}(0)=w$ for $w > 0$. We also assume a trading strategy $h(\cdot)$  
 	satisfies the integrability condition
 
-	\begin{equation*}
+ 	\begin{equation*}
 		\sum_{i=1}^{n} \int_{0}^{T} 
 		\left(
 		\abs{(h_{i}(t)b_{i}(t)} + h_{i}^2(t)a_{ii}(t)
@@ -555,7 +552,7 @@ Assumptions:
 
 	A trading strategy is called $x$-\textit{admissible} if for some $x \ge 0$
 
-	\begin{equation*}
+ 	\begin{equation*}
 		V^{w,h}(t) \ge -x
 		\quad \ranget
 		\quad \almostsurely
@@ -580,7 +577,7 @@ Assumptions:
 			\sum_{i=1}^{n} x_{i}^2 \le \kappa^2 \mid
 			\sum_{i=1}^{n} x_{i} = 1
 		\right\} 
-	\end{equation}
+ 	\end{equation}
 \end{defn}
 
 \begin{defn} [Long-Only Portfolio]
@@ -592,10 +589,16 @@ Assumptions:
 	\begin{equation}
 		\triangle_{+}^{n} \defeq 
 		\left\{ x\in\mathbb{R}^{n}:x_{i}\ge0\;\forall \rangei \right\} 
-	\end{equation}
+ 	\end{equation}
 
 \end{defn}
 
+Note that every portfolio generates a strategy by setting 
+
+\begin{equation}
+	h_i(t) = \pi_{i}(t)V^{w,\pi}(t),
+	\quad \rangei
+\end{equation}
 
 \begin{defn} [Wealth Process]
 	
@@ -611,13 +614,100 @@ Assumptions:
 	\begin{equation}
 		V^{w,\pi}(T) = V^{w,\pi}(0) + \int_{0}^{T} \sum_{i=1}^{n} \pi_{i}(t) dX_{i}(t)
 		\quad T \in [0, \infty)
-	\end{equation}
+ 	\end{equation}
 
 \end{defn}
 
+TODO: This should be a lemma
 \begin{rem} [Self Financing of Portfolio]
 	Note that by definition portfolios are self-financing.
 \end{rem}
+ 
+\begin{thm} [Wealth Process of a Portfolio]
+
+	The wealth-process $V^{w,\pi}(\centerdot)$ of a portfolio $\pi(\centerdot)$ and the initial 
+	wealth $w$ corresponding to Definition \ref{def:portfolio} satisfies the stochastic differential 
+	equation
+
+	\begin{gather}
+		\label{eq:wealthprocess}
+		\begin{split}
+			\frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)} &=
+				\sum_{i=1}^{n}\pi_{i}(t)\frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+		\end{split}
+	\end{gather}
+
+\end{thm}
+
+\begin{prop} [Strong Solution of Wealth Process]
+
+	Originally proved in \cite{fernholz1999}. 
+
+	Let $\pi(\centerdot)$ be a portfolio, then the solution of (\ref{eq:wealthprocess} is
+
+	\begin{equation}
+		\d{V^{w,\pi}(t)} =  
+				\gamma_{\pi}(t) \d{t} +
+				\sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)}
+	\end{equation}
+
+	or equivalently, as
+
+	\begin{equation}
+		V^{w,\pi}(t) = w \exp{ 
+			\left(
+				\int_{0}^{t} \gamma_{\pi}(u) \d{u} +
+				\sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{\pi\nu}(u) \d{W_{\nu}(u)}
+			\right)},
+	\quad \ranget
+	\end{equation}
+
+	where we define the process $\gamma_{\pi}(\cdot)$, called the \textit{growth rate} of the 
+	portfolio $\pi(\cdot)$
+
+	\begin{equation}
+		\label{eq:portfoliogamma}
+		\gamma_{\pi}(t) \defeq \sum_{i=1}^{n} \pi_{i}(t)\gamma_{i}(t) + \gamma_{\pi}^{*}(t)
+	\end{equation}
+
+	which in turn uses the definition of the process $\gamma_{\pi}^{*}(\cdot)$, called the
+	\textit{excess growth rate}
+
+	\begin{equation}
+		\gamma_{\pi}^{*}(t) \defeq \frac{1}{2} 
+				\left(
+					\sum_{i=1}^{n} \pi_{i}(t)a_{ii}(t) -
+					\sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t)a_{ij}(t)\pi_{j}(t)
+				\right)
+	\end{equation}
+
+\end{prop}
+
+\begin{thm} [Growth Rate of Wealth Process]
+	\label{thm:wealthgrowthrate}
+
+	The justification for the quantity (\ref{eq:portoliogamma}) being called the 
+	\textit{growth rate} is	because of the following relationship
+
+	\begin{equation}
+		\lim_{T \to \infty} 
+			\left( 
+			\log{V^{w,\pi}(T)} - \int_{0}^{T} \gamma_{\pi}(t)\d{t} 
+			\right) = 0
+		\quad \almostsurely
+	\end{equation}
+
+	TODO: Add the condition this is valid under.
+
+\end{thm}
+
+\begin{proof}
+	See also Equation 1.14 of \cite{fernholz2009}.
+	Build on Corollary 2.2 of \cite{fernholz1999}.
+\end{proof}
+
+
+
 
 \subsection{Arbitrage}
 
@@ -628,5 +718,6 @@ Assumptions:
 
 
 \printbibliography
+
 
 \end{document}
