@@ -70,10 +70,16 @@
 \newcommand{\msquared}{\mathcal{M}^{2}_{0,T}}
 \newcommand{\realnumbers}{\mathbb{R}}
 \newcommand{\ranget}{t\in[0,\infty)}
-\newcommand{\filtration}[1]{\mathcal{F_{#1}}}
+\newcommand{\filtration}[1]{\mathcal{F}_{#1}}
 \newcommand{\defeq}{\mathop{\triangleq}}
 \newcommand{\almostsurely}{\text{a.s.}}
+\newcommand{\abs}[1]{\mathop{|{#1}|}}
+\newcommand{\market}{\mathcal{M}}
+\newcommand{\rangei}{i=1,\dots,n}
+\newcommand{\measure}{\mathbb{P}}
+\newcommand{\probabilityspace}{(\Omega,\filtration,\measure)}
 \newcommand{\E}[1]{\mathbb{#1}}
+\newcommand{\valueprocess}[2]{V^{#1}(#2)}
 %%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -81,344 +87,61 @@
 \author{Lawrence Edwards}
 \maketitle
 
+\newpage
+
 \tableofcontents{}
 
-\section{Introduction}
-% Stochastic Portfolio Theory (\textbf{SPT}) was first introduced by Fernholz and 
-% Shay (1982) \cite{fernholz1982}, formalised in Fernholz (1999) 
-% \cite{fernholz1999} and was further developed by Fernholz (2002) 
-% \cite{fernholz2002}. It has evolved into a flexible framework for analysing 
-% portfolio behaviour and equity market structure that has both theoretical and 
-% practical applications.
-% 
-% From a theoretical standpoint, the framework provides insight into questions 
-% regarding the behaviour of the market as well as arbitrage, and can be used to 
-% construct portfolios with controlled behaviour under quite general assumptions. 
-% 
-% The framework does not assume the existence of equivalent local martingale
-% measures (equivalent to the assumption of \textbf{No Free Lunch with Vanishing 
-% Risk} (NFLVR)), detailed by Delbaen and Schachermayer \cite{delbaen1994}. In 
-% fact, most models developed in the framework satisfy only the weaker \textbf{No 
-% Unbounded Profit with Bounded Risk assumption} (NUPBR), which holds if and only 
-% if a local martingale deflator exists, which was shown by Kardaras 
-% \cite{kardaras2012}. 
-% 
-% NUPBR plays the role of Radon-Nikodym derivative in the case that an equivalent
-% local martingale measure does exist.  Karatzas and Kardaras (2007) proved that 
-% NUPBR is a necessary and sufficient condition for the log-utility maximization 
-% problem to have a solution. For an overview of these different notions of 
-% arbitrage, and their relation to the existence of deflators and equivalent 
-% measures, we refer the reader to Fontana (2015).
-% 
-% As a practical tool, SPT has been applied to the analysis and optimization of 
-% portfolio performance and has been the basis of successful equity investment 
-% strategies for over a decade.
-% 
-% * importance of portfolio construction in finance
-% * proportion of the market that is passively investing wealth in financial 
-% market has been growing
-% * a relatively recent approach to creating portfolios
-% 
-% A thorough survey in Fernholz and Karatzas \cite{fernholz2009} and recently
-% by Vervuurt \cite{vervuurt2015}.
-% 
-% * relatively general market model is assumed
-% * continuous-time model with weak no-arbitrage assumptions
-% * portfolio selection criteria is to outperform a benchmark with probability 1
-% * relies on a method of \textit{functional generation} to constructs portfolios
-% that rely deterministically only on the market capitalisation (or equivalently 
-% prices)
-% 
-% An example is the Diversity weighted ortfolios (DWP)
-% * builds on the concept of diversification leading to superior returns
-% * we present the in-depth theoretical basis showing that the DWP outperforms the 
-% market index, including recent enhancements by \cite{vervuurt2016} that
-% extend the basic formulation to include negative-weighted parameters.
-% 
-% Vervuurt \cite{vervuurt2015} notes in his survey that hardly any of the 
-% theoretical results in SPT have been tested using real market data. We aim as 
-% part of this dissertation to provide an in-depth empirical study of the European 
-% equity market, examining the assumptions and the real world implementation of
-% such strategies, including frictions such as:
+\newpage
 
-\begin{description}
-	\item [Corporate actions] including splits
-	\item [Transaction costs] realistic trading costs based on an accurate 
-		market impact model
-	\item [Market imperfections] including indivisibility of shares, entries 
-		and exits from the universe etc.
-\end{description}
+\section{Introduction}
+
+\newpage
 
 \section{Preliminaries}
 
-This section provides a concise overview of stochastic calculus for
-diffusion processes. The model for continuous stock prices presented
-here has an extensive literature can be found in \cite{shreve2012}.
-Throughout, we work on a \textbf{filtered probability space} denoted
-by $(\Omega,\filtration,\left\{ \filtration{t}\right\} ,P)$
-where:
-
-\begin{itemize}
-	\item $\Omega$ denotes the space of all events,
-	\item $\mathcal{F}$ denotes the set of all measureable events,
-	\item ${\mathcal{F}_{t}}_{t\ge0}$ denotes the filtration, a family of 
-				$\sigma$-algebras contained in $\mathcal{F}$ with
-				the property that if $s<t$ then $\mathcal{F}_{s}\subset\mathcal{F}_{t}$. 
-\end{itemize}
-
-\begin{defn} [Stochastic Processes]
-	\label{def:stochasticprocesses}
-
-	The modelling of random assets in finance is based on \textbf{stochastic
-	processes}, which are families $X(t)$  of random variables $X(t):\Omega\to\mathbb{R}$
-	for $t\in[0,T]$, where $X(0)$ is constant.
-
-\end{defn}
-
-\subsection{Diffusion Processes}
-
-We introduce the stochastic process known as a Brownian motion (also sometimes 
-referred to as a Weiner process).
-
-\begin{defn} [Standard Brownian Motion]
-	\label{def:brownianmotion}
-
-	A Standard Brownian motion $W(\cdot)$ is a stochastic process 
-	(Definition \ref{def:stockpriceprocess})  which is a 	mapping 
-	$W:[0,\infty)\times\Omega\to\mathbb{R}$ for a probability	space 
-	$(\Omega,\mathcal{F},P)$ which has the properties: 
-
-	\begin{enumerate}
-		\item $W(0)=0 \quad \almostsurely$,
-		\item $W(t)$ has \textbf{independent increments,}
-		\item $W(t)$ has \textbf{stationary increments} 
-			$W(t)-W(s)\thicksim\mathcal{N}(0,t-s)$for $0\le s<t<\infty,$
-		\item the sample trajectories for almost all $\omega\in\Omega$ the paths 
-			$t\to W(t,\omega)$ are \textbf{almost surely continuous.}
-	\end{enumerate}
-
-\end{defn}
-
-\begin{thm} [Martingale property of Brownian motion]
-	\label{tmh:brownianmotionmartingaleproperty}
-
-	(Definition \ref{def:brownianmotion})
-	(Definition \ref{def:martingale})
-
-	\begin{equation*}
-		\E{W(t) \mid \filtration{s}} = W_{s}
-	\end{equation*}
-
-\end{thm}
-
-\begin{defn} [Quadratic Variation]
-	\label{def:quadraticvariation}
-
-	For a stochastic process (Definition \ref{def:stochasticprocesses}) $X(\cdot)$ we write
-
-	\begin{equation*}
-		\left< X \right>_{t} \defeq i
-			\lim_{\max{(t_{n+1}-t_{n}}\to0}
-			\sum \left| \right|
-	\end{equation*}
-
-\end{defn}
-
-\begin{thm} [Quadratic variation of Brownian motion]
-	\label{thm:quadraticvariationofbrownianmotion}
-
-	(\ref{def:quadraticvariation})
-	(\ref{def:brownianmotion})
-
-	\begin{equation}
-		\left<W(t)\right>_{t} = t \quad \almostsurely.
-	\end{equation}
-
-\end{thm}
-
-\subsection{It\^{o} Calculus}
-
-We briefly introduce It\^{o} calculus, beginning with definition of a
-simple process and the It\^{o} integral for simple functions, and
-then move to the more general definition of the It\^{o} integrals. 
-Square-integrable (random) adapted processes, introducing the notion of 
-measurability. 
-
-\begin{defn} [Measurable]
-	A stochastic process is called $\mathcal{F}_{t}$-\textbf{measurable} if 
-
-	\begin{equation*}
-		X^{-1}(B) =\left\{ \omega\in\Omega:X(\omega)\in B \right\} \in \mathcal{F}, \quad \text{for every Borel set }B\in\mathcal{B}(\mathbb{R}).
-	\end{equation*}
-
-	In other words, the knowledge of $X$ depends only on the information 
-  known up until time $t$.
-\end{defn}
-
-\begin{defn} [Filtration]
-	The \textbf{filtration} generated by a stochastic process $X(t)$
-	is a family of $\sigma$-fields is defined as, 
-	\[
-	\mathcal{F}^{X}(t)\triangleq\sigma\left\{ X(s);0\le s\le t\right\} ,\;\;\forall t\in[0,T].
-	\]
-\end{defn}
-
-\begin{defn} [Adapted]
-	A process $\left\{ X(t),\mathcal{F}_{t},t\in[0,T]\right\} $ is \textbf{adapted}
-	to a filtration $\mathcal{F}$ if $X(t)$ is $\mathcal{F}_{t}$-measurable
-	for all $t\in[0,T]$. 
-\end{defn}
-
-\begin{defn} [Square Integrable]
-	Let $f(t),t\ge0$ be a stochastic process with a.s. continuous paths
-	adapted to the filtration $\mathcal{F}_{t}=\mathcal{F}^{W}(t)$, then
-	we define the $\mathcal{M}^{2}$ space of processes as
-	\begin{equation*}
-	\mathcal{M}^{2}\triangleq\left\{ f:[0,T]\times\Omega\to\mathbb{R}:f\,\text{is\,adapted},\,\mathbb{E}\left(\int_{0}^{T}f^{2}(t)dt\right)<\infty\right\} .
-	\end{equation*}
-\end{defn}
-
-\begin{defn}
-A process $f\in\mathcal{M}^{2}$ is \textbf{simple} if we can find
-a partition $0=t_{0}<t_{1}<...<t_{n}=T$, and $\mathcal{F}_{t_{k}}$-measurable
-random variables $\xi_{k}$ with $\mathbb{E}(\xi_{k}^{2})<\infty$,
-$k=0,1,...,n-1$ such that
-\[
-f(t,\omega)=\xi_{0}(\omega)\mathbf{1}_{\{0\}}(t)+\sum_{k=0}^{n-1}\xi_{k}(\omega)\mathbf{1}_{(t_{k},t_{k+1}]}(t),
-\]
- and we write $f\in\mathcal{S}^{2}$ to denote the class of all simple
-processes.
-\end{defn}
-%
-\begin{defn}
-\textbf{The Itô integral} of a stochastic process $X(t)$ on a partition
-$[0,T]$, $0=t_{0}<t_{1}<\ldots<t_{n}=T$, with respect to the Brownian
-motion $W$ given by
-\[
-\int_{0}^{T}X(t)dW(t)\triangleq\lim_{n\to\infty}\sum_{j=0}^{n-1}X(t_{j})\left(W(t_{j+1})-W(t_{j})\right).
-\]
-%
-\end{defn}
-Let $X(t)$ be a generalised Brownian motion process or an Itô process.
-That is, let $X(t)$ have the following dynamics
-%
-\begin{equation}
-dX(t)=a(t,X(t))dt+b(t,X(t))dW(t),
-\end{equation}
-
-where $W(t)$ is a standard Brownian motion process.
-
-Let $F(t,X(t))$ be a function with continuous second derivatives,
-where $F$ and $X$ have a functional dependence. Then $F(t,X(t))$
-is also an Itô process and has the following dynamics
-
-\begin{align*}
-dF(t, & X(t))=\frac{\partial F}{\partial t}(t,x)dt+\frac{\partial F}{\partial x}(t,x)dX(t)+\frac{1}{2}\frac{\partial^{2}F}{dx^{2}}(t,x)(dX(t))^{2}\\
-= & \left(\frac{\partial F}{\partial t}(t,x)+a(t,x)\frac{\partial F}{\partial x}(t,x)+\frac{1}{2}b^{2}(t,x)\frac{\partial^{2}F}{\partial x^{2}}(t,x)\right)dt+b(t,x)\frac{\partial F}{\partial x}(t,x)dW(t).\\
-\end{align*}
-
-
-\begin{defn} [It\^{o} Process]
-	\label{def:itoprocess}
-	TODO: write
-\end{defn}
-
-\begin{defn} [It\^{o} Formula]
-	\label{def:itoformula}
-	TODO: flesh out
-\end{defn}
-
-\begin{thm} [Quadratic variation of It\^{o} processes]
-	\label{thm:quadraticvariationofitoprocess}
-
-	For an It\^{o} process $X(\cdot)$ 
-	
-	\begin{equation*}
-		\d{X(t)} = a(t)\d{t} + b(t)\d{W(t)}
-	\end{equation*}
-	
-	then the quadratic variation of $X$ is
-	
-	\begin{equation*}
-		\left< X \right>_{t} = \int_{0}^{t} b^2(s)\d{s}.
-	\end{equation*}
-
-\end{thm}
-
-\begin{proof}
-	We start with the result for continuous, \textit{square-integrable} martingale 
-	$I(X) \in \msquared$ given in \cite{shreve2012} (Equation 2.19).
-
-	\begin{equation*}
-		\left<I(X)\right>_{t} = \int_{0}^{t} X_{M}^2 d\left<M\right>_{M}.
-	\end{equation*}
-
-	and note that since (TODO: compete)
-\end{proof}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% SPT DEFINITIONS
-\newcommand{\abs}[1]{\mathop{|{#1}|}}
-\newcommand{\market}{\mathcal{M}}
-\newcommand{\rangei}{i=1,\dots,n}
-\newcommand{\measure}{\mathbb{P}}
-\newcommand{\probabilityspace}{(\Omega,\filtration,\measure)}
+\newpage
 
 \section{Stochastic Portfolio Theory}
 
 \subsection{Market Model}
 
-Assumptions:
+We follow the market model introduced by Fernholz (\cite{fernholz1999pgf} and later in \cite{fernholz2009}) of stock price processes represented by continuous semimartingales, which is fairly standard in continuous-time financial theory and investigated in detail in \cite{karatzas1998}.
+
+A number of assumptions are made for clarity of expression, amongst these are:
 \begin{itemize}
-	\item number of companies is fixed and finite
-	\item number of shares of each company is constant
-	\item each company has a single share of stock outstanding
-	\item no issues with indivisibility of shares (i.e. fractional share 
-				quantities are allowed)
-	\item no mergers or splits
-	\item continuous trading
-	\item no dividends
-	\item no taxes
-	\item no transaction costs
+	\item the number of companies in the market is fixed, and companies do not break up or merge,
+	\item the number of shares of a company remains constant,
+	\item trading is in continuous time,
+	\item dividends are paid continuously,
+	\item there are no transaction costs or taxes, and
+	\item fractional ownership of shares are allowed.
 \end{itemize}
+
+Although most of these assumptions are clearly not based on the empirical facts of the market, these have been made for clarity and in most cases the theory can be generalised to include them. Additionally, we also assume that each company has a single share outstanding, so that the price of the stock is equivalent to it's market capitalisation.
 
 \begin{defn} [The Equity Market Model]
 	\label{def:marketmodel}
- 	\cite{fernholz2009} 
+
+ 	(\cite{fernholz2009})
+
 	We define market $\market$, with $n$ stocks, and $d$-dimensional independent Brownian 
 	motion $W(\cdot)$ (with $d \ge n$), defined on a probability space 
 	$\probabilityspace$ as
 
-	\begin{equation*}
-		\label{eq:equitymarketmodelriskfree}
-		\d{B(t)} = B(t)r(t)\d{t},
-		\quad \ranget
-	\end{equation*}
-
-	\begin{equation}
-		\label{eq:stockpriceprocess}
-		\d{X_{i}(t)} = X_{i}(t) 
-				\left[
-					b_{i}(t)dt + 
-					\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
-				\right],
+	\begin{gather}
+		\label{eq:marketmodel}
+		\begin{split}
+			\d{B(t)} &= B(t)r(t)\d{t},	
+				\quad \ranget, \\
+			\d{X_{i}(t)} &= X_{i}(t) \left[b_{i}(t)dt + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)\right],
 				\quad \rangei,
 				\quad \ranget
-	\end{equation}
+		\end{split}
+	\end{gather}
 
-	Where $W = \left\{ W(t)=(W_{1}(t),...,W_{n}(t)),\filtration{t},\ranget \right\}$.
+	where $W = \left\{ W(t)=(W_{1}(t),...,W_{n}(t)),\filtration{t},\ranget \right\}$ and $r(\cdot)$ is the interest-rate process for the money-market, $B(0)=1$. The price process $X_{i}(t)$ which represents the price of the $i$th stock, where $X_{i}(0) = x_{i} > 0$ are the (strictly positive) initial values of the stock prices.
 
-	Where $B(0)=1$ and $r(\cdot)$ is the interest-rate process for the money-market.
-
-	Stock price process $X_{i}(t)$ which represents the price of the $i$th stock, where 
-	$X_{i}(0) = x_{i} > 0$ are the (strictly positive) initial values of the stock prices.
-
-	We also assume the $\filtration{t}$-progressively measurable processes (Definition: 
-	\ref{def:progressivelymeasureable)} $(n \times 1)$ process $b(\cdot)$ the 
-	\textit{rates of return}, and $(n \times d)$ process $\sigma_{i\nu}(t)$ of the 
-	\textit{volatilities} satisfy the integrability conditions (Definition: 
-	\ref{def:itointegrabilityconditions})
+	We also assume the $\filtration{}$-progressively measurable $(n \times 1)$ process $b(\cdot)$ called the \textit{rates of return}, and the $(n \times d)$ process $\sigma_{i\nu}(t)$ of \textit{volatilities} satisfy the integrability conditions: 
 
 	\begin{equation*}
 		\int_{0}^{T} 
@@ -436,85 +159,41 @@ Assumptions:
 
 \end{defn}
 
-The equation (\ref{eq:stockpriceprocess}) can be written using the notation 
+The stock price process (\ref{eq:marketmodel}) can be written using the notation 
 
-\begin{equation}
+\begin{equation*}
 	\label{eq:stockpriceprocessdiff}
 		\frac{\d{X_{i}(t)}}{X_{i}(t)} = 
 				b_{i}(t)\d{t} + 
-				\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+				\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t),
 			\quad \rangei,
 			\quad \ranget
-\end{equation}
+\end{equation*}
 
-where 
+where this first ratio is defined as
 
-\begin{equation}
+\begin{equation*}
 	\label{eq:stockpriceprocessdiff}
 		\frac{\d{X_{i}(t)}}{X_{i}(t)} \defeq 
 				\int_{0}^{t} b_{i}(s)\d{s} + 
-				\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) dW_{\nu}(s)
+				\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) dW_{\nu}(s),
 			\quad \rangei
-\end{equation}
+\end{equation*}
 
+and is often referred to as the \textit{instantaneous} return on the stock.
 
+This very general setting admits a rich class of continuous-path Ito processes, with very general distributions: in particular, no Markovian or Gaussian assumption is imposed. The model has been extended to very general semimartingale settings; see \cite{kardaras2003} for example.
 
-and is often referred to as the "instantaneous" return on the stock.
+\newpage
 
-\subsection{Stock Price Process}
+\subsection{Stocks}
 
-\begin{prop} [Quadratic Variation of Logarithmic Stock Price Process]
-	\label{prop:crossvarlogX}
+We follow the convention used by Fernholz and use a logarithmic representation for stocks following directly from Definition \ref{def:marketmodel}. A logarithmic representation is considered to be more natural when considering long-term behaviour (see e.g. \cite{fernholz1982}).
 
-	Let $X_{i}(\cdot)$ be a stock prices process defined as in (\ref{eq:stockpriceprocess}), 
-	then the quadratic variation (Definition: \ref{def:quadraticvariation}) of
-	$\log{X_{i}(\cdot)}$ satisfies
-
-	\begin{equation}
-		\d{\langle \log{X_{i}} \rangle_{t}} = \sum_{\nu=1}^{d} \sigma_{i\nu}^2\d{t},
-		\quad \ranget,
-		\quad \rangei,
-		\quad \almostsurely
-	\end{equation}
-
-\end{prop}
-
-\begin{proof} 
-
-	From (Definition: \ref{def:quadraticvariation}), (Theorem: 
-	\ref{thm:quadraticvariationofbrownianmotion}) and (Theorem: 
-	\ref{thm:quadraticvariationofitoprocess}), for $\rangei$
-
-	\begin{gather}
-		\begin{split} 
-			\label{eq:quadraticvariationlogX}
-			\langle \log{X_{i}} \rangle_{t} 
-			 & = \left< \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
-			 & = \left< \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
-			 & = \sum_{\nu=1}^{d} \left< \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
-			 & = \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}^{2}(s) \d{\langle W_{\nu}(s) \rangle } \\
-			 & = \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}^{2}(s) \d{s}.
-		\end{split}
-	\end{gather}
-	
-	Then from (\ref{eq:quadraticvariationlogX}) we have
-	
-	\begin{gather}
-		\begin{split}
-			\d{\langle \log{X} \rangle_{t}}
-				& = \d{\left<\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s) \d{W_{\nu}(s)}\right>_{t}}\\
-				& = \d{\left(\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(s) \d{s}\right)} \\
-				& = \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(t) \d{t}.
-		\end{split}
-	\end{gather}
-
-\end{proof}
-
-\begin{thm} [Logarithmic Representation of Stock Price Process]
+\begin{thm} (\cite{fernholz1999pgf}) [Logarithmic Representation of Stock Price Process]
 	\label{thm:logarithmicrepresentation}
 
-	Let $X_{i}(\cdot)$ be a stock prices process defined as in 
-	(\ref{eq:stockpriceprocess}), then 
+	Let $X_{i}(\cdot)$ be stock price processes defined as in (\ref{eq:marketmodel}), then 
 
 	\begin{equation} 
 		\d{\log{X_{i}(t)}} = 
@@ -523,7 +202,7 @@ and is often referred to as the "instantaneous" return on the stock.
 		\quad \rangei,
 	\end{equation}
 
-	or, equivalently in exponential form as
+	which can be written equivalently as:
 
 	\begin{equation*}
 		X_{i}(t) = X_{i}(0) 
@@ -610,7 +289,7 @@ and is often referred to as the "instantaneous" return on the stock.
 
 \begin{thm} [Growth Rate of Stock Price Process]
 	\label{thm:growthrate}
-
+	(Equation 1.6 in \cite{fernholz2009})
 	The justification for the quantity (\ref{eq:gamma}) being called the 
 	\textit{growth rate} is	because of the following relationship
 
@@ -622,16 +301,26 @@ and is often referred to as the "instantaneous" return on the stock.
 		\quad \almostsurely
 	\end{equation}
 
-	TODO: Add the condition this is valid under.
+	This is valid when the individual stock variances $a_{ii}(\cdot)$ do not increase too quickly, e.g. if we have 
+
+
+	\begin{equation*}
+		\lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii} \d{t}a \right)
+		\quad \almostsurely 
+	\end{equation*}
+
 	See also Equation 1.6 of \cite{fernholz2009}.
 
 \end{thm}
 
 \begin{proof}
-	Build on Corollary 2.2 of \cite{fernholz1999}.
+	Build on Corollary 2.2 of \cite{fernholz1999pgf}.
 \end{proof}
 
 \subsection{Strategies and Portfolios}
+
+The building blocks of Stochastic Portfolio Theory are portfolios which are 
+
 
 \begin{defn} [Trading Strategy]
 	\label{def:tradingstrategy}
@@ -809,11 +498,12 @@ Note that every portfolio generates a strategy by setting
 \begin{prop} [Strong Solution of Wealth Process]
 	\label{prop:solutionofwealthprocess}
 
-	Originally proved in \cite{fernholz1999}. 
+	Originally proved in \cite{fernholz1999pgf}. 
 
 	Let $\pi(\centerdot)$ be a portfolio, then the solution of (\ref{eq:wealthprocess}) is
 
 	\begin{equation}
+		\label{eq:wealthprocess}
 		\d{V^{w,\pi}(t)} =  
 				\gamma_{\pi}(t) \d{t} +
 				\sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)}
@@ -871,10 +561,19 @@ Note that every portfolio generates a strategy by setting
 
 \begin{proof}
 	See also Equation 1.14 of \cite{fernholz2009}.
-	Build on Corollary 2.2 of \cite{fernholz1999}.
+	Build on Corollary 2.2 of \cite{fernholz1999pgf}.
 
 	TODO: Proof.
 \end{proof}
+
+To simplify notation slightly, going forward we write $V^{\pi}(\cdot) \defeq V^{1,\pi}$ for initial wealth $w=1$. We also note the following equality analogous to (\ref{eq:wealthprocess})
+
+\begin{equation}
+	\label{eq:logvalueprocess}
+		\d{\log V^{\pi}(t)} = \gamma_{\pi}^{*}(t)\d{t} + \sum_{i=1}^{n} \pi_{i}(t) \d{\log{X_{i}(t)}}.
+\end{equation}
+
+\newpage
 
 \section{The Market Portfolio}
 
@@ -947,16 +646,396 @@ $\mu(\cdot)$
 			\sum_{\nu=1}^{d} \sigma_{\mu\nu}(t) \d{W_{\nu}(t)}
 \end{equation}
 
+\begin{lem} [Relative Return of Two Portfolio]
+	\label{lem:relativereturnoftwoportfolios}
+
+	For any two arbitrary portfolios $\pi(\cdot)$ and $\rho(\cdot)$, we have the following dynamics
+
+	\begin{equation}
+		\label{eq:rrdynamics}
+		\d{ \log{ \left( \frac{ V^{\pi}(t) }{ V^{\rho}(t) } \right) } } =
+			\gamma_{\pi}^{*}(t)\d{t} + 
+			\sum_{i=1}^{n} \pi_{i}(t) \d{ \log{ \left( \frac{ X_{i}(t) }{ V^{\rho}(t)} \right) }}.
+	\end{equation}
+
+	In particular, for a portfolio $\pi(\cdot)$ relative to the market portfolio $\mu(\cdot)$ we have
+
+	\begin{gather*}
+		\label{eq:rrdynamics2}
+		\begin{split}	
+			\d{ \log{ \left( \frac{ V^(t) }{ V^{\mu}(t) } \right) } } &=
+				\gamma_{pi}^{*}(t)\d{t} + 
+				\sum_{i=1}^{n} \pi_{i}(t)  \d{ \log{\mu_{i}(t)} } \\
+			&=
+				(\gamma_{\pi}^{*}(t) - \gamma_{\mu}^{*}(t)) \d{t} + 
+				\sum_{i=1}^{n} (\pi_{i}(t) - \mu_{i}(t)) \d{ \log{\mu_{i}(t)} } \\
+		\end{split}
+	\end{gather*}
+
+\end{lem}
+
+\begin{proof}
+
+	The equation (\ref{eq:rrdynamics}) follows from (\ref{eq:logvalueprocess}), and the first equality in (\ref{eq:rrdynamics2}) is the special case of (\ref{rrdynamics2}) with $\rho(\cdot) = \pi(\cdot)$. The second equality in (\ref{eq:rrdynamics2} follows upon observing from (\ref{eq:marketweights} that
+
+	\begin{equation*}
+		\sum_{i=1}^{n} \mu_{i}\d{\log{\mu_{i}(t)}} =
+			\sum_{i=1}^{n} \mu_{i}(t)(\gamma_{i}(t)-\gamma_{\mu}(t))\d{t} =
+			-\gamma_{\mu}^{*}(t)\d{t}.
+	\end{equation*}
+
+\end{proof}
+
+\begin{lem} [Numeraire-Invariance Property]
+	\label{lem:relativereturnoftwoportfolios}
+
+	For any two arbitrary portfolios $\pi(\cdot)$ and $\rho(\cdot)$, we have the following property 
+
+	\begin{equation*}
+		\d{ \log{ \left( \frac{ V^{\pi}(t) }{ V^{\rho}(t) } \right) } } =
+			\gamma_{\pi}^{*}(t)\d{t} + 
+			\sum_{i=1}^{n} \pi_{i}(t) \d{ \log{ \left( \frac{ X_{i}(t) }{ V^{\rho}(t)} \right) }}.
+	\end{equation*}
+
+	
+\end{lem}
+
+\begin{thm} [Relative Return Formula]
+	For any portfolios $\pi(\cdot)$ we have
+
+	\begin{equation*}
+			\d{ \log{ \left( \frac{ V^{\pi}(t) }{ V^{\mu}(t) } \right) } } =
+				\sum_{i=1}^{n} \frac{\pi_{i}(t)}{\mu_{i}(t)} \d{\mu_{i}(t)} -
+				\frac{1}{2} 
+				\left( 
+					\sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) \pi_{i}(t) \tau_{ij}^{\mu}(t)
+				\right)
+				\d{t}.
+	\end{equation*}
+\end{thm}
+
+\begin{proof}
+\end{proof}
+
+\newpage
+
+\section{Arbitrage}
+
+One of the most explored lines of research in Stochastic Portfolio Theory has been portfolio construction. The mechanism for selection of portfolios is typically measured against some benchmark, as in the Benchmark Approach of \cite{platen2006}. The objective is to have a terminal wealth that is almost-surely (under the physical measure) greater than that pertaining to the market portfolio (Definition \ref{def:marketportfolio}). In industry terminology referred to as "outperforming the market", and a portfolio which achieves this objective is called a relative arbitrage. In this section we present the formal definition of relative arbitrage.
+
+% it can be shown that a relative arbitrage exists if all local martingale deflators are strict local martingales. For an alternative characterization, see Theorem 8 of Ruf (2011)
+% explicit conditions on the Itoˆ model parameters were derived in the one-dimensional case by Mijatovi ́c and Urusov (2012).
 
 
+\begin{defn} [Relative Arbitrage]
+	\label{def:relativearbitrage}
 
-\subsection{Arbitrage}
+	Let $h(\cdot)$ and $k(\cdot)$ be trading strategies, then $h(\cdot)$ is called a relative arbitrage over over $[0,T]$ with respect to $k(\cdot)$ if their associated wealth processes satisfy
 
-\begin{defn} [Arbitrage]
-	\label{def:portfolio}
+	\begin{gather*}
+		\valueprocess{T} \ge \valueprocess{h}{T} \quad \almostsurely \\
+		\measure(\valueprocess{T} \ge \valueprocess{h}{T}) > 0.
+	\end{gather*}
+
 \end{defn}
+
+\newpage
+
+\section{Functionally Generated Portfolios}
+
+\newcommand{\CTwoFunction}{\mathcal{C}^2}
+
+Initially introduced by Fernholz (in \cite{fernholz1999pgf} and further developed in \cite{fernholz2002}), functionally generated portfolios are portfolios, described solely in terms of the market weights, for which the stochastic integrals of the market-relative wealth process disappear completely. This allows for pathwise comparisons of relative performance, leading to the construction of almost-surely relative arbitrage opportunities relative to the market portfolio, for fixed time-horizons and under appropriate conditions.
+
+% diversity weighted portfolio
+
+Fernholz \cite{fernholz1999diversity} showed how certain positive $\CTwoFunction$ functions measuring market diversity generate such relative arbitrage opportunities, called the diversity-weighed portfolio (DWP). Fernholz \cite{fernholz2005} showed that the diversity-weighted portfolio almost-surely outperforms the market over sufficiently long time horizons $[0, T]$ with probability one. 
+
+% rank based (atlas models)
+ 
+% volatility stabilised
+
+% entropy weighted portfolio
+
+Even though presented using stocks as the underlying risky assets, functionally generated portfolios can be constructed for a general classes of assets, with the market portfolio replaced by an arbitrary passive portfolio of the assets under consideration (\cite{fernholz2009}).
+
+The most-studied functionally-generated portfolio to date is the diversity-weighted portfolio, defined in \cite{fernholz2005}. 
+
+\subsection{Generating Functions}
+
+\begin{defn} [Generating Function]
+	\label{def:generatingfunction}
+
+	Let $U\subset\triangle_{+}^{n}$ be a given open set. The function $\mathbf{G}\in\mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the portfolio $\pi(\cdot)$ if $\mathbf{G}$ is such that $x\to x_{i}D_{i}\log\mathbf{G}(x)$ is bounded on $U$, and if there exists a measurable, adapted process $\mathfrak{g}(\centerdot)$ such that 
+
+	\begin{equation}
+		\d{ \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) } = 
+		\d{ \log \mathbf{G}(\mu(t)) + \mathfrak{g}(t) }
+		\quad \ranget
+		\quad \almostsurely
+	\end{equation}
+
+See Definition 2.3.1 in \cite{vervuurt2015}, as well as Definition 3.1. in \cite{karatzas1998}). 
+
+$\mathbf{G}$ is called the generating function of the functionally generated portfolio $\pi(\centerdot)$.
+
+\end{defn}
+
+Recently, in \cite{karatzas2017} the condition that the generating function $\mathbf{G}\in\mathcal{C}^{2}$ was loosened to regular functions (see Definition 3.1. of \cite{karatzas2017}).
+
+\begin{prop} [Functionally Generated Portfolio]
+	\label{prop:FGP}
+	Let a function $\mathbf{G}$ defined above generate the portfolio $\pi(\cdot)$. Then for $i=1,\dots,n$, the portfolio generated by $\mathbf{G}$, called the functionally generated portfolio, is given by
+
+	\begin{equation}
+		\frac{\pi_{i}(t)}{\mu_{i}(t)} = 
+			\frac{D_{i}\log\mathbf{G}(\mu(t))}{\mathbf{G}(\mu(t))}+1 - 
+			\sum_{j=1}^{n} \mu_{j}(t) \frac{D_{j} \log \mathbf{G}(\mu(t))}{\mathbf{G}(\mu(t))}
+	\end{equation}
+
+where we write $D_{i}$ to indicate the partial derivative with respect to the $i^{th}$ variable, and $D_{ij}^{2}$ for the second partial derivative with respect to the $i^{th}$ and $j^{th}$ variables. 
+
+	See Proposition 2.3.2 in (\cite{vervuurt2015}) for a proof.
+\end{prop}
+
+\begin{thm} [Fernholz's Master Equation]
+	\label{thm:masterequation}
+
+	\begin{equation}
+		\log\left(\frac{V^{\pi}(t)}{V^{\mu}(t)}\right)=\log\left(\frac{\mathbf{G}\mu(T)}{\mathbf{G}\mu(0)}\right)+\int_{0}^{T}\mathfrak{g}(t)dt,\;\;a.s.
+	\end{equation}
+
+where the quantity
+
+	\begin{equation}
+		\mathfrak{g}(t)\triangleq\frac{-1}{\mathbf{G}(\mu(t))}\sum_{i=1}^{n}\sum_{j=1}^{n}D_{ij}^{2}\mathbf{G}(\mu(t))\mu_{i}(t)\mu_{j}(t)\tau_{ij}^{\mu}(t)
+	\end{equation}
+
+is called the \textit{drift process} of the portfolio $\pi(\cdot)$. (See also Theorem 3.1.5 of \cite{fernholz2002} and Lemma 2.3.2 for a proof).
+
+\end{thm}
+
+Under suitable conditions (see Non.... \ref{def:NF}, Bounded Variation \ref{def:BV}, Non-Degenerate \ref{def:ND}) on the market the left had side part of the master equation can be bounded away from zero
+for sufficiently large $T>0$, thus proving that $\pi(\cdot)$ is an arbitrage relative to the market over $[0,T]$.
+
+An relative arbitrage with respect to the market is necessarily of the form of (\ref{prop:FGP}).
+
+\newpage 
+
+\subsection{Diversity Weighted Portfolio (DWP)}
+
+An equity market is called diverse if no single stock is ever allowed to dominate the entire market in
+terms of relative capitalization. Fernholz \cite{fernholz2005} shows that diversity is possible to achieve, but delicate and also shows that weakly-diverse markets contain relative arbitrage opportunities.
+
+Fernholz (\cite{fernholz2002}) shows how to generate fully-invested, long-only portfolios that outperform a diverse market over sufficiently long time-horizons and how to exploit this property for passive asset
+management.
+
+The following notions of diversity were introduced in the paper by Fernholz \cite{fernholz1999diversity} and studied in detail in \cite{fernholz2002}.
+
+\begin{defn} [Diversity]
+	\label{def:diversity}
+
+	We call a market model \textbf{$\mathcal{M}$ diverse }on $[0,T]$ if 
+
+	\begin{equation}
+		\exists \delta \in(0,1) \text{ such that }
+			\mu_{max}(t)<1-\delta
+		\quad \ranget
+		\quad \almostsurely
+	\end{equation}
+
+	where $\mu_{max}(t)$ represents the value of the largest markets weights at a given time. 
+
+\end{defn}
+
+\begin{defn} [Weakly Diverse]
+	A market model\textbf{ $\mathcal{M}$} is called \textbf{weakly diverse} on $[0,T]$ if 
+
+	\begin{equation}
+		\exists \delta \in(0,1) \text{ such that }
+			\frac{1}{T} \int_{0}^{T} \mu_{max}(t) < 1-\delta
+		\quad \ranget
+		\quad \almostsurely
+	\end{equation}
+
+\end{defn}
+
+The diversity condition asserts that no single company capitalization can take up more than a certain proportion of the entire market, and is weakly diverse if this holds on average over history.
+
+These are fairly weak empirical requirements, as it is clear that actual equity markets satisfy both conditions.
+
+\begin{defn} [Diversity-Weighted Portfolio (DWP)] 
+	\label{defn:diversityweightedportfolio}
+
+	The Diversity-Weighted Portfolio (DWP) with parameter $p\in\mathbb{R}$ is defined in terms of the market portfolio $\mu(\centerdot)$ (\ref{eq:marketportfolio}) by
+
+	\begin{equation}
+		\label{eq:diversityweightedportfolio}
+		\pi_{i}^{(p)}(t) \triangleq 
+				\frac{\left( \mu_{i}(t) \right)^{p}} {\sum_{j=1}^{n} \left( \mu_{j}(t) \right)^{p} }
+		\quad \rangei
+	\end{equation}
+\end{defn}
+
+It can be shown that the diversity-weighted portfolio is generated by the generating function
+
+	\begin{equation}
+		\mathbf{G}_{p}:x\to\left(\sum_{i=1}^{n}x_{i}^{p}\right)^{\frac{1}{p}}.
+	\end{equation}
+
+and where the master equation (\ref{thm:masterequation}) for the diversity-weighted portfolio is
+
+	\begin{equation}
+		\log\left(\frac{V^{\pi^{(p)}}(T)}{V^{\mu}(T)}\right)=\log\left(\frac{\mathbf{G}_{p}(\mu(T))}{\mathbf{G}_{p}(\mu(0))}\right)+(1-p)\int_{0}^{T}\gamma_{\pi^{(p)}}^{*}dt\;\;\text{a.s.}
+	\end{equation}
+
+Fernholz et al. \cite{Fernholz2005a} showed that for markets satisfying the diverse (D) property (\ref{def:defnD}) showed that the diversity weighted portfolio (\ref{eq:DWP}) outperforms the market portfolio $\mu(\cdot)$ strongly, in markets satisfying (\ref{def:ND}) and (\ref{def:defnD}), for any $p\in(0,1)$, and over time-horizons $[0,T]$ with 
+
+\begin{equation}
+	T>\frac{2\log n}{\epsilon\delta p}.
+\end{equation}
+
+\begin{defn} [No Failure Condition]
+	\label{def:NF}
+
+The \textbf{No-failure (NF) }condition is defined as follows
+
+	\begin{equation}
+		\exists\varphi\in(0,\frac{1}{n}) \text{ such that }
+			\measure \left( \mu_{(n)}(t) > \varphi, \quad \forall t\in[0,T] \right) = 1
+	\end{equation}
+
+\end{defn}
+
+Vervuurt extended the initial formulation in \cite{vervuurt2015} and showed that a similar relative arbitrage holds for the diversity-weighted portfolio with negative parameter $p$ (see Theorem 1 in \cite{vervuurt2015}), in markets with the no-failure condition (Definition \ref{def:NF}), with diversity parameter $\delta=(n-1)\varphi$.
+
+\newpage
+
+\subsection{Entropy Weighted Portfolio (EWP)}
+i
+\begin{defn}
+\label{SV}A market satisfies the \textbf{sufficient intrinsic volatility}
+property on $[0,T]$, or is \textbf{sufficiently volatile} (\textbf{SV}),
+if
+\begin{equation}
+\exists\zeta>0\text{ such that }\gamma_{\mu}^{*}(t)\ge\zeta\;\;\;\forall t\in[0,T]\;\;\;\text{a.s. }
+\end{equation}
+\end{defn}
+%
+\begin{defn}
+\label{WSV}Furthermore, we say that a model is \textbf{weakly sufficiently
+volatile (WSV) }is there exists a continuous strictly increasing function
+$\Gamma:[0,\infty)\to[0,\infty)$ with $\Gamma(0)=0$ and $\Gamma(\infty)=\infty$,
+such that
+\begin{equation}
+\infty>\int_{0}^{t}\gamma_{\mu}^{*}(t)ds\ge\Gamma(t)\;\;\;\forall t\in[0,T]\;\;\;\text{a.s. }
+\end{equation}
+\end{defn}
+%
+\begin{defn}
+\label{EWP}The \textbf{Entropy-Weighted Portfolio (EWP) }with parameter
+$c>0$ is generated by a version of the Shannon entropy function
+\begin{equation}
+\mathbf{H}_{c}(x)\triangleq c+\mathbf{H}(x)\triangleq c-\sum_{i=1}^{n}x_{i}\log x_{i}.
+\end{equation}
+
+Here, $\mathbf{H}$ is the Shannon entropy function. The portfolio
+generated is
+\begin{equation}
+\pi_{i}^{(c)}=\frac{\mu_{i}(t)(c-\log\mu_{i}(t))}{\sum_{j=1}^{n}\mu_{j}(t)(c-\log\mu_{j}(t))},\;\;\;i=1,...,n.
+\end{equation}
+
+Where the master equation (\ref{thm:MasterEquation}) for the EWP
+is
+
+\begin{equation}
+\log\left(\frac{V^{\pi^{(c)}}(T)}{V^{\mu}(T)}\right)=\log\left(\frac{\mathbf{H}_{c}(\mu(T))}{\mathbf{H}_{c}(\mu(0))}\right)+\int_{0}^{T}\frac{\gamma_{\pi^{(p)}}^{*}}{\mathbf{H}_{c}(\mu(t))}dt\;\;\text{a.s.}
+\end{equation}
+\end{defn}
+Fernholz et al. (\cite{Fernholz2005a}) showed that for markets satisfying
+the WSV property (\ref{WSV}) that the EWP portfolio (\ref{EWP})
+outperforms the market portfolio $\mu(\cdot)$ strongly, without the
+bounded variation (BV) (\ref{def:BV}) nor the non-degenerate (ND)
+(\ref{def:ND}) assumptions for any $c>0$ sufficiently large and
+over time-horizons $[0,T]$ with
+
+\begin{equation}
+T>\mathcal{T}_{*}\triangleq\frac{1}{\zeta}\mathbf{H}(\mu(0))=\lim_{c\to\infty}\mathcal{T}_{*}(c)
+\end{equation}
+
+
+\section{Empirical Results}
+
+We present a simulation of DWP and EWP on a realistic simulation platform
+with market impact cost model that has been calibrated on billions
+of dollars of trading activity on a diverse set of European stocks.
+To our knowledge this has not been done before. 
+
+Rebalancing frequency \& turnover constraints (Fernholz gives a formula
+to estimate turnover). We also investigate various methods of controlling
+turnover (as well as holding constraints which are common in portfolio
+management).
+
+Universe is Eurostoxx 600 and we use the historical composition as
+at each time point.
+
+Gross Return, Net Return and Sharpe Ratio are given.
+
+
+
+\newpage
 
 \printbibliography
 
+\newpage
+
+\section{Appendix A - Quadratic Variation}
+
+\begin{prop} [Quadratic Variation of Logarithmic Stock Price Process]
+	\label{prop:crossvarlogX}
+
+	Let $X_{i}(\cdot)$ be a stock prices process defined as in (\ref{eq:stockpriceprocess}), 
+	then the quadratic variation (Definition: \ref{def:quadraticvariation}) of
+	$\log{X_{i}(\cdot)}$ satisfies
+
+	\begin{equation}
+		\d{\langle \log{X_{i}} \rangle_{t}} = \sum_{\nu=1}^{d} \sigma_{i\nu}^2\d{t},
+		\quad \ranget,
+		\quad \rangei,
+		\quad \almostsurely
+	\end{equation}
+
+\end{prop}
+
+\begin{proof} 
+
+	From (Definition: \ref{def:quadraticvariation}), (Theorem: 
+	\ref{thm:quadraticvariationofbrownianmotion}) and (Theorem: 
+	\ref{thm:quadraticvariationofitoprocess}), for $\rangei$
+
+	\begin{gather}
+		\begin{split} 
+			\label{eq:quadraticvariationlogX}
+			\langle \log{X_{i}} \rangle_{t} 
+			 & = \left< \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \left< \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \sum_{\nu=1}^{d} \left< \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\
+			 & = \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}^{2}(s) \d{\langle W_{\nu}(s) \rangle } \\
+			 & = \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}^{2}(s) \d{s}.
+		\end{split}
+	\end{gather}
+	
+	Then from (\ref{eq:quadraticvariationlogX}) we have
+	
+	\begin{gather}
+		\begin{split}
+			\d{\langle \log{X} \rangle_{t}}
+				& = \d{\left<\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s) \d{W_{\nu}(s)}\right>_{t}}\\
+				& = \d{\left(\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(s) \d{s}\right)} \\
+				& = \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(t) \d{t}.
+		\end{split}
+	\end{gather}
+
+\end{proof}
 
 \end{document}
