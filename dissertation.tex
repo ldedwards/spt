@@ -13,6 +13,7 @@
 \usepackage{amstext}
 \usepackage{amsthm}
 \usepackage{amssymb}
+\usepackage{subfiles}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
@@ -102,7 +103,6 @@
 \newpage
 
 \section{Stochastic Portfolio Theory}
-
 \subsection{Market Model}
 
 We follow the market model introduced by Fernholz (\cite{fernholz1999pgf} and later in \cite{fernholz2009}) of stock price processes represented by continuous semimartingales, which is fairly standard in continuous-time financial theory and investigated in detail in \cite{karatzas1998}.
@@ -161,23 +161,20 @@ Although most of these assumptions are clearly not based on the empirical facts 
 
 The stock price process (\ref{eq:marketmodel}) can be written using the notation 
 
-\begin{equation*}
+\begin{equation}
 	\label{eq:stockpriceprocessdiff}
-		\frac{\d{X_{i}(t)}}{X_{i}(t)} = 
-				b_{i}(t)\d{t} + 
-				\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t),
-			\quad \rangei,
-			\quad \ranget
-\end{equation*}
+		\frac{\d{X_{i}(t)}}{X_{i}(t)} = b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t),
+	\quad \rangei,
+	\quad \ranget
+\end{equation}
 
 where this first ratio is defined as
 
 \begin{equation*}
-	\label{eq:stockpriceprocessdiff}
-		\frac{\d{X_{i}(t)}}{X_{i}(t)} \defeq 
-				\int_{0}^{t} b_{i}(s)\d{s} + 
-				\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) dW_{\nu}(s),
-			\quad \rangei
+	\frac{\d{X_{i}(t)}}{X_{i}(t)} \defeq 
+	\int_{0}^{t} b_{i}(s)\d{s} + 
+	\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) dW_{\nu}(s),
+	\quad \rangei
 \end{equation*}
 
 and is often referred to as the \textit{instantaneous} return on the stock.
@@ -188,35 +185,16 @@ This very general setting admits a rich class of continuous-path Ito processes, 
 
 \subsection{Stocks}
 
-We follow the convention used by Fernholz and use a logarithmic representation for stocks following directly from Definition \ref{def:marketmodel}. A logarithmic representation is considered to be more natural when considering long-term behaviour (see e.g. \cite{fernholz1982}).
+We follow the convention used by Fernholz and use a logarithmic representation for stocks following directly from Definition \ref{def:marketmodel}. A logarithmic representation is considered to be more natural when considering long-term behaviour (see e.g. \cite{fernholz1982}). 
 
-\begin{thm} (\cite{fernholz1999pgf}) [Logarithmic Representation of Stock Price Process]
-	\label{thm:logarithmicrepresentation}
-
-	Let $X_{i}(\cdot)$ be stock price processes defined as in (\ref{eq:marketmodel}), then 
+\begin{lem} \cite{fernholz1999pgf} \label{thm:logarithmicrepresentation} Let $X_{i}(\cdot)$ be stock price processes then
 
 	\begin{equation} 
-		\d{\log{X_{i}(t)}} = 
-			\gamma_{i}(t)\d{t} + 
-			\sum_{\nu=1}^{d} \sigma_{i\nu}(t){\d{W_{\nu}(t)}}, 
-		\quad \rangei,
+		\label{eq:logX}
+				\d{{X_{i}(t)}} = \gamma_{i}(t) \d{t}  + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t).
 	\end{equation}
 
-	which can be written equivalently as:
-
-	\begin{equation*}
-		X_{i}(t) = X_{i}(0) 
-				\exp{ 
-					\left(
-						\int_{0}^{t} \gamma_{i}(s)\d{s} + \int_{0}^{t} 
-						\sum_{\nu=1}^{d} \sigma_{i\nu}(s){\d{W_{\nu}(s)}} 
-					\right)
-				}, 
-		\quad \ranget.
-	\end{equation*}
-
-	Where the (non-negative definite matrix-valued) \textit{covariance process} 
-	$a_{i,j}(t)$ is defined as
+	Where the (non-negative definite matrix-valued) \textit{covariance process} $a_{ij}(t)$ is defined as
 	
 	\begin{gather}
 		\label{eq:covarianceprocess}
@@ -228,60 +206,41 @@ We follow the convention used by Fernholz and use a logarithmic representation f
 		\end{split}
 	\end{gather}
 
-	with ' denoting vector transposition, and the process $\gamma_{i}(t)$ called 
-	the \textit{growth rate} is	defined as
+	with apostrophe (') denoting vector transposition, and where the process $\gamma_{i}(t)$, called the \textit{growth rate}, is defined as
 
 	\begin{equation}
 		\label{eq:gamma}
 		\gamma_{i}(t)\defeq b_{i}(t)-\frac{1}{2}a_{ii}(t)
-		\quad \rangei
 	\end{equation}
 
-\end{thm}
+\end{lem}
 
 \begin{proof}
 
-	We apply It\^{o}s formula (\ref{def:itoformula}) to the function $f(x)\defeq\exp{x}$ with the argument $\log{X_{i}(t)}$, so for $\ranget$, $\rangei$
+	By application of It\^{o}s lemma we have.
+
+	\begin{equation}
+		\label{eq:itoX}
+		\d{X_{i}(t)} = X_{i}(t) \log{X_{i}(t)} + \frac{1}{2} X_{i}(t) \d{ \langle \log{X_{i}} \rangle_{t} }.
+	\end{equation}
+
+	Then also recalling the definition of the quadratic variation
+
+	\begin{equation*}
+		\d{ \langle \log{X_{i}} \rangle_{t} } \defeq \d{ \langle \log{X_{i}}, \log{X_{i}} \rangle_{t} } 
+	\end{equation*}
+
+	we rearrange (\ref{eq:itoX}) and have
 
 	\begin{gather*}
 		\begin{split}
-			\d{\log{X_{i}(t)}} 
-			 	& = 
-					\frac{\d{X_{i}(t)}}{X_{i}(t)} - 
-						\frac{1}{2} \frac{d}{dt}\left\langle \log X_{i},\log X_{i}\right\rangle(t)
-					\\
-				& = 
-					\left(
-						b_{i}(t)\d{t} + 
-						\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
-					\right)- 
-					\frac{1}{2} \frac{d}{dt}\left\langle \log X_{i},\log X_{i}\right\rangle(t)
-					\\
-				& = 
-					\left(
-						b_{i}(t)\d{t} + 
-						\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
-					\right)- 
-					\frac{1}{2} \frac{d}{dt}\left\langle \log X_{i},\log X_{i}\right\rangle(t)
-					\\
-				& = 
-					\left(
-						b_{i}(t)\d{t} + 
-						\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
-					\right)- 
-					\frac{1}{2} a_{ii}(t)\d{t}
-					\\
-				& = 
-					\left(
-						b_{i}(t) -
-						\frac{1}{2} a_{ii}(t)
-					\right) \d{t} +
-					\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
-					\\
-				& = 
-					\gamma_{i}(t) +
-					\sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
-				\quad \almostsurely
+			\d{\log{X_{i}(t)}} &= \frac{\d{X_{i}(t)}}{X_{i}(t)} - \frac{1}{2} \d{ \langle \log{X_{i}} \rangle_{t} } \\
+				&= \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t) \right)
+					- \frac{1}{2} \d{ \langle \log{X_{i}} \rangle_{t} } \\
+				&= \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t) \right)
+					- \frac{1}{2} \left( a_{ii} \right)\d{t} \\
+				&= \left( b_{i}(t)\d{t} - \frac{1}{2}  a_{ii} \right)\d{t}  + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t) \\
+				&= \gamma_{i}(t) \d{t}  + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t ).
 		\end{split}
 	\end{gather*}
 
@@ -305,7 +264,7 @@ We follow the convention used by Fernholz and use a logarithmic representation f
 
 
 	\begin{equation*}
-		\lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii} \d{t}a \right)
+		\lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii} \d{t} \right)
 		\quad \almostsurely 
 	\end{equation*}
 
@@ -541,23 +500,34 @@ Note that every portfolio generates a strategy by setting
 
 \end{prop}
 
-\begin{thm} [Growth Rate of Wealth Process]
+Note that the excess growth rate is the difference between the weighted sum of the individual stock variances and the overall portfolio variance, and can therefore be interpreted as the returns due to diversification.
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\begin{prop} [Growth Rate of Wealth Process]
 	\label{thm:wealthgrowthrate}
 
-	The justification for the quantity (\ref{eq:portoliogamma}) being called the 
-	\textit{growth rate} is	because of the following relationship
+	The justification for the naming of $\gamma_{\pi}(\cdot)$ as the \textit{growth rate} is because of the following property
 
-	\begin{equation}
+	\begin{equation*}
 		\lim_{T \to \infty} 
 			\left( 
 			\log{V^{w,\pi}(T)} - \int_{0}^{T} \gamma_{\pi}(t)\d{t} 
 			\right) = 0
 		\quad \almostsurely
-	\end{equation}
+	\end{equation*}
 
-	TODO: Add the condition this is valid under.
+	which is valid under the condition
 
-\end{thm}
+	\begin{equation*}
+		\lim_{T \to \infty}
+			\left(
+				\frac{\log \log T}{T^2} \int_{0}^{T} \norm{ a(t) } \d{t}
+			\right) = 0,
+	%	\quad \almostsurely.
+	\end{equation*}
+
+\end{prop}
 
 \begin{proof}
 	See also Equation 1.14 of \cite{fernholz2009}.
@@ -761,6 +731,9 @@ Even though presented using stocks as the underlying risky assets, functionally 
 
 The most-studied functionally-generated portfolio to date is the diversity-weighted portfolio, defined in \cite{fernholz2005}. 
 
+
+\newpage
+
 \subsection{Generating Functions}
 
 \begin{defn} [Generating Function]
@@ -798,6 +771,10 @@ where we write $D_{i}$ to indicate the partial derivative with respect to the $i
 	See Proposition 2.3.2 in (\cite{vervuurt2015}) for a proof.
 \end{prop}
 
+\newpage
+
+\subsection{Fernholz's Master Equation}
+
 \begin{thm} [Fernholz's Master Equation]
 	\label{thm:masterequation}
 
@@ -822,7 +799,7 @@ An relative arbitrage with respect to the market is necessarily of the form of (
 
 \newpage 
 
-\subsection{Diversity Weighted Portfolio (DWP)}
+\subsection{Diversity Weighted Portfolio}
 
 An equity market is called diverse if no single stock is ever allowed to dominate the entire market in
 terms of relative capitalization. Fernholz \cite{fernholz2005} shows that diversity is possible to achieve, but delicate and also shows that weakly-diverse markets contain relative arbitrage opportunities.
@@ -911,8 +888,8 @@ Vervuurt extended the initial formulation in \cite{vervuurt2015} and showed that
 
 \newpage
 
-\subsection{Entropy Weighted Portfolio (EWP)}
-i
+\subsection{Entropy Weighted Portfolio}
+
 \begin{defn}
 \label{SV}A market satisfies the \textbf{sufficient intrinsic volatility}
 property on $[0,T]$, or is \textbf{sufficiently volatile} (\textbf{SV}),
@@ -994,9 +971,7 @@ Gross Return, Net Return and Sharpe Ratio are given.
 \begin{prop} [Quadratic Variation of Logarithmic Stock Price Process]
 	\label{prop:crossvarlogX}
 
-	Let $X_{i}(\cdot)$ be a stock prices process defined as in (\ref{eq:stockpriceprocess}), 
-	then the quadratic variation (Definition: \ref{def:quadraticvariation}) of
-	$\log{X_{i}(\cdot)}$ satisfies
+	Let $X_{i}(\cdot)$ be a stock prices process defined as in (\ref{eq:stockpriceprocess}), then the quadratic variation (Definition: \ref{def:quadraticvariation}) of $\log{X_{i}(\cdot)}$ satisfies
 
 	\begin{equation}
 		\d{\langle \log{X_{i}} \rangle_{t}} = \sum_{\nu=1}^{d} \sigma_{i\nu}^2\d{t},
@@ -1004,7 +979,6 @@ Gross Return, Net Return and Sharpe Ratio are given.
 		\quad \rangei,
 		\quad \almostsurely
 	\end{equation}
-
 \end{prop}
 
 \begin{proof} 
