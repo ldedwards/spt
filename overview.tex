@@ -1,0 +1,392 @@
+\documentclass[british]{amsart} \usepackage{lmodern}
+
+% Bibliography
+\usepackage[backend=biber,style=alphabetic]{biblatex} \addbibresource{spt.bib}
+
+\renewcommand{\sfdefault}{lmss} \renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc} \usepackage[latin9]{inputenc} \usepackage{verbatim}
+\usepackage{amstext} \usepackage{amsthm} \usepackage{amssymb}
+\usepackage{subfiles}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section} \numberwithin{figure}{section}
+\theoremstyle{plain} \newtheorem{thm}{\protect\theoremname}[section]
+\theoremstyle{definition} \newtheorem{defn}[thm]{\protect\definitionname}
+\theoremstyle{plain} \newtheorem{assumption}[thm]{\protect\assumptionname}
+\theoremstyle{plain} \newtheorem{lem}[thm]{\protect\lemmaname}
+\theoremstyle{plain} \newtheorem{prop}[thm]{\protect\propositionname}
+\theoremstyle{remark} \newtheorem{rem}[thm]{\protect\remarkname}
+\theoremstyle{plain} \newtheorem{cor}[thm]{\protect\corollaryname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{color} \usepackage[colorlinks=true,linkcolor={blue}]{hyperref}
+
+\usepackage{amsfonts}
+%\renewenvironment{lyxgreyedout}{\color{red}\bgroup}{\egroup}
+
+\makeatother
+
+\usepackage[british]{babel} \usepackage[babel]{csquotes}
+\addto\captionsbritish{\renewcommand{\assumptionname}{Assumption}}
+\addto\captionsbritish{\renewcommand{\definitionname}{Definition}}
+\addto\captionsbritish{\renewcommand{\lemmaname}{Lemma}}
+\addto\captionsbritish{\renewcommand{\propositionname}{Proposition}}
+\addto\captionsbritish{\renewcommand{\remarkname}{Remark}}
+\addto\captionsbritish{\renewcommand{\theoremname}{Theorem}}
+\addto\captionsenglish{\renewcommand{\assumptionname}{Assumption}}
+\addto\captionsenglish{\renewcommand{\definitionname}{Definition}}
+\addto\captionsenglish{\renewcommand{\lemmaname}{Lemma}}
+\addto\captionsenglish{\renewcommand{\propositionname}{Proposition}}
+\addto\captionsenglish{\renewcommand{\remarkname}{Remark}}
+\addto\captionsenglish{\renewcommand{\theoremname}{Theorem}}
+\addto\captionsenglish{\renewcommand{\corollaryname}{Corollary}}
+\providecommand{\assumptionname}{Assumption}
+\providecommand{\definitionname}{Definition} \providecommand{\lemmaname}{Lemma}
+\providecommand{\propositionname}{Proposition}
+\providecommand{\remarkname}{Remark} \providecommand{\theoremname}{Theorem}
+\providecommand{\corollaryname}{Corollary}
+
+%%%%%%%%%%%%%%%%%%%
+\renewcommand{\d}[1]{\mathop{\mathrm{d}{#1}}}
+\newcommand{\msquared}{\mathcal{M}^{2}_{0,T}}
+\newcommand{\realnumbers}{\mathbb{R}} \newcommand{\ranget}{t\in[0,\infty)}
+\newcommand{\filtration}[1]{\mathcal{F}_{#1}}
+\newcommand{\defeq}{\mathop{\triangleq}} \newcommand{\almostsurely}{\text{a.s.}}
+\newcommand{\abs}[1]{\mathop{|{#1}|}} \newcommand{\market}{\mathcal{M}}
+\newcommand{\rangei}{i=1,\dots,n} \newcommand{\measure}{\mathbb{P}}
+\newcommand{\probabilityspace}{(\Omega,\filtration,\measure)}
+\newcommand{\E}[1]{\mathbb{#1}} \newcommand{\valueprocess}[2]{V^{#1}(#2)}
+%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{Functionally Generated Portfolios in Stochastic Portfolio Theory}
+\author{Lawrence Edwards} \maketitle
+
+\newpage
+
+\tableofcontents{}
+
+\newpage
+
+%\section{Introduction} \include{introduction} \section{Preliminaries}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+Stochastic Portfolio Theory (SPT) is a mathematical theory of how portfolios of
+risky assets evolve over time. Unlike Modern Portfolio Theory (MPT) and Capital Asset
+Pricing Model (CAPM) theories, SPT is descriptive as opposed to normative and is
+therefore consistent with empirical observations of the market.
+
+SPT models assets using continuous semi-martingales to represent the prices of
+the assets. By convention the theory uses use the logarithmic representation of
+prices and therefore refers to the growth rates of assets and portfolios. This
+logarithmic representation is equivalent to the classical arithmetic
+representation (i.e. rate of return).
+
+The theory is often presented referring to non-dividend paying stocks for
+reasons of simplicity, but the theory has been shown to be compatible with
+dividend paying stocks and is in theory applicable to other classes of assets.
+Additionally processes with discontinuities, such as jumps have been
+incorporated into the theory. The convention is to assume the stocks have a
+single share outstanding, so that the prices reflect the total market
+capitalisation of the stock.
+
+The theory builds on the concept of \textit{investment strategies}, which are
+progressively measurable processes that represent the proportion of the total
+wealth invested in each stock at a particular time. \textit{Portfolios} are defined as
+investment strategies which are always fully invested in the market. The theory
+presents a formula for the (always positive) value process of a strategy,
+defined using the sum of the weighted logarithmic returns of a strategy plus a
+process, called the \textit{excess growth rate process}, which forms a
+fundamental tool in examining how arbitrage opportunities can arise.
+
+An important portfolio, called the \textit{market portfolio} is defined, where the
+investment strategy is to hold a fraction of wealth corresponding to a stocks
+relative capitalisation. The excess growth rate of this portfolio is interpreted
+as the market's "intrinsic volatility" which is shown to lead to arbitrage
+opportunities relative to the market when "sufficiency" (boundedness away from
+zero) conditions are met.
+
+The theory examines \textit{relative arbitrage} relationships between investment
+strategies, both in a \textit{strong arbitrage} and \textit{weak arbitrage}
+form. In a link with the Benchmark approach to Mathematical finance
+\cite{platen2006}, SPT defines a \textit{numeraire property} of a strategy,
+which can be shown to preclude arbitrage over any time horizon.
+
+The cornerstones of SPT are \textit{functionally generated portfolios}, and
+the so-called "Fernholz's Master Equation". Functionally generated portfolios are
+portfolios generated by a $\mathcal{C}^2$ \textit{generating function} that allow
+for the generation of well-performing portfolios that, in general, do not require
+estimation of the drifts or volatilities of the stocks. The primary machinery of
+SPT in which virtually all relative arbitrages are constructed, the
+\textit{Master Equation} measures the performance of any portfolio relative to
+the market portfolio. This performance is decomposed into a stochastic part of
+infinite variation (written as a function of the market weights), plus a
+finite variation component. By choosing a suitable generating function the
+stochastic term can be bounded from below, producing relative arbitrage
+opportunities.
+
+Some generalisations of functionally generated portfolios have been recently
+been proposed, e.g. in \cite{strong2014generalizations} who demonstrates how the
+generating function may be dependent on other sources of information. Pal and
+Wong in \cite{pal2013} prove that subject to the class of portfolios being only
+those generated by current market capitalisations, then a slight generalisation
+of functionally generated portfolios are the only class of portfolios that can
+lead to relative arbitrage.
+
+Several such classes, corresponding to different assumptions on market
+behaviour, have been introduced and studied in SPT; these are:
+
+\begin{enumerate}
+
+\item[\textbf{Diverse}] 
+
+SPT introduces a definition of diversity as being the condition that the market
+weight processes weights are bounded from above by a number smaller than one,
+effectively meaning that no single company can dominate the entire market
+capitalisation.
+
+Diversity is clearly observed in real markets, and its validity is virtually
+guaranteed in mature markets by anti-trust regulations. This assumption was
+first studied in detail in the context of SPT by Fernholz, Karatzas and Kardaras
+\cite{fernholz2005}, who introduced a number of formal definitions of diversity 
+and proved that under an additional \textit{non-degeneracy} condition on the 
+stock volatilities, relative arbitrages exist in such markets - both over
+sufficiently long time horizons and as well as over arbitrarily short time
+horizons.
+
+\item[\textbf{Intrinsically Volatile}]
+
+The condition of "sufficiently intrinsic volatility" requires the excess growth
+rate of the market portfolio to be bounded away from zero.
+
+Fernholz in \cite{fernholz2002} argued that this condition holds for real
+markets, and without any additional assumptions, showed that there exists
+relative arbitrage over sufficiently \textit{long} time horizons, where the
+duration required to achieve the relative arbitrage depending on the size 
+of the lower bound for average market volatility (see
+also \cite{fernholz2005relative}.
+
+It remains an open problem whether a relative arbitrage over arbitrarily
+\textit{short} time horizons exists. Short horizon arbitrage  has been shown to
+exist in volatility-stabilised markets (see \cite{banner2008short} generalised
+volatility-stabilised markets (see \cite{pickova2014generalized}), and Markovian
+intrinsically volatile models (see Proposition 2 of \cite{fernholz2009}).
+
+\item[\textbf{Rank-based}] 
+
+In Rank-based methods, the drift and volatility processes of each stock
+are made to depend on the stocks rank according to its capitalisation.
+
+Fernholz first introduced a framework for studying the performance of portfolios
+which put weights on stocks based on their rank instead of their name, allowing
+him to theoretically explain certain phenomena observed in real markets in
+\cite{fernholz2002}. These models were introduced based on the observation that
+the distribution of capital according to rank by capitalisation has been very
+stable over the past decades. The dynamics of stocks in these models have
+been studied extensively, but the question of existence of (asymptotic) relative
+arbitrage has not been addressed yet. A very simple case of a rank-based model,
+the Atlas model, was introduced and studied in \cite{banner2005atlas} and
+\cite{ichiba2011hybrid}.
+
+\end{enumerate}
+
+In this dissertation, we aim to provide a detailed introduction to the theory
+and proofs of SPT, leading to the proof of the Master Equation. Using this as a
+foundation we examine the diverse model and show how relative arbitrage
+opportunities are created, as well as identifying all of the relevant
+assumptions and conditions required for these arbitrages.
+
+Once armed with this theory we then examine various simulations of these
+strategies using a proprietary dataset and commercial backtesting framework to
+see how these portfolios would perform under real conditions taking into account
+trading costs and market impact.
+
+%%%%%%%%%%%%% END INTRODUCTION %%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Stochastic Portfolio Theory}
+
+Stochastic Portfolio Theory (SPT) is a mathematical theory of how portfolios of
+risky assets evolve over time. Unlike Modern Portfolio Theory (MPT) and Capital Asset
+Pricing Model (CAPM) theories, SPT is descriptive as opposed to normative and is
+therefore consistent with empirical observations of the market.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{The Market Model}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Stocks}
+
+SPT models assets using continuous semi-martingales to represent the prices of
+the assets. By convention the theory uses use the logarithmic representation of
+prices and therefore refers to the growth rates of assets and portfolios. This
+logarithmic representation is equivalent to the classical arithmetic
+representation (i.e. rate of return).
+
+The theory is often presented referring to non-dividend paying stocks for
+reasons of simplicity, but the theory has been shown to be compatible with
+dividend paying stocks and is in theory applicable to other classes of assets.
+Additionally processes with discontinuities, such as jumps have been
+incorporated into the theory. The convention is to assume the stocks have a
+single share outstanding, so that the prices reflect the total market
+capitalisation of the stock.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Investment Strategies and Portfolios}
+
+The theory builds on the concept of \textit{investment strategies}, which are
+progressively measurable processes that represent the proportion of the total
+wealth invested in each stock at a particular time. \textit{Portfolios} are defined as
+investment strategies which are always fully invested in the market. The theory
+presents a formula for the (always positive) value process of a strategy,
+defined using the sum of the weighted logarithmic returns of a strategy plus a
+process, called the \textit{excess growth rate process}, which forms a
+fundamental tool in examining how arbitrage opportunities can arise.
+
+An important portfolio, called the \textit{market portfolio} is defined, where the
+investment strategy is to hold a fraction of wealth corresponding to a stocks
+relative capitalisation. The excess growth rate of this portfolio is interpreted
+as the market's "intrinsic volatility" which is shown to lead to arbitrage
+opportunities relative to the market when "sufficiency" (boundedness away from
+zero) conditions are met.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Relative Arbitrage}
+
+The theory examines \textit{relative arbitrage} relationships between investment
+strategies, both in a \textit{strong arbitrage} and \textit{weak arbitrage}
+form.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Numeraire Property}
+
+In a link with the Benchmark approach to Mathematical finance
+\cite{platen2006}, SPT defines a \textit{numeraire property} of a strategy,
+which can be shown to preclude arbitrage over any time horizon.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Functionally Generated Portfolios}
+
+Functionally generated portfolios were introduced in \cite{fernholz1999pgf}, and
+use a generating function 
+is new class of portfolios one can derive a decomposition of their relative
+performance into 
+
+and this proves useful in the construction
+and study of arbitrages relative to the market. Just as in (7.6), this new
+decomposition (11.2) does not involve stochastic integrals, and opens the
+possibility for making probability-one comparisons over given, fixed
+time-horizons.
+This performance is decomposed into a stochastic part of
+infinite variation (written as a function of the market weights), plus a
+finite variation component. By choosing a suitable generating function the
+stochastic term can be bounded from below, producing relative arbitrage
+opportunities.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Generating Function}
+
+The cornerstones of SPT are \textit{functionally generated portfolios}, and
+the so-called "Fernholz's Master Equation". Functionally generated portfolios are
+portfolios generated by a $\mathcal{C}^2$ \textit{generating function} that allow
+for the generation of well-performing portfolios that, in general, do not require
+estimation of the drifts or volatilities of the stocks. 
+
+\begin{defn} [Generating Function] 
+  
+  \label{def:generatingfunction}
+
+  Let $U \subset \triangle^{n}$ be a given open set, then the function
+  $\mathbf{G}\in\mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the
+  portfolio $\pi(\cdot)$ if $\mathbf{G}$ is such that $x\to
+  x_{i}D_{i}\log\mathbf{G}(x)$ is bounded on $U$, and if there exists a
+  measurable, adapted process $\mathfrak{g}(\centerdot)$ such that 
+
+  \begin{equation}
+    \d{ \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) } = 
+    \d{ \log \mathbf{G}(\mu(t)) + \mathfrak{g}(t) }
+    \quad \ranget
+    \quad \almostsurely
+  \end{equation}
+
+  (see 
+    Definition 3.1 in \cite{fernholz1999pgf} and 
+    Definition 2.3.1 in \cite{vervuurt2015})
+
+\end{defn}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fernholz's Master Equation}
+
+The primary machinery of SPT in which virtually all relative arbitrages are constructed, the
+\textit{Master Equation} measures the performance of any portfolio relative to
+the market portfolio. This performance is decomposed into a stochastic part of
+infinite variation (written as a function of the market weights), plus a
+finite variation component. By choosing a suitable generating function the
+stochastic term can be bounded from below, producing relative arbitrage
+opportunities.
+
+\begin{thm} [Fernholz's Master Equation]
+  \label{thm:masterequation}
+
+  \begin{equation}
+    \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) = 
+    \log \left( \frac{\mathbf{G}\mu(T)}{\mathbf{G}\mu(0)} \right) + 
+      \int_{0}^{T} \mathfrak{g}(t)\d{t}
+    \quad \almostsurely
+  \end{equation}
+
+  where 
+
+  \begin{equation}
+    \mathfrak{g}(t) \triangleq \frac{-1}{\mathbf{G}(\mu(t))}
+        \sum_{i=1}^{n} \sum_{j=1}^{n} D_{ij}^{2} \mathbf{G}(\mu(t)) 
+        \mu_{i}(t) \mu_{j}(t)
+        \tau_{ij}^{\mu}(t)
+  \end{equation}
+
+  is called the \textit{drift process} of the portfolio $\pi(\cdot)$. 
+
+% (See also   Theorem 3.1.5 of \cite{fernholz2002} and Lemma 2.3.2 for a proof).
+\end{thm}
+
+\begin{proof}
+
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Diverse Models}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Relative Arbitrage over Long Horizons}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Relative Arbitrage over Short Horizons}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Empirical Analysis}
+
+We present a simulation of DWP  on a realistic simulation platform
+with market impact cost model that has been calibrated on billions
+of dollars of trading activity on a diverse set of European stocks.
+To our knowledge this has not been done before. 
+
+Rebalancing frequency \& turnover constraints (Fernholz gives a formula
+to estimate turnover). We also investigate various methods of controlling
+turnover (as well as holding constraints which are common in portfolio
+management).
+
+Universe is Eurostoxx 600 and we use the historical composition as
+at each time point.
+
+Gross Return, Net Return and Sharpe Ratio are given.
+
+
+
+\printbibliography
+
+\end{document}
