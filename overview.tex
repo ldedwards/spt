@@ -57,6 +57,7 @@
 \newcommand{\rangei}{i=1,\dots,n} \newcommand{\measure}{\mathbb{P}}
 \newcommand{\probabilityspace}{(\Omega,\filtration,\measure)}
 \newcommand{\E}[1]{\mathbb{#1}} \newcommand{\valueprocess}[2]{V^{#1}(#2)}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 %%%%%%%%%%%%%%%%%%%
 
 \begin{document}
@@ -216,6 +217,232 @@ therefore consistent with empirical observations of the market.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Market Model}
 
+We follow the market model introduced by Fernholz (\cite{fernholz1999pgf} and
+later in \cite{fernholz2009}) of stock price processes represented by continuous
+semimartingales, which is fairly standard in continuous-time financial theory
+and investigated in detail in \cite{karatzas1998}.
+
+A number of assumptions are made for clarity of expression, amongst these are:
+
+\begin{itemize}
+  \item the number of companies in the market is fixed, and companies do not 
+        break up or merge,
+  \item the number of shares of a company remains constant,
+  \item trading is in continuous time,
+  \item dividends are paid continuously,
+  \item there are no transaction costs or taxes, and
+  \item fractional ownership of shares are allowed.
+\end{itemize}
+
+Although most of these assumptions are clearly not based on the empirical facts
+of the market, these have been made for clarity and in most cases the theory can
+be generalised to include them. Additionally, we also assume that each company
+has a single share outstanding, so that the price of the stock is equivalent to
+it's market capitalisation.
+
+\begin{defn} [The Equity Market Model]
+  \label{def:marketmodel}
+
+  We define market $\market$, with $n$ stocks, and $d$-dimensional independent
+  Brownian motion $W(\cdot)$ (with $d \ge n$), defined on a probability space 
+  $\probabilityspace$ as
+
+  \begin{gather}
+    \label{eq:marketmodel}
+    \begin{split}
+      \d{B(t)} &= B(t)r(t)\d{t},  
+        \quad \ranget, \\
+      \d{X_{i}(t)} &= 
+            X_{i}(t) 
+            \left(
+                b_{i}(t)dt + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+            \right),
+        \quad \rangei,
+        \quad \ranget
+    \end{split}
+  \end{gather}
+
+  where $W = \left\{ W(t)=(W_{1}(t),...,W_{n}(t)),\filtration{t},\ranget \right\}$
+  and $r(\cdot)$ is the interest-rate process for the money-market, $B(0)=1$. The
+  price process $X_{i}(t)$ which represents the price of the $i$th stock, where
+  $X_{i}(0) = x_{i} > 0$ are the (strictly positive) initial values of the stock
+  prices.
+
+  We also assume the $\filtration{}$-progressively measurable $(n \times 1)$
+  process $b(\cdot)$ called the \textit{rates of return}, and the $(n \times d)$
+  process $\sigma_{i\nu}(t)$ of \textit{volatilities} satisfy the integrability
+  conditions: 
+
+  \begin{equation*}
+    \int_{0}^{T} 
+    \abs{r(t)} 
+    \d{t} +
+    \sum_{i=1}^{n} \int_{0}^{T} 
+      \left( 
+          \abs{b_{i}(t)} +
+          \sum_{\nu=1}^{d} ( \sigma_{i\nu}(t)^2  ) 
+          \right) \d{t} < \infty,
+    \quad
+    T \in [0, \infty),
+    \almostsurely
+   \end{equation*}
+
+\end{defn}
+
+The stock price process (\ref{eq:marketmodel}) can be written using the notation 
+
+\begin{equation}
+  \label{eq:stockpriceprocessdiff}
+    \frac{\d{X_{i}(t)}}{X_{i}(t)} = b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t),
+  \quad \rangei,
+  \quad \ranget
+\end{equation}
+
+where this first ratio is defined as
+
+\begin{equation*}
+  \frac{\d{X_{i}(t)}}{X_{i}(t)} \defeq 
+  \int_{0}^{t} b_{i}(s)\d{s} + 
+  \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) dW_{\nu}(s),
+  \quad \rangei
+\end{equation*}
+
+and is often referred to as the \textit{instantaneous} return on the stock.
+
+This very general setting admits a rich class of continuous-path Ito processes,
+with very general distributions: in particular, no Markovian or Gaussian
+assumption is imposed. The model has been extended to very general
+semimartingale settings; see \cite{kardaras2003} for example.
+
+\subsection{Stocks}
+
+We follow the convention used by Fernholz and use a logarithmic representation
+for stocks following directly from Definition \ref{def:marketmodel}.
+
+The logarithmic return (log return) of a financial asset is the change in the
+natural logarithm of the asset's value. This is commonly referred to as the
+"geometric" or "compound" return. Sometimes, the log return yields a clearer
+picture of stock behaviour than is available from the usual arithmetic return
+particularly in the case of certain stock portfolios
+\cite{fernholz2007statistics}. A logarithmic representation is considered to be
+more natural when considering long-term behaviour (see e.g.
+\cite{fernholz1982}).
+
+Consider a stock represented by its value $X(t)$ at time $t$ as per Definition
+\ref{def:marketmodel}. The value $X$ is assumed to be positive, and varies over
+time. If a period of time $dt$ passes and the value of the stock moves from $X$
+to $X + \d{X}$, then the arithmetic return over the period is $\frac{\d{X}}{X}$.
+The corresponding $\log$ return is defined to be $\d{\log{X}} \defeq \log{(X +
+\d{X})} - \log{X}$.
+
+In all cases, the "$log$" is understood to be the natural logarithm.
+
+\begin{prop}
+  \cite{fernholz1999pgf}
+  \label{thm:logarithmicrepresentation}
+
+  Let $X_{i}(\cdot)$ be stock price processes as defined under market $\market$,
+  then
+
+  \begin{equation}
+    \label{eq:dlogX}
+        \d{\log{X_{i}(t)}} =
+          \gamma_{i}(t) \d{t} +
+          \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+  \end{equation}
+
+  with apostrophe (') denoting vector transposition, and where the process
+  $\gamma_{i}(t)$, called the \textit{growth rate}, is defined as
+
+  \begin{equation}
+    \label{eq:gamma}
+    \gamma_{i}(t)\defeq b_{i}(t)-\frac{1}{2}a_{ii}(t)
+  \end{equation}
+
+  We also define the (non-negative definite matrix-valued) \textit{covariance
+  process} $a_{ij}(t)$ as
+
+  \begin{gather}
+    \label{eq:covarianceprocess}
+    \begin{split}
+      a_{ij}(t)
+        & \defeq \sum_{\nu=1}^{d}\sigma_{i\nu}(t)\sigma_{j\nu}(t) 
+%        & = \left( \sigma(t)\sigma'(t) \right)_{ij} \\
+%        & = \frac{d}{dt}\left\langle \log X_{i},\log X_{j}\right\rangle(t)
+    \end{split}
+  \end{gather}
+
+\end{prop}
+
+\begin{proof}
+
+  The proposition is proved by a simple application of It\^{o}'s lemma for
+  $\rangei$, using $X = \exp(\log(X))$ and then $u(t) = \log{X}$, we get 
+  the following partial derivatives:
+
+  \begin{gather*}
+    \begin{split}
+      \frac{\partial u}{\partial t} &= 0 \\
+      \frac{\partial u}{\partial x} &= \exp{Y(t)}  \\
+      \frac{\partial^2 u}{\partial x^2} &= \exp{Y(t)}  \\
+    \end{split}
+  \end{gather*}
+
+  \begin{equation*}
+      \d{X_{i}(t)} = \d{\log{X_{i}(t)}} X_{i}(t) 
+          + \frac{1}{2} X_{i}(t) \d{ \langle \log{X_{i}} \rangle_{t} } 
+  \end{equation*}
+
+  Rearranging we get
+
+  \begin{gather*}
+    \begin{split}
+      \d{\log{X_{i}(t)}} &= \frac{\d{X_{i}(t)}}{X_{i}(t)} 
+          - \frac{1}{2} \d{ \langle \log{X_{i}} \rangle_{t} } \\
+        &= \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t) \right)
+          - \frac{1}{2} \d{ \langle \log{X_{i}} \rangle_{t} } \\
+        &= \left( b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t) \right)
+          - \frac{1}{2} \left( a_{ii} \right)\d{t} \\
+        &= \left( b_{i}(t) - \frac{1}{2}  a_{ii} \right)\d{t}  
+          + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t) \\
+        &= \gamma_{i}(t) \d{t}  + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t ).
+    \end{split}
+  \end{gather*}
+
+\end{proof}
+
+\begin{thm} [Growth Rate of Stock Price Process]
+  \label{thm:growthrate}
+  (Equation 1.6 in \cite{fernholz2009})
+  The justification for the quantity (\ref{eq:gamma}) being called the 
+  \textit{growth rate} is because of the following relationship
+
+  \begin{equation}
+    \lim_{T \to \infty} 
+      \left( 
+      \log{X_{i}(T)} - \int_{0}^{T} \gamma_{i}(t)\d{t} 
+      \right) = 0
+    \quad \almostsurely
+  \end{equation}
+
+  This is valid when the individual stock variances $a_{ii}(\cdot)$ do not
+  increase too quickly, e.g. if we have 
+
+  \begin{equation*}
+    \lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii} \d{t} \right)
+    \quad \almostsurely 
+  \end{equation*}
+
+  See also Equation 1.6 of \cite{fernholz2009}.
+
+\end{thm}
+
+\begin{proof}
+  Build on Corollary 2.2 of \cite{fernholz1999pgf}.
+\end{proof}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Stocks}
 
@@ -252,6 +479,270 @@ as the market's "intrinsic volatility" which is shown to lead to arbitrage
 opportunities relative to the market when "sufficiency" (boundedness away from
 zero) conditions are met.
 
+\begin{defn} [Trading Strategy]
+  \label{def:tradingstrategy}
+
+  A \textit{trading strategy} is a progressively measurable process $h(\cdot)$ 
+  takes values in $\mathbb{R}^{n}$ with a wealth process $V^{w,h}(\cdot)$ 
+
+  \begin{equation*}
+    V^{w,h}(t) = \sum_{i=1}^{n} h_{i}(t) X_{i}(t) 
+    \quad \ranget
+  \end{equation*}
+
+  with $V^{w,h}(0)=w$ for $w > 0$. We also assume a trading strategy $h(\cdot)$  
+  satisfies the integrability condition
+
+  \begin{equation*}
+    \sum_{i=1}^{n} \int_{0}^{T} 
+    \left(
+    \abs{(h_{i}(t)b_{i}(t)} + h_{i}^2(t)a_{ii}(t)
+      \right) \d{t} < \infty
+    \quad \almostsurely.
+  \end{equation*}
+
+\end{defn}
+
+\begin{defn} [Self Financing Condition]
+  \label{def:selffinancingcondition}  
+  A strategy $h(\cdot)$ is called \textit{self-financing} if 
+  
+  \begin{equation}
+    \d{V^{w,h}(t)} = \sum_{i=1}^{n} h_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)}.
+  \end{equation}
+
+\end{defn}
+
+\begin{defn} [Portfolio]
+  \label{def:portfolio}
+
+  A portfolio is a progressively measurable process $\pi(\cdot)$ uniformly
+  bounded in $(t,\omega)$, where $\pi_{i}(t)$ represents the proportion of wealth
+  invested in stock $i$ at time $t$, with values in the set $\triangle^{n}$,
+  defined as 
+
+  \begin{equation*}
+    \triangle^{n} \defeq 
+    \left\{
+          (\pi_{1}, \dots, \pi_{n}) \in \mathbb{R}^{n} 
+          \mid
+          \sum_{i=1}^{n} \pi_{i} = 1
+    \right\}.
+  \end{equation*}
+
+  A negative value for $\pi_{i}(t)$ indicates a short sale, we also define a
+  \textit{long only} portfolio $\pi(\cdot)$ as a portfolio where $\pi_{i}(t) \ge
+  0$ $\forall \rangei$. We introduce the notation for this set as
+
+  \begin{equation*}
+    \triangle_{+}^{n} \defeq 
+    \left\{
+          (\pi_{1}, \dots, \pi_{n}) \in \triangle^{n} 
+          \mid
+          \pi_{1} \ge 0, \dots, \pi_{n} \ge 0
+          \mid
+          \sum_{i=1}^{n} \pi_{i} = 1
+    \right\}.
+  \end{equation*}
+
+\end{defn}
+
+Every portfolio can therefore be seen to generate a strategy by noting the
+relationship between the process $h_{i}(\cdot)$, representing the amount
+invested in each stock, and the portfolio weights process $\pi_{i}(\cdot)$ which
+represents the proportion of total wealth invested in stock, which is 
+
+\begin{equation}
+  \label{eq:wealthinvestedbyportfolio}
+  h_i(t) = \pi_{i}(t)V^{w,\pi}(t)
+  \quad \rangei.
+\end{equation}
+
+\begin{prop} [Wealth Process of a Portfolio]
+
+  The wealth-process $V^{w,\pi}(\centerdot)$ of a portfolio $\pi(\centerdot)$
+  with initial wealth $w > 0$ satisfies the stochastic differential equation
+
+  \begin{gather}
+    \label{eq:wealthprocess}
+    \begin{split}
+      \frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)} 
+        &= \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+        &= b_{\pi}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)}
+    \end{split}
+  \end{gather}
+
+  where we define the $b(\cdot)$, called the \textit{rate-of-return} of the 
+  portfolio $\pi(\cdot)$ as
+
+  \begin{equation*}
+    \label{eq:bpi}
+    b_{\pi}(t) \defeq \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)
+  \end{equation*}
+
+  and the volatility coefficients $\sigma_{\pi\nu}(\cdot)$ as
+
+  \begin{equation*}
+    \label{eq:sigmapi}
+    \sigma_{\pi\nu}(\cdot) \defeq \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t)
+    \quad \nu=1,\dots,d.
+  \end{equation*}
+
+\end{prop}
+
+\begin{proof}
+
+  From the self-financing condition (Definition \ref{def:selffinancingcondition}) 
+  and (\ref{eq:wealthinvestedbyportfolio}) we have
+
+  \begin{gather*}
+    \begin{split}
+      \d{V^{w,\pi}(t)} 
+      &= \sum_{i=1}^{n} h_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+      &= \sum_{i=1}^{n} \pi_{i}(t)V^{w,\pi}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+      &= V^{w,\pi}(t) \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+      \frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)} 
+      &= \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+    \end{split}
+  \end{gather*}
+
+  which completes the proof for the first part of (\ref{eq:wealthprocess}). We
+  prove the second equality by using (\ref{eq:stockpriceprocessdiff}), so that
+
+  \begin{gather*}
+    \begin{split}
+      \frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)}
+          & = \sum_{i=1}^{n} \pi_{i}(t) 
+          \left(
+            b_{i}(t)dt + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+          \right) \\
+          & = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)dt + 
+              \sum_{i=1}^{n} \sum_{\nu=1}^{d} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
+          & = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)dt + 
+              \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
+          & = b_{\pi}(t)dt + 
+              \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
+          & = b_{\pi}(t)dt + 
+              \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) dW_{\nu}(t).
+    \end{split}
+  \end{gather*}
+
+\end{proof}
+
+Since SPT is interested in the behaviour of portfolios, solutions to
+(\ref{eq:wealthprocess}) are of great interest.
+
+\begin{prop} [Strong Solution of Wealth Process]
+  \label{prop:solutionofwealthprocess}
+
+%  Originally proved in \cite{fernholz1999pgf}. 
+
+  Let $\pi(\centerdot)$ be a portfolio, then the solution of
+  (\ref{eq:wealthprocess}) is
+
+  \begin{equation}
+    \label{eq:wealthprocess}
+    \d{V^{w,\pi}(t)} =  
+        \gamma_{\pi}(t) \d{t} +
+        \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)}
+  \end{equation}
+
+%  or equivalently, as
+%
+%  \begin{equation}
+%    V^{w,\pi}(t) = w \exp{ 
+%      \left(
+%        \int_{0}^{t} \gamma_{\pi}(u) \d{u} +
+%        \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{\pi\nu}(u) \d{W_{\nu}(u)}
+%      \right)},
+%  \quad \ranget
+%  \end{equation}
+
+  where we define the process $\gamma_{\pi}(\cdot)$, called the \textit{growth
+  rate} of the portfolio $\pi(\cdot)$ and the process $\gamma_{\pi}^{*}(\cdot)$,
+  called the \textit{excess growth rate} as follows
+
+  \begin{equation*}
+    \gamma_{\pi}(t) \defeq 
+      \sum_{i=1}^{n} \pi_{i}(t)\gamma_{i}(t) + 
+      \gamma_{\pi}^{*}(t)
+  \end{equation*}
+
+  \begin{equation*}
+    \gamma_{\pi}^{*}(t) \defeq \frac{1}{2} 
+        \left(
+          \sum_{i=1}^{n} \pi_{i}(t)a_{ii}(t) -
+          \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t)a_{ij}(t)\pi_{j}(t)
+        \right)
+  \end{equation*}
+
+\end{prop}
+
+Note that the excess growth rate process $\gamma_{\pi}^{*}(\cdot)$ is the
+difference between the weighted sum of the individual stock variances and the
+overall portfolio variance, and can therefore be interpreted as the returns due
+to diversification. It was proved in \cite{fernholz1999diversity} that for
+portfolios with non-negative weights, the excess growth rate is non-negative,
+and is positive unless the portfolio consists of a single stock.
+
+\begin{proof}
+
+\end{proof}
+
+\begin{prop} [Growth Rate of Wealth Process]
+  \label{thm:wealthgrowthrate}
+
+  The justification for the naming of $\gamma_{\pi}(\cdot)$ as the \textit{growth rate} is because of the following property
+
+  \begin{equation*}
+    \lim_{T \to \infty} 
+      \left( 
+      \log{V^{w,\pi}(T)} - \int_{0}^{T} \gamma_{\pi}(t)\d{t} 
+      \right) = 0
+    \quad \almostsurely
+  \end{equation*}
+
+  which is valid under the condition
+
+  \begin{equation*}
+    \lim_{T \to \infty}
+      \left(
+        \frac{\log \log T}{T^2} \int_{0}^{T} \norm{ a(t) } \d{t}
+      \right) = 0,
+  % \quad \almostsurely.
+  \end{equation*}
+
+\end{prop}
+
+\begin{proof}
+  See also Equation 1.14 of \cite{fernholz2009}.
+  Build on Corollary 2.2 of \cite{fernholz1999pgf}.
+
+  TODO: Proof.
+\end{proof}
+
+To simplify notation slightly, going forward we write $V^{\pi}(\cdot) \defeq V^{1,\pi}$ for initial wealth $w=1$. We also note the following equality analogous to (\ref{eq:wealthprocess})
+
+\begin{prop}
+
+  \begin{equation}
+    \label{eq:logvalueprocess}
+      \d{\log V^{\pi}(t)} = \gamma_{\pi}^{*}(t)\d{t} + \sum_{i=1}^{n} \pi_{i}(t) \d{\log{X_{i}(t)}}.
+  \end{equation}
+
+\end{prop}
+
+\begin{proof}
+
+  TODO: Proof (Using Ito Lemma)
+
+\end{proof}
+
+\newpage
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Relative Arbitrage}
 
@@ -269,70 +760,98 @@ which can be shown to preclude arbitrage over any time horizon.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Functionally Generated Portfolios}
 
-Functionally generated portfolios were introduced in \cite{fernholz1999pgf}, and
-use a generating function 
-is new class of portfolios one can derive a decomposition of their relative
-performance into 
-
-and this proves useful in the construction
-and study of arbitrages relative to the market. Just as in (7.6), this new
-decomposition (11.2) does not involve stochastic integrals, and opens the
-possibility for making probability-one comparisons over given, fixed
-time-horizons.
-This performance is decomposed into a stochastic part of
-infinite variation (written as a function of the market weights), plus a
-finite variation component. By choosing a suitable generating function the
-stochastic term can be bounded from below, producing relative arbitrage
-opportunities.
-
+Functionally generated portfolios were introduced in \cite{fernholz1999pgf} as a
+generalisation of the diversity-weighted portfolios we will introduce later.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Generating Function}
 
-The cornerstones of SPT are \textit{functionally generated portfolios}, and
-the so-called "Fernholz's Master Equation". Functionally generated portfolios are
-portfolios generated by a $\mathcal{C}^2$ \textit{generating function} that allow
-for the generation of well-performing portfolios that, in general, do not require
-estimation of the drifts or volatilities of the stocks. 
+\newcommand{\G}{\mathbf{G}}
 
 \begin{defn} [Generating Function] 
-  
   \label{def:generatingfunction}
 
   Let $U \subset \triangle^{n}$ be a given open set, then the function
-  $\mathbf{G}\in\mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the
-  portfolio $\pi(\cdot)$ if $\mathbf{G}$ is such that $x\to
-  x_{i}D_{i}\log\mathbf{G}(x)$ is bounded on $U$, and if there exists a
+  $\G\in\mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the
+  portfolio $\pi(\cdot)$ if $\G$ is such that $x\to
+  x_{i}D_{i}\log\G(x)$ is bounded on $U$, and if there exists a
   measurable, adapted process $\mathfrak{g}(\centerdot)$ such that 
 
   \begin{equation}
     \d{ \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) } = 
-    \d{ \log \mathbf{G}(\mu(t)) + \mathfrak{g}(t) }
+    \d{ \log \G(\mu(t)) + \mathfrak{g}(t) }
     \quad \ranget
     \quad \almostsurely
   \end{equation}
 
-  (see 
-    Definition 3.1 in \cite{fernholz1999pgf} and 
-    Definition 2.3.1 in \cite{vervuurt2015})
+%  (see 
+%    Definition 3.1 in \cite{fernholz1999pgf} and 
+%    Definition 2.3.1 in \cite{vervuurt2015})
 
 \end{defn}
+
+\begin{prop} 
+  \label{prop:generatingfunction}
+  Let a function $\G$ as in Definition \ref{def:generatingfunction}
+  generate the portfolio $\pi(\cdot)$, then for each of the portfolio weights
+  $\pi_{i}(t)$, $\rangei$
+
+  \begin{equation}
+    \pi_{i}(t) = 
+      \left( 
+        D_{i}\log{\G}(\mu(t)) + 1 - 
+          \sum_{j=1}^{n} \mu_{j}(t)D_{j}\log{\G(\mu(t))}
+      \right) \mu_{i}(t).
+  \end{equation}
+
+\end{prop}
+
+\begin{proof}
+  First we verify $\pi(\cdot)$ is a valid portfolio, i.e. fully invested.
+
+   \begin{gather}
+    \begin{split}
+      \sum_{i=1}^{n} \pi_{i}(t) 
+      &= \sum_{i=1}^{n} 
+        \left( 
+          D_{i}\log{\G}(\mu(t)) + 1 - 
+            \sum_{j=1}^{n} \mu_{j}(t)D_{j}\log{\G(\mu(t))}
+        \right) \mu_{i}(t) \\
+      &= 
+        \sum_{i=1}^{n} \mu_{i}(t) D_{i}\log{\G}(\mu(t)) + 
+        \sum_{i=1}^{n} \mu_{i}(t)
+        \left( 
+          1 - \sum_{j=1}^{n} \mu_{j}(t)D_{j}\log{\G(\mu(t))}
+        \right) \\
+       &= 
+        \sum_{i=1}^{n} \mu_{i}(t) D_{i}\log{\G}(\mu(t)) + 
+        \sum_{i=1}^{n} \mu_{i}(t) -
+        \sum_{i=1}^{n} \mu_{i}(t) \sum_{j=1}^{n} \mu_{j}(t)D_{j}\log{\G(\mu(t))}
+\\
+       &= 1,
+  \end{split}
+  \end{gather}
+
+  since by definition $\sum_{i=1}^{n} \mu_{i}(t) = 1$.
+
+  The remainder of the proof is performed by formulating a lemma shown below that
+  proves the reverse direction of Proposition \ref{prop:generatingfunction}, (as
+  presented in \cite{fernholz2009} and \cite{vervuurt2015}). A proof of the
+  reverse direction was performed in \cite{fernholz1999pgf}. 
+
+\end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fernholz's Master Equation}
 
-The primary machinery of SPT in which virtually all relative arbitrages are constructed, the
-\textit{Master Equation} measures the performance of any portfolio relative to
-the market portfolio. This performance is decomposed into a stochastic part of
-infinite variation (written as a function of the market weights), plus a
-finite variation component. By choosing a suitable generating function the
-stochastic term can be bounded from below, producing relative arbitrage
-opportunities.
-
-\begin{thm} [Fernholz's Master Equation]
+\begin{lem} [Fernholz's Master Equation]
   \label{thm:masterequation}
 
+  For a portfolio $\pi(\cdot)$ satisfying \ref{prop:generatingfunction}, then the
+  generating function $\G$ generates the portfolio $\pi(\cdot)$, i.e.
+
   \begin{equation}
+    \label{eq:masterequation}
     \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) = 
     \log \left( \frac{\mathbf{G}\mu(T)}{\mathbf{G}\mu(0)} \right) + 
       \int_{0}^{T} \mathfrak{g}(t)\d{t}
@@ -345,15 +864,18 @@ opportunities.
     \mathfrak{g}(t) \triangleq \frac{-1}{\mathbf{G}(\mu(t))}
         \sum_{i=1}^{n} \sum_{j=1}^{n} D_{ij}^{2} \mathbf{G}(\mu(t)) 
         \mu_{i}(t) \mu_{j}(t)
-        \tau_{ij}^{\mu}(t)
+        \tau_{ij}^{\mu}(t
   \end{equation}
 
-  is called the \textit{drift process} of the portfolio $\pi(\cdot)$. 
+  is called the \textit{drift process} of the portfolio $\pi(\cdot)$.
 
-% (See also   Theorem 3.1.5 of \cite{fernholz2002} and Lemma 2.3.2 for a proof).
-\end{thm}
+\end{lem}
 
 \begin{proof}
+
+  For the first part of the proof we derive a useful expression for the LHS of
+  (\ref{eq:masterequation}, 
+
 
 \end{proof}
 
