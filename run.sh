@@ -1,2 +1,2 @@
 #!/bin/bash
-latexmk  -pvc -pdf dissertation.tex
+sudo latexmk  -pvc -pdf dissertation.tex

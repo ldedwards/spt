@@ -216,13 +216,13 @@ trading costs and market impact.
 
 This section provides a concise overview of stochastic calculus for
 diffusion processes. The model for continuous stock prices presented
-here has an extensive literature can be found in \cite{ShreveKaratzas1998}.
+here has an extensive literature can be found in \cite{shreve1991}.
 Throughout, we work on a \textbf{filtered probability space} denoted
 by $(\Omega,\mathcal{F},\left\{ \mathcal{F}_{t}\right\} _{t\ge0},P)$
 where:
 \begin{itemize}
 \item $\Omega$ denotes the space of all events,
-\item $\mathcal{F}$ denotes the set of all measureable events,
+\item $\mathcal{F}$ denotes the set of all measurable events,
 \item ${ \mathcal{F}_{t}} _{t\ge0}$ denotes the filtration
 - a family of $\sigma$-algebras contained in $\mathcal{F}$ with
 the property that if $s<t$ then $\mathcal{F}_{s}\subset\mathcal{F}_{t}$. 
@@ -247,12 +247,12 @@ $t\to W(t,\omega)$ are \textbf{almost surely continuous.}
 \end{enumerate}
 \end{defn}
 
-\subsection{Itô Calculus}
+\subsection{Ito Calculus}
 
-We briefly introduce Itô calculus, beginning with definition of a
-simple process and the the Itô integral for simple functions, and
-then move to the more general definition of the Itô integrals. Square-integrable
-(random) adapted processes, introducing the notion of measurability. 
+We briefly introduce Ito calculus, beginning with definition of a
+simple process and the Ito integral for simple functions, and
+then move to the more general definition of the Ito integrals. Square-integrable
+(random) adapted processes, introducing the notion of measureability. 
 \begin{defn}
 A stochastic process is called $\mathcal{F}_{t}$-\textbf{measurable}
 if 
@@ -301,7 +301,7 @@ processes.
 \end{defn}
 %
 \begin{defn}
-\textbf{The Itô integral} of a stochastic process $X(t)$ on a partition
+\textbf{The Ito integral} of a stochastic process $X(t)$ on a partition
 $[0,T]$, $0=t_{0}<t_{1}<\ldots<t_{n}=T$, with respect to the Brownian
 motion $W$ given by
 \[
@@ -309,7 +309,7 @@ motion $W$ given by
 \]
 %
 \end{defn}
-Let $X(t)$ be a generalised Brownian motion process or an Itô process.
+Let $X(t)$ be a generalised Brownian motion process or an Ito process.
 That is, let $X(t)$ have the following dynamics
 %
 \begin{equation}
@@ -320,7 +320,7 @@ where $W(t)$ is a standard Brownian motion process.
 
 Let $F(t,X(t))$ be a function with continuous second derivatives,
 where $F$ and $X$ have a functional dependence. Then $F(t,X(t))$
-is also an Itô process and has the following dynamics
+is also an Ito process and has the following dynamics
 
 \begin{align*}
 dF(t, & X(t))=\frac{\partial F}{\partial t}(t,x)dt+\frac{\partial F}{\partial x}(t,x)dX(t)+\frac{1}{2}\frac{\partial^{2}F}{dx^{2}}(t,x)(dX(t))^{2}\\
@@ -681,7 +681,7 @@ total wealth invested in stock, by the relationship
 \end{equation}
 
 Using this relationship, and by applying the self financing condition we can
-investigate the dyamics of the wealth process, and formulate the following
+investigate the dynamics of the wealth process, and formulate the following
 proposition that relates the portfolio's arithmetic return
 $\frac{\d{\V(t)}}{\V(t)}$ is the "weighted average" of the weights of the
 individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
@@ -759,7 +759,7 @@ individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
 Since SPT is interested in the long term behaviour of portfolios, solutions of
 (\ref{eq:arithmeticreturnofportfolio}) are of great interest. 
 
-\begin{prop} [Strong Solution of Aritmetic Return of Portfolio]
+\begin{prop} [Strong Solution of Arithmetic Return of Portfolio]
   \label{prop:solutionofarithmeticreturnofportfolio}
 
   Let $\pi(\centerdot)$ be a portfolio, then the solution of
@@ -856,7 +856,7 @@ Since SPT is interested in the long term behaviour of portfolios, solutions of
 
 Note that the excess growth rate process $\gamma_{\pi}^{*}(\cdot)$ is the
 difference between the weighted sum of the individual stock variances and the
-overall portfolio variance, and has therefore baen interpreted as the returns due
+overall portfolio variance, and has therefore been interpreted as the returns due
 to diversification. It was proved in \cite{fernholz1999diversity} that for
 portfolios with non-negative weights, the excess growth rate is non-negative,
 and is positive unless the portfolio consists of a single stock.
@@ -1013,13 +1013,14 @@ We now introduce the \textit{Market Portfolio}, which is perhaps the most
 important portfolio in SPT. The main objective under SPT is to relate the 
 performance of two different portfolios, so naturally one needs a 
 benchmark portfolio to perform these comparisons against. The Market Portfolio
-fullfils this requirement in SPT.
+fulfils this requirement in SPT.
 
 The portfolio buys at time $t=0$ the same number of shares in all stocks, and
 holds on to them (recalling our assumption that each stock has just one share
 outstanding, so that capitalization and stock price are the same).
 
-\begin{defn} [Market Portfolio] \label{def:marketportfolio}
+\begin{defn} [Market Portfolio] 
+  \label{def:marketportfolio}
 
   We define the process $\mu(\cdot)$ as a portfolio that invests the proportion
   $\mu_{i}(t)$ of current wealth in the $i$th asset at all times
@@ -1172,7 +1173,7 @@ Note also that
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Relative Return}
 
-We have now defined the core features of SPT, namely the constintuent stocks and
+We have now defined the core features of SPT, namely the constituent stocks and
 portfolios. So we can now turn our attention to the how the relative performance of
 two portfolio under our market model evolve.
 
@@ -1379,6 +1380,8 @@ generalisation of the diversity-weighted portfolios we will introduce later.
 \end{defn}
 
 \begin{prop} 
+  \label{prop:generatingfunction}
+
   Let a function $\G{}$ as in Definition \ref{def:generatingfunction}
   generate the portfolio $\pi(\cdot)$, then for each of the portfolio weights
   $\pi_{i}(t)$, $\rangei$
@@ -1432,7 +1435,7 @@ generalisation of the diversity-weighted portfolios we will introduce later.
 \subsection{Fernholz's Master Equation}
 
 \begin{lem} [Fernholz's Master Equation]
-  \label{thm:masterequation}
+  \label{lem:masterequationlemma}
 
   For a portfolio $\pi(\cdot)$ satisfying \ref{prop:generatingfunction}, then the
   generating function $\G{}$ generates the portfolio $\pi(\cdot)$, i.e.
@@ -1472,7 +1475,7 @@ For the first part of the proof we derive a useful expression for the LHS of
     \end{split} 
   \end{gather}
 
-and expressions (\ref{eq:marketweights}) and (\ref{eq:relativemarketweights})
+and expressions (\ref{eq:dynamicsofmarketweights}) and (\ref{eq:relativemarketweights})
 and applying the numeraire-invariance property
 (\ref{eq:numeraireinvarianceproperty}) to get
   
@@ -1653,7 +1656,7 @@ Fernholz \cite{fernholz1999diversity} and studied in detail in
   \end{equation}
 \end{defn}
 
-The diversity condition asserts that no single company\textquoteright s
+The diversity condition asserts that no single company's
 capitalization can take up more than a certain proportion of the entire
 market, and is weakly diverse if this holds on average over history.
 These are fairly weak empirical requirements, as it is clear that
@@ -1661,7 +1664,7 @@ actual equity markets satisfy both conditions.
 
 \begin{defn}
 The \textbf{Diversity-Weighted Portfolio (DWP) }with parameter $p\in\mathbb{R}$
-is defined in terms of the market portfolio $\mu(\centerdot)$ (\ref{eq:defnmarketportfolio})
+is defined in terms of the market portfolio $\mu(\centerdot)$ (\ref{def:marketportfolio})
 by
 \begin{equation}
 \pi_{i}^{(p)}(t)\triangleq\frac{\left(\mu_{i}(t)\right)^{p}}{\sum_{j=1}^{n}\left(\mu_{j}(t)\right)^{p}},\;\;\;i=1,...,n.\label{eq:DWP}
@@ -1672,13 +1675,13 @@ The portfolio is generated by the generating function
 \mathbf{G}_{p}:x\to\left(\sum_{i=1}^{n}x_{i}^{p}\right)^{\frac{1}{p}}.
 \end{equation}
 
-Where the master equation (\ref{thm:MasterEquation}) for the DWP
+Where the master equation from Lemma \ref{lem:masterequation} for the DWP
 is
 \begin{equation}
 \log\left(\frac{V^{\pi^{(p)}}(T)}{V^{\mu}(T)}\right)=\log\left(\frac{\mathbf{G}_{p}(\mu(T))}{\mathbf{G}_{p}(\mu(0))}\right)+(1-p)\int_{0}^{T}\gamma_{\pi^{(p)}}^{*}dt\;\;\text{a.s.}
 \end{equation}
 \end{defn}
-Fernholz et al. \cite{Fernholz2005a} showed that for markets satisfying
+Fernholz et al. \cite{fernholz2005} showed that for markets satisfying
 the diverse (D) property (\ref{def:defnD}) showed that the diversity
 weighted portfolio (\ref{eq:DWP}) outperforms the market portfolio
 $\mu(\cdot)$ strongly, in markets satisfying (\ref{def:ND}) and
@@ -1695,9 +1698,9 @@ follows
 \exists\varphi\in(0,\frac{1}{n})\text{ such that }P\left(\mu_{(n)}(t)>\varphi,\;\forall t\in[0,T]\right)=1
 \end{equation}
 
-Vervuurt \cite{Vervuurt2015} showed that a similar relative arbitrage
+Vervuurt \cite{vervuurt2015} showed that a similar relative arbitrage
 holds for the diversity-weighted portfolio with negative parameter
-$p$ (see Theorem 1\cite{Vervuurt2015}), in markets with the no-failure
+$p$ (see Theorem 1\cite{vervuurt2015}), in markets with the no-failure
 (NF) condition (\ref{def:NF}), with diversity parameter $\delta=(n-1)\varphi$.
 \end{defn}
 %
