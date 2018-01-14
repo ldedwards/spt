@@ -531,7 +531,7 @@ format.
     \label{eq:covarianceprocess}
     \begin{split}
       a_{ij}(t)
-        & \defeq \sum_{\nu=1}^{d}\sigma_{i\nu}(t)\sigma_{j\nu}(t).
+         \defeq \sum_{\nu=1}^{d}\sigma_{i\nu}(t)\sigma_{j\nu}(t).
 %        & = \left( \sigma(t)\sigma'(t) \right)_{ij} \\
 %        & = \frac{d}{dt}\left\langle \log X_{i},\log X_{j}\right\rangle(t)
     \end{split}
@@ -1004,8 +1004,6 @@ and is positive unless the portfolio consists of a single stock.
 To simplify notation slightly, going forward we write $V^{\pi}(\cdot) \defeq V^{1,\pi}$ for initial wealth $w=1$.
 
 \newpage
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Market Portfolio}
 
@@ -1148,30 +1146,74 @@ The relative market weights evolve as
     \end{split}
   \end{gather}
 
-where we define the matrix-valued \textit{covariance process} of the stocks
-relative to the portfolio $\pi(\cdot)$ as
+where we define $\tau_{ij}^{\pi}$, the matrix-valued \textit{covariance process}
+of the stocks relative to the portfolio $\pi(\cdot)$ as
 
 \begin{equation}
   \label{eq:deftau}
-  \tau_{ij}^{\pi}(t) \defeq         
+  \tau_{ij}^{\pi}(t) \defeq
             \sum_{\nu=1}^{d}
             \left(
               \sigma_{i\nu}(t) - \sigma_{\mu\nu}(t)
-            \right) ^ 2
+            \right) 
+            \left(
+              \sigma_{j\nu}(t) - \sigma_{\mu\nu}(t)
+            \right) 
 \end{equation}
 
-Note also that
+Expanding this out and using the definition of $a_{ij}$
+from (\ref{eq:covarianceprocess}), we can also write this as
+
+  \begin{gather}
+    \begin{split}
+      \tau_{ij}^{\pi}(t) 
+        &=
+            \sum_{\nu=1}^{d}
+            \left(
+              \sigma_{i\nu}(t) - \sigma_{\mu\nu}(t)
+            \right) 
+            \left(
+              \sigma_{j\nu}(t) - \sigma_{\mu\nu}(t)
+            \right) \\
+        &=
+            \sum_{\nu=1}^{d}
+            \left(
+              \sigma_{i\nu}(t)\sigma_{j\nu}(t) - \sigma_{i\nu}(t)\sigma_{\mu\nu}(t) -
+              \sigma_{\mu\nu}(t)\sigma_{j\nu}(t) + \sigma_{\mu\nu}(t)\sigma_{\mu\nu}(t)
+            \right) \\
+        &= a_{ij}(t) - a_{\pi i} - a_{\pi j}(t) + a_{\pi\pi}(t)
+   \end{split}
+  \end{gather}
+
+Where we define
+
+  \begin{equation}
+      a_{\pi i}(t) \defeq \sum_{j=1}^{n} \pi_{j}(t)a_{ij}(t), \quad 
+      a_{\pi \pi}(t) \defeq \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) \pi_{j}(t) a_{ij}(t).
+  \end{equation}
+
+
+\begin{lem} [Covariance Process]
+
+The covariance process $\tau_{ij}^{\pi}$ of the stocks relative to the portfolio $\pi(\cdot)$ 
+can be writted as
 
 \begin{equation}
   \label{eq:tau}
   \tau_{ij}^{\pi}(t) = 
-    frac{ \d{\langle \mu_{i}, \mu_{j} \rangle}(t)}{ \mu_{i} \mu_{j}}\d{t},
+    \frac{ \d{\langle \mu_{i}, \mu_{j} \rangle}(t)}{ \mu_{i} \mu_{j}}\d{t},
     \quad 1 \le i,j \le n.
 \end{equation}
 
+\end{lem}
 
+\begin{proof}
+TODO
+\end{proof}
+
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Relative Return}
+\section{Relative Return}
 
 We have now defined the core features of SPT, namely the constituent stocks and
 portfolios. So we can now turn our attention to the how the relative performance of
@@ -1325,11 +1367,17 @@ form.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Numeraire Property}
 
-TODO: Needs expanding
-
-In a link with the Benchmark approach to Mathematical finance
-\cite{platen2006}, SPT defines a \textit{numeraire property} of a strategy,
-which can be shown to preclude arbitrage over any time horizon.
+In a link with the Benchmark approach to Mathematical finance \cite{platen2006},
+when building relative arbitrage strategies, SPT relies on benchmarking a
+portfolio against another portfolio, called the numeraire portfolio. The
+\textit{numeraire property} is a property of the excess growth rate
+(\ref{eq:portfolioexcessgrowthrate}) that shows that it is numeraire invariant,
+as it shows that we may simply replace the covariance matrix in
+(\ref{eq:portfolioexcessgrowthrate}) by the matrix of covariances relative to
+any portfolio. When the numeraire proposed is the canonical benchmark market
+portfolio defined in Definition \ref{def:marketportfolio}, this property
+demonstrates the fact that the excess growth rate of a portfolio does not depend
+on the choice of numeraire portfolio.
 
 \begin{lem} [Numeraire-Invariance Property]
  For any two arbitrary portfolios $\pi(\cdot)$ and $\rho(\cdot)$, we have the
@@ -1337,15 +1385,35 @@ following property
 
   \begin{equation} 
     \label{eq:numeraireinvarianceproperty}
-    \d{ \log{ \left( \frac{ V^{\pi}(t) }{ V^{\rho}(t) } \right)} } = 
-      \gamma_{\pi}^{*}(t)\d{t} + 
-      \sum_{i=1}^{n} \pi_{i}(t) \d{ \log{ 
-      \left(
-        \frac{ X_{i}(t) }{ V^{\rho}(t)} 
-      \right) }}. 
+    \gamma_{\pi}^{*}(t) = \frac{1}{2} 
+        \left(
+          \sum_{i=1}^{n} \pi_{i}(t)\tau_{ii}^{\rho}(t) - 
+          \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t)\pi_{j}(t)\tau_{ii}^{\rho}(t) 
+        \right)
   \end{equation}
+
+  and in particular, for a long-only portolio $\pi(\cdot)$ we have that
+
+  \begin{equation} 
+    \label{eq:numeraireinvarianceproperty}
+    \gamma_{\pi}^{*}(t) = \frac{1}{2} 
+          \sum_{i=1}^{n} \pi_{i}(t)\tau_{ii}^{\pi}(t) 
+     \ge 0. 
+  \end{equation}
+ 
 \end{lem}
 
+\begin{proof}
+
+  From definition of $\tau(\cdot)$ (\ref{def:deftau}) we have
+
+  \begin{equation} 
+    \gamma_{\pi}^{*}(t) = \frac{1}{2} 
+          \sum_{i=1}^{n} \pi_{i}(t)\tau_{ii}^{\pi}(t) 
+     \ge 0. 
+  \end{equation}
+
+\end{proof}
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1612,9 +1680,18 @@ equation (\ref{eq:masterstep1}) as
         \tau_{ij}^{\mu}(t)
   \end{equation}
 
- 
-
 \end{proof}
+
+The formulation of the Master Equation is of great importance in SPT, as it
+allows us to relate the observed properties of markets (and thus conditions on
+the behaviour of certain processes over time) to the relative performance of a
+portfolio compared to the market portfolio. 
+
+The method of constructing relative arbitrage opportunities in SPT, is to choose
+suitable generating function $\G$, by noting that the first term on the RHS of
+(\ref{eq:masterequation}) can be bounded from below. Furthermore, the volatility
+processes only appear in the drift process $\g$, and the drift processes do not
+appear at all in (\ref{eq:masterequation}).
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
