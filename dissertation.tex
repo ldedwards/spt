@@ -1,7 +1,9 @@
 \documentclass[british]{amsart} \usepackage{lmodern}
 
 % Bibliography
-\usepackage[backend=biber,style=alphabetic]{biblatex} \addbibresource{spt.bib}
+%\usepackage[backend=biber,style=alphabetic]{biblatex} \addbibresource{spt.bib}
+\usepackage[style=alphabetic]{biblatex} 
+\addbibresource{spt.bib}
 
 \renewcommand{\sfdefault}{lmss} \renewcommand{\ttdefault}{lmtt}
 \usepackage[T1]{fontenc} \usepackage[latin9]{inputenc} \usepackage{verbatim}
@@ -361,10 +363,10 @@ dF(t, & X(t))=\frac{\partial F}{\partial t}(t,x)dt+\frac{\partial F}{\partial x}
 \begin{thm} [Multidimensional Ito formula]
 
   For a $n$-dimensional Ito process $X_{i}(\cdot)$ with $d$ independent Brownian motions and a
-  matrix $[\beta_{ij}(t)]$, $i=1,\dots,n$ and $j=1,\dots,d$ of $\mathcal{L}_{[0,T]}^{2}$ processes
+  matrix $[\beta_{ij}(t)]$, $i=1,\dots,n$ and $\nu=1,\dots,d$ of $\mathcal{L}_{[0,T]}^{2}$ processes
 
   \begin{equation}
-    \d{X_{i}(t)} = \alpha_i(t) + \sum_{j=1}^d \beta_{ij}(t)\d{W_{j}(t)}
+    \d{X_{i}(t)} = \alpha_i(t) + \sum_{\nu=1}^d \beta_{i\nu}(t)\d{W_{\nu}(t)}
     \quad i=1,\dots,k,
   \end{equation}
 
@@ -375,7 +377,7 @@ dF(t, & X(t))=\frac{\partial F}{\partial t}(t,x)dt+\frac{\partial F}{\partial x}
    \begin{gather}
     \begin{split}
     \d{Y(t)} &= F_{t}(t, X(t))\d{t} + \sum_{i=1}^n F_{x_{i}}(t,X(t)) \alpha_{i}(t)\d{t} \\
-             & + \sum_{i=1}^n F_{x_{i}}(t,X(t)) \sum_{j=1}^n \beta_{ij}(t)\d{W_{j}(t)} \\
+             & + \sum_{i=1}^n F_{x_{i}}(t,X(t)) \sum_{\nu=1}^n \beta_{i\nu}(t)\d{W_{\nu}(t)} \\
              & + \frac{1}{2} \sum_{\nu=1}^d \sum_{i=1}^n \sum_{j=1}^n
                   F_{x_{i}x_{j}}(t,X(t)) \beta_{i\nu}(t) \beta_{j\nu}(t)\d{t}.
     \end{split}
@@ -736,11 +738,19 @@ process $h_{i}(\cdot)$, representing the amount invested in each stock, and the
 portfolio weights process $\pi_{i}(\cdot)$ which represent the proportion of
 total wealth invested in stock, by the relationship
 
-\begin{equation}
-  \label{eq:wealthinvestedbyportfolio}
-  h_i(t)X_{i}(t) = \pi_{i}(t)V^{w,h}(t)
-  \quad \rangei.
-\end{equation}
+\begin{gather}
+  \begin{split}
+    \label{eq:wealthinvestedbyportfolio}
+    h_i(t)X_{i}(t) &= \pi_{i}(t)V^{w,h}(t) \\
+    h_i(t) &= \frac{\pi_{i}(t)V^{w,h}(t)}{X_{i}(t)}, \\
+    &= \frac{\pi_{i}(t)V^{w,\pi}(t)}{X_{i}(t)},
+    \quad \rangei.
+  \end{split}
+\end{gather}
+
+The last equality stems from the fact that the wealth process of a portfolio
+generates the same wealth process of the strategy $h_{i}(\cdot)$, so we can 
+write $V^{w,\pi}(t)=V^{w,h}(t)$.
 
 Using this relationship, and by applying the self financing condition we can
 investigate the dynamics of the wealth process, and formulate the following
@@ -750,7 +760,7 @@ individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
 
 \begin{prop} [Wealth Process of a Portfolio]
   (See Equation 2.2 in \cite{fernholz2009})
-  The wealth-process $V^{w,\pi}(\centerdot)$ of a portfolio $\pi(\centerdot)$
+  The wealth-process $V^{w,\pi}(\cdot)$ of a portfolio $\pi(\cdot)$
   with initial wealth $w > 0$ satisfies the stochastic differential equation
 
   \begin{gather}
@@ -787,8 +797,8 @@ individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
   \begin{gather*}
     \begin{split}
       \d{V^{w,\pi}(t)} 
-      &= \sum_{i=1}^{n} h_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
-      &= \sum_{i=1}^{n} \pi_{i}(t)V^{w,\pi}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
+      &= \sum_{i=1}^{n} h_{i}(t) \d{X_{i}(t)} \\
+      &= \sum_{i=1}^{n} \left(  \frac{\pi_{i}(t)V^{w,\pi}(t)}{X_{i}(t)} \right) \d{X_{i}(t)} \\
       &= V^{w,\pi}(t) \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
       \frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)} 
       &= \sum_{i=1}^{n} \pi_{i}(t) \frac{\d{X_{i}(t)}}{X_{i}(t)} \\
@@ -824,7 +834,7 @@ Since SPT is interested in the long term behaviour of portfolios, solutions of
 \begin{prop} [Strong Solution of Arithmetic Return of Portfolio]
   \label{prop:solutionofarithmeticreturnofportfolio}
 
-  Let $\pi(\centerdot)$ be a portfolio, then the solution of
+  Let $\pi(\cdot)$ be a portfolio, then the solution of
   (\ref{eq:arithmeticreturnofportfolio}) is
 
   \begin{equation}
@@ -867,51 +877,122 @@ Since SPT is interested in the long term behaviour of portfolios, solutions of
   \end{equation}
 
 \end{prop}
+\newcommand{\Valpha}{\V(t)b_{\pi}(t)}
+\newcommand{\Vbeta}{\V(t)\sigma_{\pi\nu}(t)}
+\newcommand{\VFt}{0}
+\newcommand{\VFx}{\frac{1}{\V(t)}}
+\newcommand{\VFxx}{-\frac{1}{(\V(t))^2}}
 \begin{proof}
 
-  The proposition is again proved by a simple application of It\^{o}'s lemma 
-  for $\rangei$, using $V = \exp(\log(V))$ and then $u(t) = \log{V}$, we get 
-  the following partial derivatives:
+  As before, we use the multidimensional Ito's lemma with $F(t,x)=\log\{x\}$ therefore we obtain that
+
+  \begin{equation}
+    F_{t}=0, \quad F_{x}=\frac{1}{x}, \quad F_{xx}=-\frac{1}{x^2}.
+  \end{equation}
+
+  Then, using $\alpha=\Valpha$ and $\beta=\Vbeta$, from (\ref{eq:arithmeticreturnofportfolio}) we get
 
   \begin{gather*}
     \begin{split}
-      \frac{\partial u}{\partial t} &= 0 \\
-      \frac{\partial u}{\partial x} &= \exp{Y(t)}  \\
-      \frac{\partial^2 u}{\partial x^2} &= \exp{Y(t)}  \\
+      \d{Y(t)} &= F_{t}(t, X(t))\d{t} + F_{x}(t,X(t)) \alpha(t)\d{t} 
+         + F_{x}(t,X(t)) \sum_{\nu=1}^d \beta_{\nu}(t)\d{W_{\nu}(t)} \\
+         &+ \frac{1}{2} \sum_{\nu=1}^d F_{xx}(t,X(t)) \beta_{\nu}(t)^{2}(t)\d{t}. \\
+     \d{\log{\V(t)}} 
+         &= \VFx \Valpha \d{t} + \VFx \sum_{\nu=1}^d \Vbeta \d{W_{\nu}(t)} \\
+            &+ \frac{1}{2} \sum_{\nu=1}^d \VFxx \left( \Vbeta \right)^{2} \d{t}. \\
+         &= b_{\pi}(t) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{\pi\nu}(t)  \d{W_{\nu}(t)} 
+            - \frac{1}{2} \sum_{\nu=1}^d \left( \sigma_{\pi\nu}(t)\sigma_{\pi\nu}(t) \right) \d{t}. \\
     \end{split}
   \end{gather*}
 
-  which yields
+  Recalling the definition of $b_{i\pi}(\cdot)$ (\ref{eq:wealthprocessrateofreturn})
+  , $\sigma_{\pi\nu}(\cdot)$ (\ref{eq:wealthprocessvolatility}) and
+  $a_{ij}(\cdot)$ (\ref{eq:covarianceprocess}) gives:
 
   \begin{equation*}
-      \d{\V(t)} = \d{\log{\V(t)}} \V(t) 
-          + \frac{1}{2} \V(t) \d{ \langle \log{\V} \rangle_{t} } 
+    b_{\pi}(t) \defeq \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t),
   \end{equation*}
 
-  Rearranging we get
+  \begin{equation*}
+    \sigma_{\pi\nu}(\cdot) \defeq \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t),
+    \quad \nu=1,\dots,d,
+  \end{equation*}
+
+  \begin{gather*}
+    \begin{split}
+      a_{ij}(t) \defeq \sum_{\nu=1}^{d}\sigma_{i\nu}(t)\sigma_{j\nu}(t).
+    \end{split}
+  \end{gather*}
+
+  We then have
+  
+  \begin{gather*}
+    \begin{split}
+      \d{\log{\V(t)}} 
+        &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} 
+            - \frac{1}{2} \sum_{\nu=1}^{d}
+                \left( \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) \right) 
+                \left( \sum_{j=1}^{n} \pi_{j}(t) \sigma_{j\nu}(t) \right) 
+              \d{t}. \\
+        &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} 
+            - \frac{1}{2} \left( \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) 
+              \left( 
+                \sum_{\nu=1}^{d} \sigma_{i\nu}(t) \sigma_{j\nu}(t) 
+              \right) \pi_{j}(t) \d{t}. \\
+        &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \right) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} 
+            - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) a_{ij}(t) \pi_{j}(t) \d{t}. \\
+   \end{split}
+  \end{gather*}
+
+  From (\ref{eq:gamma}) we have
+
+  \begin{gather*}
+    \begin{split}
+      \gamma_{i}(t) & \defeq b_{i}(t)-\frac{1}{2}a_{ii}(t) \\
+       \text{rearranging so } b_{i}(t) &= \gamma_{i}(t) + \frac{1}{2}a_{ii}(t). \\
+    \end{split}
+  \end{gather*}
+
+  Substituting in gives:
 
   \begin{gather*}
     \begin{split}
       \d{\log{\V(t)}} 
-      &= \frac{\d{\V(t)}}{\V(t)} 
-          - \frac{1}{2} \d{ \langle \log{\V} \rangle_{t} } \\
-      &= \left(
-          b_{\pi}(t)\d{t} + 
-              \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) dW_{\nu}(t)
-          \right)
-          - \frac{1}{2} \d{ \langle \log{\V} \rangle_{t} } \\
-      &= \left(
-          b_{\pi}(t)\d{t} + 
-              \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) dW_{\nu}(t)
-          \right)
-          - \frac{1}{2} \sum_{\nu=1}^{d}(\sigma_{\pi\mu})^2\d{t} \\
-      &= \left(
-              b_{\pi}(t)
-              - \frac{1}{2} \sum_{\nu=1}^{d}(\sigma_{\pi\mu})^2 
-          \right) \d{t} +
-          \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) dW_{\nu}(t) \\
-      &= \gamma_{\pi}\d{t} + \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) dW_{\nu}(t) \\
-    \end{split}
+        & =
+            \sum_{i=1}^{n} \pi_{i}(t) \left( 
+                \gamma_{i}(t)\d{t} + \frac{1}{2}a_{ii}(t) 
+            \right)\d{t}
+          - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t)a_{ij}(t)\pi_{j}(t)\d{t}
+          + \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} \\
+        & =
+            \sum_{i=1}^{n} \pi_{i}(t)\gamma_{i}(t)\d{t} +
+                \frac{1}{2} \sum_{i=1}^{n} \pi_{i}(t)a_{ii}(t) \d{t}
+                - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t)a_{ij}(t)\pi_{j}(t)\d{t}
+          + \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} \\
+         & =
+          \left(
+            \sum_{i=1}^{n} \pi_{i}(t)\gamma_{i}(t) +
+            \frac{1}{2}
+              \left(
+                \sum_{i=1}^{n} \pi_{i}(t)a_{ii}(t) -
+                \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t)a_{ij}(t)\pi_{j}(t)
+              \right) 
+          \right)\d{t} +
+          \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} \\
+         & =
+          \left(
+            \sum_{i=1}^{n} \pi_{i}(t)\gamma_{i}(t) +
+            \gamma_{\pi}^{*}(t)
+          \right)\d{t} +
+          \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} \\
+         &=
+          \gamma_{\pi}(t) \d{t} +
+          \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)}.
+   \end{split}
   \end{gather*}
 
 \end{proof}
@@ -967,7 +1048,7 @@ and is positive unless the portfolio consists of a single stock.
 \begin{proof}
   We start by recalling the definitions of the following processes over the last
   few sections, specifically the portfolio growth rate $\gamma_{\pi}(\cdot)$
-  (\ref{eq:portfoliogrowthrate} and the volatility of the wealth process of a
+  (\ref{eq:portfoliogrowthrate}) and the volatility of the wealth process of a
   portfolio $\sigma_{\pi\nu}(\cdot)$ (\ref{eq:wealthprocessvolatility}), 
   
   \begin{equation}
@@ -1409,9 +1490,9 @@ strategies, both in a \textit{strong arbitrage} and \textit{weak arbitrage}
 form.
 
 \begin{defn}
-  Let $h(\centerdot)$ and $k(\centerdot)$ be trading strategies. Then
-  $h(\centerdot)$ is called a \textbf{relative arbitrage} (RA) over
-  $[0,T]$ with respect to $k(\centerdot)$ is their associated wealth
+  Let $h(\cdot)$ and $k(\cdot)$ be trading strategies. Then
+  $h(\cdot)$ is called a \textbf{relative arbitrage} (RA) over
+  $[0,T]$ with respect to $k(\cdot)$ is their associated wealth
   processes satisfy
 
   \begin{equation}
@@ -1498,7 +1579,7 @@ generalisation of the diversity-weighted portfolios we will introduce later.
   $\G\in\mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the
   portfolio $\pi(\cdot)$ if $\G{\cdot}$ is such that $x\to
   x_{i}D_{i}\log\G(x)$ is bounded on $U$, and if there exists a
-  measurable, adapted process $\mathfrak{g}(\centerdot)$ such that 
+  measurable, adapted process $\mathfrak{g}(\cdot)$ such that 
 
   \begin{equation}
     \d{ \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) } = 
@@ -1803,7 +1884,7 @@ actual equity markets satisfy both conditions.
 
 \begin{defn}
 The \textbf{Diversity-Weighted Portfolio (DWP) }with parameter $p\in\mathbb{R}$
-is defined in terms of the market portfolio $\mu(\centerdot)$ (\ref{def:marketportfolio})
+is defined in terms of the market portfolio $\mu(\cdot)$ (\ref{def:marketportfolio})
 by
 \begin{equation}
 \pi_{i}^{(p)}(t)\triangleq\frac{\left(\mu_{i}(t)\right)^{p}}{\sum_{j=1}^{n}\left(\mu_{j}(t)\right)^{p}},\;\;\;i=1,...,n.\label{eq:DWP}
@@ -1872,6 +1953,7 @@ Gross Return, Net Return and Sharpe Ratio are given.
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \printbibliography
 
 \end{document}
