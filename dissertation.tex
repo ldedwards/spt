@@ -613,37 +613,6 @@ more natural when considering long-term behaviour (see e.g.
 
 \end{proof}
 
-The following lemma is given by Fernholz \cite{fernholz2009}
-as a justification for the process $\gamma_{i}(\cdot)$ being called the
-\textit{growth rate}.
-
-\begin{lem} [{\cite[Equation 1.6]{fernholz2009}} Relationship between growth
-rate and price of stock]
-  \label{lem:stockgrowthrate}
-
-  For a given stock $X_{i}(\cdot)$ for $\rangei$, we have
-
-  \begin{equation}
-    \lim_{T \to \infty} 
-      \left( 
-      \log{X_{i}(T)} - \int_{0}^{T} \gamma_{i}(t)\d{t} 
-      \right) = 0
-    \quad \almostsurely.
-  \end{equation}
-
-  Which is valid when the individual stock variances $a_{ii}(\cdot)$ do not
-  increase too quickly, i.e. if we have 
-
-  \begin{equation*}
-    \lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii}(t) \d{t} \right)
-    \quad \almostsurely.
-  \end{equation*}
-
-  We leave the proof of this until later, as it can be proved as the special case
-  of a portfolio with a single stock. See also Corollary 2.2 of \cite{fernholz1999pgf}.
-
-\end{lem}
-
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Investment Strategies and Portfolios}
@@ -731,10 +700,6 @@ takes that results in an allocation of capital to assets in the market.
 Consider the wealth process $\V(\cdot)$ of a portfolio $\pi(\cdot)$, then by
 definition, the weights $h_{i}(\cdot)$ of the trading strategy corresponding to
 the portfolio are related as follows:
-%o is related to a strategy by noting the relationship between the
-%process $h_{i}(\cdot)$, representing the amount invested in each stock, and the
-%portfolio weights process $\pi_{i}(\cdot)$ which represent the proportion of
-%total wealth invested in stock, by the relationship
 
 \begin{gather}
   \begin{split}
@@ -1007,92 +972,18 @@ to diversification. It was proved in \cite{fernholz1999diversity} that for
 portfolios with non-negative weights, the excess growth rate is non-negative,
 and is positive unless the portfolio consists of a single stock.
 
-\begin{lem} [
-  {\cite[Equation 1.14]{fernholz2009}}
-  Growth Rate of Portfolio]
-  \label{thm:growthrateofportfolio}
-
-  The justification for the naming of $\gamma_{\pi}(\cdot)$ as the \textit{growth rate} is because of the following property
-
-  \begin{equation*}
-    \lim_{T \to \infty} 
-      \left( 
-      \log{V^{w,\pi}(T)} - \int_{0}^{T} \gamma_{\pi}(t)\d{t} 
-      \right) = 0
-    \quad \almostsurely
-  \end{equation*}
-
-  which is valid under the condition
-
-  \begin{equation*}
-    \lim_{T \to \infty}
-      \left(
-        \frac{\log \log T}{T^2} \int_{0}^{T} \norm{ a(t) } \d{t}
-      \right) = 0,
-  % \quad \almostsurely.
-  \end{equation*}
-
-\end{lem}
-
-\begin{proof}
-  From (\ref{eq:solutionofarithmeticreturnofportfoliodiff}) and from the
-  definition of $\sigma_{\pi\nu}(t)$ (\ref{eq:wealthprocessvolatility}) 
-  we have
-
-  \begin{gather*}
-    \begin{split}
-    \d\log{\V(t)} 
-      &= \gamma_{\pi}(t) \d{t} +
-         \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} \\
-      &= \gamma_{\pi}(t) \d{t} +
-         \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t)\d{W_{\nu}(t)},
-    \end{split}
-  \end{gather*}
-
-  which can be written in integral form as
-
-  \begin{gather*}
-    \begin{split}
-    \log{\V(t)} 
-      &= \V(0) + \int_{0}^{t} \gamma_{\pi}(t) \d{t} +
-         \int_{0}^{t} \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(s) \sigma_{i\nu}(s)\d{W_{\nu}(s)}
-    \end{split}
-  \end{gather*}
-
-  Let
-
-  \begin{gather*}
-    \begin{split}
-      \sigma_{\pi\pi}(t) \defeq \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(s)a_{ij}(s)\pi_{j}(s)
-    \end{split}
-  \end{gather*}
-
-  and
-
-   \begin{gather*}
-    \begin{split}
-      v(t) \defeq \int_{0}^{t} \sigma_{\pi\pi} \d{s}
-    \end{split}
-  \end{gather*}
-
-  then, from the definition of the portfolio weights $\pi(\cdot)$ (Definition
-\ref{def:portfolio}), $\sum_{i=1}^{n} \pi_{i}(t) = 1$, and $\pi$ is bounded on $[0,
-\infty) \times \Omega$, so 
-
-   \begin{gather*}
-    \begin{split}
-      n^{-1} \le \| \pi(t) \|^{2}  \le N, \quad \ranget
-    \end{split}
-  \end{gather*}
-
-
-\end{proof}
-
-\begin{prop}
+\begin{prop} 
+  [
+    {\cite[Equation 1.15]{fernholz2009}}
+    Portfolio Wealth Process
+  ]
   \label{prop:dlogV}
 
+  Let $\V(\cdot)$ be the wealth process of a portfolio $\pi(\cdot)$ in market
+  $\market$, then the wealth process satisfies the stochastic differential equation
+
   \begin{equation}
-      \d{\log V^{\pi}(t)} = \gamma_{\pi}^{*}(t)\d{t} + \sum_{i=1}^{n} \pi_{i}(t) \d{\log{X_{i}(t)}}.
+      \d{\log \V(t)} = \gamma_{\pi}^{*}(t)\d{t} + \sum_{i=1}^{n} \pi_{i}(t) \d{\log{X_{i}(t)}}.
   \end{equation}
 
 \end{prop}
@@ -1387,29 +1278,11 @@ Where we define
       a_{\pi \pi}(t) \defeq \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) \pi_{j}(t) a_{ij}(t).
   \end{equation}
 
-
-\begin{lem} [Covariance Process]
-
-The covariance process $\tau_{ij}^{\pi}$ of the stocks relative to the portfolio $\pi(\cdot)$ 
-can be writted as
-
-\begin{equation}
-  \label{eq:tau}
-  \tau_{ij}^{\pi}(t) = 
-    \frac{ \d{\langle \mu_{i}, \mu_{j} \rangle}(t)}{ \mu_{i} \mu_{j}}\d{t},
-    \quad 1 \le i,j \le n.
-\end{equation}
-
-\end{lem}
-
-\begin{proof}
-% TODO: Prove Covariance Process
-\end{proof}
-
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Relative Return}
 
+% TODO rewrite this introduction
 We have now defined the core features of SPT, namely the constituent stocks and
 portfolios. So we can now turn our attention to the how the relative performance of
 two portfolio under our market model evolve.
@@ -1541,7 +1414,9 @@ The theory examines \textit{relative arbitrage} relationships between investment
 strategies, both in a \textit{strong arbitrage} and \textit{weak arbitrage}
 form.
 
-\begin{defn}
+\begin{defn} [Relative Arbitrage]
+  \label{def:defstrongrelativearbitrage}
+
   Let $h(\cdot)$ and $k(\cdot)$ be trading strategies. Then
   $h(\cdot)$ is called a \textbf{relative arbitrage} (RA) over
   $[0,T]$ with respect to $k(\cdot)$ is their associated wealth
@@ -1552,7 +1427,9 @@ form.
   \end{equation}
 \end{defn}
 
-\begin{defn}
+\begin{defn} [Strong Relative Arbitrage]
+  \label{def:defstrongrelativearbitrage}
+
   A \textbf{strong relative arbitrage} has the following stronger inequality
   \begin{equation}
     \mathbb{P}(V^{h}(T)>V^{k}(T))=1.
@@ -1614,14 +1491,46 @@ following property
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Functionally Generated Portfolios}
 
-% TODO: Add more details to intro to FGP
-Functionally generated portfolios were introduced in \cite{fernholz1999pgf} as a
-generalisation of the diversity-weighted portfolios we will introduce later.
+Functionally generated portfolios were used by Fernholz
+\cite{fernholz1999diversity} to study market diversity and to establish
+conditions under which arbitrage will exist in markets. In
+\cite{fernholz1999pgf}, Fernholz presented a general discussion of these
+portfolios and the mathematical functions which generate them. The returns on
+these portfolios were shown to be related to the return on the market portfolio
+by a stochastic differential equation. Under appropriate conditions, this
+equation can be used to establish a dominance, or relative arbitrage
+relationship between a functionally generated portfolio and the market
+portfolio.
+
+In addition to being used for studying theoretical questions such as market
+diversity and arbitrage, these portfolios have been used for actual equity
+investments. An institutional investment product based on a functionally
+generated portfolio of the stocks in the S&P 500 Index was introduced in 1996 by
+Intech (now part of Janus Capital). The theory has also been used by Fernholz
+\cite{fernholz1999diversity} to investigate the well known size factor, the
+historical tendancy of smaller stocks to have higher returns than larger stocks.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Generating Function}
 
-% Add more details to intro to Generating Functions
+In this section we shall show that certain real-valued functions of the market
+weights can be used to generate portfolios, we introduce in this section the
+properties of these functions and the portfolios they generate. 
+
+SPT deals with a number of different types of portfolio generating functions
+that mostly fall into two categories: smooth functions of the market weights, 
+and smooth functions of the ranked market weights. 
+
+Those portfolio generating functions that are smooth functions of the market
+weights can be used to create portfolios with returns that satisfy almost sure
+relationships relative to the market portfolio, and, hence, can be applied to
+situations in which arbitrage might be possible. Those functions that are smooth
+functions of the ranked market weights can be used to analyze the role of
+company size in portfolio behaviour.
+
+We restrict our investigation to generating functions that are smooth functions
+of the market weights, as these are used to generate diversity-weighted
+portfolios that we investigate in later sections.
 
 \newcommand{\G}[1]{\mathbf{G}(#1)}
 \newcommand{\Gmu}{\G{\mu(t)}}
@@ -1631,21 +1540,24 @@ generalisation of the diversity-weighted portfolios we will introduce later.
   \label{def:generatingfunction}
 
   Let $U \subset \triangle^{n}$ be a given open set, then the function
-  $\G\in\mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the
+  $\G{\cdot} \in \mathcal{C}^{2}(U,(0,\infty))$ is a generating function for the
   portfolio $\pi(\cdot)$ if $\G{\cdot}$ is such that $x\to
-  x_{i}D_{i}\log\G(x)$ is bounded on $U$, and if there exists a
+  x_{i}D_{i}\log\G{x}$ is bounded on $U$, and if there exists a
   measurable, adapted process $\mathfrak{g}(\cdot)$ such that 
 
   \begin{equation}
     \d{ \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) } = 
     \d{\log{\Gmu}} + \g 
     \quad \ranget
-    \quad \almostsurely
+    \quad \almostsurely.
   \end{equation}
 
 \end{defn}
 
-\begin{prop} 
+\begin{prop} [
+  {\cite[Proposition 2.3.2]{vervuurt2015}}
+  Weights of portfolio generated by portfolio generating function
+  ]
   \label{prop:generatingfunction}
 
   Let a function $\G{}$ as in Definition \ref{def:generatingfunction}
@@ -1879,8 +1791,6 @@ equation (\ref{eq:masterstep1}) as
         \mu_{i}(t) \mu_{j}(t)
         \tau_{ij}^{\mu}(t)
   \end{equation}
- 
-%TODO: Complete proof of Master Equation
 
 \end{proof}
 
@@ -1895,105 +1805,166 @@ suitable generating function $\G$, by noting that the first term on the RHS of
 processes only appear in the drift process $\g$, and the drift processes do not
 appear at all in (\ref{eq:masterequation}).
 
+In the paper \cite{pal2016geometry} it is proven that for the class of
+portfolios that depend only on the current market capitalisations, then a slight
+generalisation of functionally generated portfolios is the only class that can
+lead to a relative arbitrage.
+
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Diverse Models}
 
-An equity market is called \textit{diverse}
-if no single stock is ever allowed to dominate the entire market in
-terms of relative capitalization. Fernholz \cite{fernholz2005relative} shows
-that diversity is possible to achieve, but delicate and also show
-that weakly-diverse markets contain relative arbitrage opportunities.
-Fernholz (\cite{fernholz2002}) shows how to generate fully-invested,
-long-only portfolios that outperform a diverse market over sufficiently
-long time-horizons and how to exploit this property for passive asset
-management.
+We now turn our attention to a consequence of the theory that has preceded this
+section, by looking at diverse models. These are portfolios generated by a
+generating function (Definition \ref{def:generatingfunction}), which can be
+shown using the master equation (Lemma \ref{lem:masterequationlemma}) to
+generate a relative arbitrage over the market portfolio.
 
-The following notions of diversity were introduced in the paper by
-Fernholz \cite{fernholz1999diversity} and studied in detail in
-\cite{fernholz2002}.
+\subsection{Diversity}
 
-\begin{defn}
-  \label{def:defnD}We call a market model \textbf{$\mathcal{M}$ diverse
-  }on $[0,T]$ if 
+An equity market is called \textit{diverse} if no single stock is ever allowed
+to dominate the entire market in terms of relative capitalization. In this
+section we give a formal definition of market diversity and then characterize
+market diversity in terms of the excess growth rate.
+
+\begin{defn} 
+  [
+    {\cite[Definition 3.2]{fernholz1999diversity}}
+    Diversity Condition
+  ]
+  \label{def:defnD}
+
+  A market $\market$ is diverse on $[0,T]$ if the largest weight in the market
+  portfolio (denoted $\mu_{max}(t)$) never accounts for the entire market
+  capitalisation. More formally for some $\delta\in(0,1)$ such that
+
   \begin{equation}
-    \exists\delta\in(0,1)\text{ such that }
-      \mu_{max}(t)<1-\delta
+    \label{eq:eqD}
+      \mu_{max}(t) < 1 - \delta
     \quad \ranget,
-    \quad \almostsurely
+    \quad \almostsurely.
   \end{equation}
 
-  where $\mu_{max}(t)$ represents the value of the largest markets
-  weights at a given time. 
 \end{defn}
 
 \begin{defn}
-  A market model\textbf{ $\mathcal{M}$} is called \textbf{weakly diverse}
-  on $[0,T]$ if 
+  [
+    {\cite[Equation 5.2]{fernholz2009}}
+    Weak Diversity Condition
+  ]
+  A market $\market$ is called weakly diverse on $[0,T]$ if the diversity
+  condition (Definition \ref{def:defnD}) holds on average. More formally 
+  we say if for some $\delta\in(0,1)$ we have
+
   \begin{equation}
-    \exists\delta\in(0,1)\text{ such that }\frac{1}{T}\int_{0}^{T}\mu_{max}(t)<1-\delta\;\;\;\forall t\in[0,T],\;\;\text{a.s.}
+    \label{eq:eqWD}
+      \frac{1}{T}\int_{0}^{T}\mu_{max}(t) < 1-\delta
+      \quad \forall t\in[0,T],
+      \quad \almostsurely.
   \end{equation}
 \end{defn}
 
-The diversity condition asserts that no single company's
-capitalization can take up more than a certain proportion of the entire
-market, and is weakly diverse if this holds on average over history.
-These are fairly weak empirical requirements, as it is clear that
-actual equity markets satisfy both conditions.
+The diversity condition (\ref{eq:eqD}) asserts that a market is diverse if no
+single company's capitalization can take up more than a certain proportion of
+the entire market, and is weakly diverse (\ref{eq:eqWD}) if the diversity
+condition holds on average over history. These are fairly weak empirical
+requirements, and are observable. They have been shown to be broadly consistent
+ with the actual behavior of equity markets in developed markets, especially 
+in the presence of antitrust and competition laws.
 
-\begin{defn}
-The \textbf{Diversity-Weighted Portfolio (DWP) }with parameter $p\in\mathbb{R}$
-is defined in terms of the market portfolio $\mu(\cdot)$ (\ref{def:marketportfolio})
-by
-\begin{equation}
-\pi_{i}^{(p)}(t)\triangleq\frac{\left(\mu_{i}(t)\right)^{p}}{\sum_{j=1}^{n}\left(\mu_{j}(t)\right)^{p}},\;\;\;i=1,...,n.\label{eq:DWP}
-\end{equation}
+We introduce a proposition from \cite{fernholz1999diversity} that relates the
+excess growth rate of the market to diversity, which can be shown to preclude
+diversity if all stocks in the market have the same {\cite[Corollary
+3.1]{fernholz1999diversity}} or constant {\cite[Corollary
+3.2]{fernholz1999diversity}}.
 
-The portfolio is generated by the generating function
-\begin{equation}
-\mathbf{G}_{p}:x\to\left(\sum_{i=1}^{n}x_{i}^{p}\right)^{\frac{1}{p}}.
-\end{equation}
+\begin{prop}
+[
+  {\cite[Proposition 3.1]{fernholz1999diversity}}
+  Excess growth rate and diversity
+]
+  A market $\market$ is diverse if and only if there is a $\delta > 0$ such that
 
-Where the master equation from Lemma \ref{lem:masterequation} for the DWP
-is
-\begin{equation}
-\log\left(\frac{V^{\pi^{(p)}}(T)}{V^{\mu}(T)}\right)=\log\left(\frac{\mathbf{G}_{p}(\mu(T))}{\mathbf{G}_{p}(\mu(0))}\right)+(1-p)\int_{0}^{T}\gamma_{\pi^{(p)}}^{*}dt\;\;\text{a.s.}
-\end{equation}
-\end{defn}
-Fernholz et al. \cite{fernholz2005} showed that for markets satisfying
-the diverse (D) property (\ref{def:defnD}) showed that the diversity
-weighted portfolio (\ref{eq:DWP}) outperforms the market portfolio
-$\mu(\cdot)$ strongly, in markets satisfying (\ref{def:ND}) and
-(\ref{def:defnD}), for any $p\in(0,1)$, and over time-horizons $[0,T]$
-with
-\begin{equation}
-T>\frac{2\log n}{\epsilon\delta p}.
-\end{equation}
+  \begin{equation}
+      \gamma^{*}(t) \ge \delta
+      \quad \ranget,
+      \quad \almostsurely.
+  \end{equation}
 
-\begin{defn}
-\label{def:NF}We define the \textbf{No-failure (NF) }condition as
-follows
-\begin{equation}
-\exists\varphi\in(0,\frac{1}{n})\text{ such that }P\left(\mu_{(n)}(t)>\varphi,\;\forall t\in[0,T]\right)=1
-\end{equation}
-
-Vervuurt \cite{vervuurt2015} showed that a similar relative arbitrage
-holds for the diversity-weighted portfolio with negative parameter
-$p$ (see Theorem 1\cite{vervuurt2015}), in markets with the no-failure
-(NF) condition (\ref{def:NF}), with diversity parameter $\delta=(n-1)\varphi$.
-\end{defn}
-%
+\end{prop}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Relative Arbitrage over Long Horizons}
+\subsection{Diversity-Weighted Portfolio (DWP)}
 
-% TODO: Whole section - Relative Arbitrage over Long Horizons
+Fernholz \cite{fernholz1999diversity} and \cite{fernholz2009} show that if the
+model $\market$ of (\ref{eq:marketmodel}) is weakly diverse over the
+time-interval $[0,T]$, and if the strong nondegeneracy condition
+(\ref{eq:strongnondegeneracy}) holds, then $\market$ contains arbitrage
+opportunities relative to the market portfolio, at least for sufficiently long
+time horizons $T \in (0,\infty)$. They provide an example of a portfolio, called
+the diversity-weighted portfolio (DWP) that can be show to provide such relative
+arbitrages over the market portfolio.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Relative Arbitrage over Short Horizons}
+The diversity-weighted portfolio $\pi^{(p)}(\cdot)$, is a functionally generated
+portfolio with arbitrary parameter $p\in\mathbb{R}$ whose weights are defined 
+in terms of the market portfolio $\mu(\cdot)$ (\ref{def:marketportfolio}) by
 
-% TODO: Whole section - Relative Arbitrage over Short Horizons
+\begin{equation}
+ \label{eq:DWP}
+ \pi_{i}^{(p)}(t) \triangleq 
+      \frac{ \left(\mu_{i}(t)\right)^{p} }
+           {\sum_{j=1}^{n}\left(\mu_{j}(t)\right)^{p}},
+   \quad i=1,...,n.
+\end{equation}
 
+\newcommand{\Gp}[1]{\mathbf{G}_{p}(#1)}
+
+Fernholz \cite[Equation 7.3]{fernholz2009} shows that the portfolio
+$\pi^{(p)}(\cdot)$ is generated by the $\matchcal{C}^2$, symettric, concave
+function $\Gp{x}$, which can be interpreted as a \textit{measure of diversity}
+
+\begin{equation}
+  \label{eq:eqDWPG}
+  \Gp{x}:x\to\left(\sum_{i=1}^{n}x_{i}^{p}\right)^{\frac{1}{p}}
+  \quad
+\end{equation}
+
+In definition of $\Gp{x}$, symmetry ensures that all stocks are treated in the
+same manner, and the concavity implies that transferring capital from a larger
+company to a smaller one will increase the measure. Thus it meets Fernholz's definition
+of a \textit{measure of diversity} \cite[Definition 4.3]{fernholz1999pgf}.
+
+An application of Itos lemma to (\ref{eq:eqDWPG}) leads to the expression
+
+\begin{equation}
+  \log \left( \frac{V^{\pi^{(p)}}(T)}{V^{\mu}(T)} \right) = 
+  \log \left( \frac{\Gp{\mu(T)}}{\Gp{\mu(0)}} \right) + 
+    (1-p)\int_{0}^{T}\gamma_{\pi^{(p)}}^{*}\d{t},
+  \quad \almostsurely
+\end{equation}
+
+for the wealth $V^{\pi^{(p)}}(\cdot)$ of the diversity-weighted portfolio
+$\pi^{(p)}$ of (\ref{eq:DWP}).
+
+The bounds of the function (\ref{eq:eqDWPG}), where minimum diversity occurs when the
+entire market is concentrated in one stock, and maximum diversity when all
+stocks have the same capitalization, are
+
+\begin{equation}
+  1 = \sum_{i=1}^{n} \mu_{i}(t) \le \sum_{i=1}^{n} (\mu_{i}(t))^p
+    = \left( \Gp{\mu(t)} \right)^p \le n^{1-p},
+\end{equation}
+
+so therefore
+
+\begin{equation}
+  \log \left( \frac{\Gp{\mu(T)}}{\Gp{\mu(0)}} \right) \ge 
+      - \frac{1-p}{p} \log{n}. 
+\end{equation}
+
+This shows therefore that $\frac{V^{\pi^{(p)}}(\cdot)}{V^{\mu}(\cdot)}$ is
+bounded from below by the constant $m^{1-(1-p)/p}$, so that the requirement of
+relative arbitrage (Definition \ref{def:defstrongrelativearbitrage}) is met.
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Empirical Analysis}
@@ -2009,6 +1980,14 @@ of the index, the weight of the equity is set to zero in the portfolios.
 
 The returns are corrected for stock splits and other corporate actions such as
 dividends and buybacks.
+
+\subsection{Diversity}
+
+In Figure 1 we see the cumulative changes in the diversity of the Eurostoxx 600
+index over the period 2014-2017, as measured by $\Gp{\cdot}$ with $p=0.5$,
+normalised so the average over the whole range is 0.
+
+% TODO: periods of diversity corresponding to major market events?
 
 \subsection{Simple Return Analysis}
 
