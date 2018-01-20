@@ -391,9 +391,9 @@ dF(t, & X(t))=\frac{\partial F}{\partial t}(t,x)dt+\frac{\partial F}{\partial x}
 
   \begin{gather}
     \begin{split}
-    \d{Y(t)} &= F_{t}(t, X(t))\d{t} + F_{x_{i}}(t,X(t)) \alpha_{i}(t)\d{t} \\
-             & + F_{x_{i}}(t,X(t)) \sum_{j=1}^n \beta_{ij}(t)\d{W_{j}(t)} \\
-             & + \frac{1}{2} \sum_{\nu=1}^d \sum_{j=1}^n F_{x_{i}x_{j}}(t,X(t))
+    \d{Y(t)} &= F_{t}(t, X(t))\d{t} + F_{x}(t,X(t)) \alpha_{i}(t)\d{t} \\
+             & + F_{x}(t,X(t)) \beta_{ij}(t)\d{W_{j}(t)} \\
+             & + \frac{1}{2} \sum_{\nu=1}^d F_{xx}(t,X(t))
                 \beta_{i\nu}(t) \beta_{j\nu}(t)\d{t},\\
     \end{split}
   \end{gather}
@@ -496,10 +496,36 @@ where the first ratio defined as
 
 is referred to as the \textit{instantaneous} return on the stock.
 
-%This very general setting admits a rich class of continuous-path Ito processes,
-%with very general distributions: in particular, no Markovian or Gaussian
-%assumption is imposed. The model has been extended to very general
-%semimartingale settings; see \cite{kardaras2003} for example.
+We now introduce the formal definition of a market (\market) by 
+
+\begin{defn} 
+[
+  {\cite[Definition 2.2]{fernholz1999pgf}}
+]
+\label{def:market}
+
+A market is a family $\market = \{X_{i},\dots,X_{n}\}$ of stocks, defined as in
+(\ref{eq:marketmodel}), for which there is a number $\epsilon>0$ such that
+
+\begin{equation}
+  \label{eq:strongnondegeneracy}
+  x \sigma(t) x^{T} \ge \epsilon \|x\|^{2}, 
+  \quad x \in \mathbf{R}^{n}, 
+  \quad \ranget,
+  \quad \almostsurely.
+\end{equation}
+
+Here, $\sigma(t) = \{\sigma_{i\nu}(t)\}$ where $\rangei$ and $\nu=1,\dots,d$ is the
+covariance matrix defined in (\ref{eq:marketmodel}) and $T$ denotes
+transposition.
+
+\end{defn}
+
+The \textit{strong nondegeneracy} condition (\ref{eq:strongnondegeneracy}) is a 
+common condition regarding market volatility, sometimes known as \textit{strict
+nondegeneracy}, and can be found, for example, in \cite{shreve1991}. It 
+expresses the requirement that the eigenvalues of the market covariation 
+matrix be bounded away from zero. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Stocks}
@@ -516,54 +542,9 @@ particularly in the case of certain stock portfolios
 more natural when considering long-term behaviour (see e.g.
 \cite{fernholz1982}).
 
-\begin{lem} [Quadratic Variation of Logarithmic Stock Price Process]
-
-  Let $X_{i}(\cdot)$ be a stock prices process then the quadratic variation of
-  $\log{X_{i}(\cdot)}$ satisfies
-
-  \begin{equation} 
-    \d{\langle \log{X_{i}} \rangle_{t}} = 
-        \sum_{\nu=1}^{d} \sigma_{i\nu}^2\d{t}, 
-    \quad \ranget, 
-    \quad \rangei, 
-    \quad \almostsurely.
-  \end{equation} 
-
-\end{lem}
-
-\begin{proof} 
-
-Recalling quadric variation of an Ito process, then for $\rangei$
-
-  \begin{gather} 
-    \begin{split} 
-      \label{eq:quadraticvariationlogX} 
-          \langle \log{X_{i}} \rangle_{t} 
-& = \left< \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\ 
-& = \left< \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\ 
-& = \sum_{\nu=1}^{d} \left< \int_{0}^{t} \sigma_{i\nu}(s) \d{W_{\nu}(s)} \right>_{t} \\ 
-& = \sum_{\nu=1}^{d} \int_{0}^{t} \sigma_{i\nu}^{2}(s) \d{\langle W_{\nu}(s) \rangle} \\
-& = \int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{i\nu}^{2}(s) \d{s}. 
-    \end{split}
-  \end{gather}
-  
-  Then from (\ref{eq:quadraticvariationlogX}) we have
-  
-  \begin{gather} 
-    \begin{split} 
-      \d{\langle \log{X} \rangle_{t}} 
-& =\d{\left<\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}(s) \d{W_{\nu}(s)}\right>_{t}} \\ 
-& = \d{\left(\int_{0}^{t} \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(s) \d{s}\right)} \\ & = \sum_{\nu=1}^{d} \sigma_{\nu}^{2}(t)\d{t}.
-    \end{split} 
-  \end{gather}
-
-\end{proof}
-
-Using this result we can now formulate the stock price process in logarithmic
-format.
-
-\begin{prop} [Logarithmic Representation of Stock Price Process]
-%  \cite{fernholz1999pgf}
+\begin{prop} [
+  {\cite[Equation 1.5]{fernholz2009}} 
+  Logarithmic Representation of Stock Price Process]
   \label{thm:logarithmicrepresentation}
 
   Let $X_{i}(\cdot)$ be stock price processes as defined under market $\market$,
@@ -600,36 +581,47 @@ format.
 \begin{proof}
 
   We use the multidimensional Ito's lemma with $F(t,x)=\log\{x\}$ for each stock
-independently, therefore we obtain that, for each $\rangei$,
+  independently, therefore we obtain that, for each $\rangei$,
 
   \begin{equation}
     F_{t}=0, \quad F_{x_{i}}=\frac{1}{x_{i}}, \quad 
     F_{x_{i}x_{i}}=-\frac{1}{x^2}, \quad F_{x_{i}x_{j}}=0, i \neq j.
   \end{equation}
 
-  Then, using $\alpha=X_{i}(t)b_{i}(t)$ and $\beta=X_{i}(t)\sigma_{i\nu}$, from (\ref{eq:marketmodel}) we get
+  Then, using $\alpha=X_{i}(t)b_{i}(t)$ and $\beta=X_{i}(t)\sigma_{i\nu}(t)$, 
+  from (\ref{eq:marketmodel}) we get
 
   \begin{gather}
     \begin{split}
     \d{\log{X_{i}(t)}} 
-        &= \frac{1}{X_{i}(t)} X_{i}(t)b_{i}(t)\d{t} 
-            + \frac{1}{X_{i}(t)} \sum_{\nu=1}^d X_{i}(t)\sigma_{i\nu}(t) \d{W_{\nu}(t)} 
+        =& \frac{1}{X_{i}(t)} X_{i}(t)b_{i}(t)\d{t} 
+            + \frac{1}{X_{i}(t)} \sum_{\nu=1}^d X_{i}(t)\sigma_{i\nu}(t)\d{W_{\nu}(t)} \\ 
+        &
             + \frac{1}{2} \sum_{\nu=1}^d -\frac{1}{X_{i}^2(t)} X_{i}(t)\sigma_{i\nu}(t) X_{i}(t)\sigma_{i\nu}(t) \d{t},\\
-        &= b_{i}(t)\d{t} 
+        =& b_{i}(t)\d{t} 
             + \sum_{i\nu=1}^d \sigma_{i\nu}(t) \d{W_{\nu}(t)}
             - \frac{1}{2} \sum_{\nu=1}^d \sigma^2_{i\nu}(t) \d{t} \\
-        &= \left( b_{i}(t) - \frac{1}{2} \sum_{\nu=1}^d \sigma^2_{i\nu}(t) \right) \d{t} 
-            + \sum_{\nu=1}^d \sigma_{i\nu}(t) \d{W_{\nu}(t)}.
-    \end{split}
+        =& \left( b_{i}(t) - \frac{1}{2} \sum_{\nu=1}^d \sigma^2_{i\nu}(t) \right) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{i\nu}(t) \d{W_{\nu}(t)}\\
+        =& \left( b_{i}(t) - \frac{1}{2} \sum_{\nu=1}^d \sigma_{i\nu}(t) \sigma{i\nu} \right) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{i\nu}(t) \d{W_{\nu}(t)}\\
+        =& \left( b_{i}(t) - \frac{1}{2} \sum_{\nu=1}^d a_{ii}(t) \right) \d{t} 
+            + \sum_{\nu=1}^d \sigma_{i\nu}(t) \d{W_{\nu}(t)}.\\
+        =& \gamma_{i}(t) \d{t} + \sum_{\nu=1}^d \sigma_{i\nu}(t) \d{W_{\nu}(t)}.
+   \end{split}
   \end{gather}
-
-  Recalling the definition of $a_{ij}(t)$ and $\gamma_{i}(t)$ completes the
-  proof.
 
 \end{proof}
 
-\begin{lem} The justification for the process $\gamma_{i}(\cdot)$ being called the 
-  \textit{growth rate} is because of the following relationship
+The following lemma is given by Fernholz \cite{fernholz2009}
+as a justification for the process $\gamma_{i}(\cdot)$ being called the
+\textit{growth rate}.
+
+\begin{lem} [{\cite[Equation 1.6]{fernholz2009}} Relationship between growth
+rate and price of stock]
+  \label{lem:stockgrowthrate}
+
+  For a given stock $X_{i}(\cdot)$ for $\rangei$, we have
 
   \begin{equation}
     \lim_{T \to \infty} 
@@ -639,20 +631,20 @@ independently, therefore we obtain that, for each $\rangei$,
     \quad \almostsurely.
   \end{equation}
 
-  This is valid when the individual stock variances $a_{ii}(\cdot)$ do not
-  increase too quickly, e.g. if we have 
+  Which is valid when the individual stock variances $a_{ii}(\cdot)$ do not
+  increase too quickly, i.e. if we have 
 
   \begin{equation*}
-    \lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii} \d{t} \right)
+    \lim_{T\to\infty} \left( \frac{\log \log T}{T^2} \int_{0}^{T} a_{ii}(t) \d{t} \right)
     \quad \almostsurely.
   \end{equation*}
 
   We leave the proof of this until later, as it can be proved as the special case
-  of a portfolio with a single stock. See also Equation 1.6 of \cite{fernholz2009}
-  and Corollary 2.2 of \cite{fernholz1999pgf}.
+  of a portfolio with a single stock. See also Corollary 2.2 of \cite{fernholz1999pgf}.
 
 \end{lem}
 
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Investment Strategies and Portfolios}
 
@@ -673,9 +665,9 @@ takes that results in an allocation of capital to assets in the market.
 
   with $V^{w,h}(0)=w$ for $w > 0$. 
 
-\comment{not clear why such condition is required. This would be clear if we
- would have introduced the theorem concerning existence and uniqueness of
- solutions of SDEs in the preliminaries. }
+% TODO \comment{not clear why such condition is required. This would be clear if we
+% would have introduced the theorem concerning existence and uniqueness of
+% solutions of SDEs in the preliminaries. }
 
 % TODO: Trading Strategy Integrability Conditions - Add to Definitions - or remove for now.
 %  We also assume a trading strategy $h(\cdot)$ satisfies the integrability condition
@@ -736,33 +728,39 @@ takes that results in an allocation of capital to assets in the market.
 
 \end{defn}
 
-A portfolio is related to a strategy by noting the relationship between the
-process $h_{i}(\cdot)$, representing the amount invested in each stock, and the
-portfolio weights process $\pi_{i}(\cdot)$ which represent the proportion of
-total wealth invested in stock, by the relationship
+Consider the wealth process $\V(\cdot)$ of a portfolio $\pi(\cdot)$, then by
+definition, the weights $h_{i}(\cdot)$ of the trading strategy corresponding to
+the portfolio are related as follows:
+%o is related to a strategy by noting the relationship between the
+%process $h_{i}(\cdot)$, representing the amount invested in each stock, and the
+%portfolio weights process $\pi_{i}(\cdot)$ which represent the proportion of
+%total wealth invested in stock, by the relationship
+
+\begin{gather}
+  \begin{split}
+    V^{w,h}(t) =\sum_{i=1}^{n} h_i(t)X_{i}(t) = \sum_{i=1}^{n}
+                    \pi_{i}(t)V^{w,\pi}(t), \\
+  \end{split}
+\end{gather}
+
+Therefore
 
 \begin{gather}
   \begin{split}
     \label{eq:wealthinvestedbyportfolio}
-    h_i(t)X_{i}(t) &= \pi_{i}(t)V^{w,h}(t) \\
-    h_i(t) &= \frac{\pi_{i}(t)V^{w,h}(t)}{X_{i}(t)}, \\
-    &= \frac{\pi_{i}(t)V^{w,\pi}(t)}{X_{i}(t)},
+    h_i(t) &= \frac{\pi_{i}(t)V^{w,\pi}(t)}{X_{i}(t)},
     \quad \rangei.
   \end{split}
 \end{gather}
 
-The last equality stems from the fact that the wealth process of a portfolio
-generates the same wealth process of the strategy $h_{i}(\cdot)$, so we can 
-write $V^{w,\pi}(t)=V^{w,h}(t)$.
-
 Using this relationship, and by applying the self financing condition we can
 investigate the dynamics of the wealth process, and formulate the following
-proposition that relates the portfolio's arithmetic return
-$\frac{\d{\V(t)}}{\V(t)}$ is the "weighted average" of the weights of the
-individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
+proposition that relates the return of the portfolio $\frac{\d{\V(t)}}{\V(t)}$
+to the weighted average of the returns of the individual stocks, given by the
+portfolio weights $\pi_{i}(\cdot)$.
 
-\begin{prop} [Wealth Process of a Portfolio]
-  (See Equation 2.2 in \cite{fernholz2009})
+\begin{prop} [{\cite[Equation 2.2]{fernholz2009}} Wealth Process of a Portfolio]
+
   The wealth-process $V^{w,\pi}(\cdot)$ of a portfolio $\pi(\cdot)$
   with initial wealth $w > 0$ satisfies the stochastic differential equation
 
@@ -816,16 +814,16 @@ individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
       \frac{\d{V^{w,\pi}(t)}}{V^{w,\pi}(t)}
           & = \sum_{i=1}^{n} \pi_{i}(t) 
           \left(
-            b_{i}(t)dt + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) dW_{\nu}(t)
+            b_{i}(t)\d{t} + \sum_{\nu=1}^{d} \sigma_{i\nu}(t) \d{W_{\nu}}(t)
           \right) \\
-          & = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)dt + 
-              \sum_{i=1}^{n} \sum_{\nu=1}^{d} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
-          & = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)dt + 
-              \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
-          & = b_{\pi}(t)dt + 
-              \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) dW_{\nu}(t) \\
-          & = b_{\pi}(t)dt + 
-              \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) dW_{\nu}(t).
+          & = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)\d{t} + 
+              \sum_{i=1}^{n} \sum_{\nu=1}^{d} \pi_{i}(t) \sigma_{i\nu}(t) \d{W_{\nu}}(t) \\
+          & = \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t)\d{t} + 
+              \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) \d{W_{\nu}}(t) \\
+          & = b_{\pi}(t)\d{t} + 
+              \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) \d{W_{\nu}}(t) \\
+          & = b_{\pi}(t)\d{t} + 
+              \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}}(t).
     \end{split}
   \end{gather*}
 
@@ -834,7 +832,9 @@ individual stocks given by the portfolio weights $\pi_{i}(\cdot)$.
 Since SPT is interested in the long term behaviour of portfolios, solutions of
 (\ref{eq:arithmeticreturnofportfolio}) are of great interest. 
 
-\begin{prop} [Strong Solution of Arithmetic Return of Portfolio]
+\begin{prop} [
+  {\cite[Equation 1.10]{fernholz2009}} 
+  Strong Solution of Arithmetic Return of Portfolio]
   \label{prop:solutionofarithmeticreturnofportfolio}
 
   Let $\pi(\cdot)$ be a portfolio, then the solution of
@@ -899,10 +899,10 @@ Since SPT is interested in the long term behaviour of portfolios, solutions of
     \begin{split}
       \d{Y(t)} &= F_{t}(t, X(t))\d{t} + F_{x}(t,X(t)) \alpha(t)\d{t} 
          + F_{x}(t,X(t)) \sum_{\nu=1}^d \beta_{\nu}(t)\d{W_{\nu}(t)} \\
-         &+ \frac{1}{2} \sum_{\nu=1}^d F_{xx}(t,X(t)) \beta_{\nu}(t)^{2}(t)\d{t}. \\
+         &+ \frac{1}{2} \sum_{\nu=1}^d F_{xx}(t,X(t)) \beta_{\nu}(t)^{2}(t)\d{t} \\
      \d{\log{\V(t)}} 
          &= \VFx \Valpha \d{t} + \VFx \sum_{\nu=1}^d \Vbeta \d{W_{\nu}(t)} \\
-            &+ \frac{1}{2} \sum_{\nu=1}^d \VFxx \left( \Vbeta \right)^{2} \d{t}. \\
+            &+ \frac{1}{2} \sum_{\nu=1}^d \VFxx \left( \Vbeta \right)^{2} \d{t} \\
          &= b_{\pi}(t) \d{t} 
             + \sum_{\nu=1}^d \sigma_{\pi\nu}(t)  \d{W_{\nu}(t)} 
             - \frac{1}{2} \sum_{\nu=1}^d \left( \sigma_{\pi\nu}(t)\sigma_{\pi\nu}(t) \right) \d{t}. \\
@@ -938,13 +938,13 @@ Since SPT is interested in the long term behaviour of portfolios, solutions of
             - \frac{1}{2} \sum_{\nu=1}^{d}
                 \left( \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t) \right) 
                 \left( \sum_{j=1}^{n} \pi_{j}(t) \sigma_{j\nu}(t) \right) 
-              \d{t}. \\
+              \d{t} \\
         &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \d{t} 
             + \sum_{\nu=1}^d \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} 
             - \frac{1}{2} \left( \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) 
               \left( 
                 \sum_{\nu=1}^{d} \sigma_{i\nu}(t) \sigma_{j\nu}(t) 
-              \right) \pi_{j}(t) \d{t}. \\
+              \right) \pi_{j}(t) \right) \d{t} \\
         &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \right) \d{t} 
             + \sum_{\nu=1}^d \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} 
             - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) a_{ij}(t) \pi_{j}(t) \d{t}. \\
@@ -1007,8 +1007,10 @@ to diversification. It was proved in \cite{fernholz1999diversity} that for
 portfolios with non-negative weights, the excess growth rate is non-negative,
 and is positive unless the portfolio consists of a single stock.
 
-\begin{prop} [Growth Rate of Wealth Process]
-  \label{thm:wealthgrowthrate}
+\begin{lem} [
+  {\cite[Equation 1.14]{fernholz2009}}
+  Growth Rate of Portfolio]
+  \label{thm:growthrateofportfolio}
 
   The justification for the naming of $\gamma_{\pi}(\cdot)$ as the \textit{growth rate} is because of the following property
 
@@ -1030,13 +1032,60 @@ and is positive unless the portfolio consists of a single stock.
   % \quad \almostsurely.
   \end{equation*}
 
-\end{prop}
+\end{lem}
 
 \begin{proof}
-  See also Equation 1.14 of \cite{fernholz2009}.
-  Build on Corollary 2.2 of \cite{fernholz1999pgf}.
+  From (\ref{eq:solutionofarithmeticreturnofportfoliodiff}) and from the
+  definition of $\sigma_{\pi\nu}(t)$ (\ref{eq:wealthprocessvolatility}) 
+  we have
 
-% TODO: Proof of Growth Rate of Wealth Process
+  \begin{gather*}
+    \begin{split}
+    \d\log{\V(t)} 
+      &= \gamma_{\pi}(t) \d{t} +
+         \sum_{\nu=1}^{d} \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} \\
+      &= \gamma_{\pi}(t) \d{t} +
+         \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(t) \sigma_{i\nu}(t)\d{W_{\nu}(t)},
+    \end{split}
+  \end{gather*}
+
+  which can be written in integral form as
+
+  \begin{gather*}
+    \begin{split}
+    \log{\V(t)} 
+      &= \V(0) + \int_{0}^{t} \gamma_{\pi}(t) \d{t} +
+         \int_{0}^{t} \sum_{\nu=1}^{d} \sum_{i=1}^{n} \pi_{i}(s) \sigma_{i\nu}(s)\d{W_{\nu}(s)}
+    \end{split}
+  \end{gather*}
+
+  Let
+
+  \begin{gather*}
+    \begin{split}
+      \sigma_{\pi\pi}(t) \defeq \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(s)a_{ij}(s)\pi_{j}(s)
+    \end{split}
+  \end{gather*}
+
+  and
+
+   \begin{gather*}
+    \begin{split}
+      v(t) \defeq \int_{0}^{t} \sigma_{\pi\pi} \d{s}
+    \end{split}
+  \end{gather*}
+
+  then, from the definition of the portfolio weights $\pi(\cdot)$ (Definition
+\ref{def:portfolio}), $\sum_{i=1}^{n} \pi_{i}(t) = 1$, and $\pi$ is bounded on $[0,
+\infty) \times \Omega$, so 
+
+   \begin{gather*}
+    \begin{split}
+      n^{-1} \le \| \pi(t) \|^{2}  \le N, \quad \ranget
+    \end{split}
+  \end{gather*}
+
+
 \end{proof}
 
 \begin{prop}
