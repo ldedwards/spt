@@ -9,6 +9,7 @@
 \usepackage[T1]{fontenc} \usepackage[latin9]{inputenc} \usepackage{verbatim}
 \usepackage{amstext} \usepackage{amsthm} \usepackage{amssymb}
 \usepackage{subfiles}
+\usepackage{graphicx}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
@@ -206,7 +207,7 @@ strategies using a proprietary dataset and commercial backtesting framework to
 see how these portfolios would perform under real conditions taking into account
 trading costs and market impact.
 
-% TODO: Expand this, using this as a basis:
+% TODO: Expand introduction with details on simulation
 % We carry out an empirical study of the constructed portfolios in Section
 %6, demonstrating that our adjustments of the diversity-weighted portfolio would
 %have outperformed quite considerably the S&P 500 index, if imple- mented on the
@@ -237,7 +238,7 @@ price at time $t$, then the log-return $R(t)$ is defined as
   \quad \ranget.
 \end{equation}
 
-TODO: Add geometric vs arithmetic return
+% TODO: Definitions: Add geometric vs arithmetic return
 
 \subsection{Probability and Stochastic Processes}
 
@@ -358,7 +359,7 @@ dF(t, & X(t))=\frac{\partial F}{\partial t}(t,x)dt+\frac{\partial F}{\partial x}
 = & \left(\frac{\partial F}{\partial t}(t,x)+a(t,x)\frac{\partial F}{\partial x}(t,x)+\frac{1}{2}b^{2}(t,x)\frac{\partial^{2}F}{\partial x^{2}}(t,x)\right)dt+b(t,x)\frac{\partial F}{\partial x}(t,x)dW(t).\\
 \end{align*}
 
-% TODO: Define progressively measurable process
+% TODO: Definitions: Define progressively measurable process
 
 \begin{thm} [Multidimensional Ito formula]
 
@@ -654,6 +655,7 @@ independently, therefore we obtain that, for each $\rangei$,
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Investment Strategies and Portfolios}
 
+% TODO: Add more detail to Investment Strategies and Portfolios subsection intro 
 In this section we introduce portfolios as a process of decisions an investor
 takes that results in an allocation of capital to assets in the market.
 
@@ -674,7 +676,7 @@ takes that results in an allocation of capital to assets in the market.
  would have introduced the theorem concerning existence and uniqueness of
  solutions of SDEs in the preliminaries. }
 
-% TODO: Remove for now.
+% TODO: Trading Strategy Integrability Conditions - Add to Definitions - or remove for now.
 %  We also assume a trading strategy $h(\cdot)$ satisfies the integrability condition
 %
 %  \begin{equation*}
@@ -1033,7 +1035,7 @@ and is positive unless the portfolio consists of a single stock.
   See also Equation 1.14 of \cite{fernholz2009}.
   Build on Corollary 2.2 of \cite{fernholz1999pgf}.
 
-  TODO: Proof.
+% TODO: Proof of Growth Rate of Wealth Process
 \end{proof}
 
 \begin{prop}
@@ -1351,7 +1353,7 @@ can be writted as
 \end{lem}
 
 \begin{proof}
-TODO
+% TODO: Prove Covariance Process
 \end{proof}
 
 \newpage
@@ -1428,7 +1430,7 @@ two portfolio under our market model evolve.
         = \d{\log{ \left( \frac{ X_{i}(t) }{ \Vmu(t) } \right)}} 
   \end{equation*}
 
-TODO: Prove second equation.
+% TODO: Prove second equation: Relative Return of Two Portfolios
 %  The second 
 %
 % \begin{equation} 
@@ -1479,7 +1481,7 @@ in the market weights.
 \end{thm}
 
 \begin{proof} 
-  TODO
+%  TODO: Prove Relative Return Formula
 \end{proof}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1562,11 +1564,14 @@ following property
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Functionally Generated Portfolios}
 
+% TODO: Add more details to intro to FGP
 Functionally generated portfolios were introduced in \cite{fernholz1999pgf} as a
 generalisation of the diversity-weighted portfolios we will introduce later.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Generating Function}
+
+% Add more details to intro to Generating Functions
 
 \newcommand{\G}[1]{\mathbf{G}(#1)}
 \newcommand{\Gmu}{\G{\mu(t)}}
@@ -1644,6 +1649,8 @@ generalisation of the diversity-weighted portfolios we will introduce later.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fernholz's Master Equation}
+
+% TODO: Add more detail to intro to Master Equation
 
 \begin{lem} [Fernholz's Master Equation]
   \label{lem:masterequationlemma}
@@ -1822,6 +1829,8 @@ equation (\ref{eq:masterstep1}) as
         \mu_{i}(t) \mu_{j}(t)
         \tau_{ij}^{\mu}(t)
   \end{equation}
+ 
+%TODO: Complete proof of Master Equation
 
 \end{proof}
 
@@ -1928,32 +1937,64 @@ $p$ (see Theorem 1\cite{vervuurt2015}), in markets with the no-failure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Relative Arbitrage over Long Horizons}
 
+% TODO: Whole section - Relative Arbitrage over Long Horizons
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Relative Arbitrage over Short Horizons}
+
+% TODO: Whole section - Relative Arbitrage over Short Horizons
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Empirical Analysis}
 
-We present a simulation of DWP  on a realistic simulation platform
-with market impact cost model that has been calibrated on billions
-of dollars of trading activity on a diverse set of European stocks.
-To our knowledge this has not been done before. 
+% TODO: Add details on empirical analysis
 
-Rebalancing frequency \& turnover constraints (Fernholz gives a formula
-to estimate turnover). We also investigate various methods of controlling
-turnover (as well as holding constraints which are common in portfolio
-management).
+\includegraphics[width=350]{performance.pdf}
 
-Universe is Eurostoxx 600 and we use the historical composition as
-at each time point.
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+\begin{table}[!h]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+  & 2014 & 2015 & 2016 & 2017\\
+\midrule
+Jan & -1.1 & 0.3 & -0.3 & 0.6\\
+Feb & -2.3 & 0.0 & 1.5 & 1.5\\
+Mar & 0.7 & 0.4 & -1.0 & -0.5\\
+Apr & 0.0 & 0.5 & -0.1 & 0.7\\
+May & 0.2 & 0.1 & -0.6 & 0.5\\
+\addlinespace
+Jun & 0.8 & 1.6 & 1.0 & 1.1\\
+Jul & -1.3 & 0.6 & -0.6 & 0.7\\
+Aug & 0.1 & -1.0 & -0.2 & 0.4\\
+Sep & -0.9 & -0.4 & 0.4 & 0.5\\
+Oct & -0.8 & 0.3 & -0.9 & 0.2\\
+\addlinespace
+Nov & -0.5 & -0.1 & -0.7 & -0.8\\
+Dec & -0.1 & -2.0 & 0.8 & -0.1\\
+market & -5.2 & 0.4 & -0.8 & 4.9\\
+dwp.m1.0.1 & -4.4 & 1.6 & 1.2 & 4.9\\
+dwp.m0.7.0.1 & -4.4 & 1.4 & 1.1 & 4.9\\
+\addlinespace
+dwp.m0.4.0.1 & -4.4 & 1.2 & 0.9 & 4.9\\
+dwp.m0.2.0.1 & -4.4 & 1.1 & 0.7 & 5.0\\
+dwp.0.4.0.1 & -4.7 & 0.6 & 0.0 & 5.0\\
+dwp.0.7.0.1 & -4.9 & 0.5 & -0.4 & 5.0\\
+dwp.1.0.1 & -5.2 & 0.4 & -0.8 & 4.9\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Gross Return, Net Return and Sharpe Ratio are given.
+
 
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%TODO: Get Bibliography Working
+%TODO: Ensure all references are working correctly
+%TODO: Ensure formatting matches submission format
 \printbibliography
 
 \end{document}
