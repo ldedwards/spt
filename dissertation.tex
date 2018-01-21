@@ -672,20 +672,15 @@ takes that results in an allocation of capital to assets in the market.
 
   with $V^{w,h}(0)=w$ for $w > 0$. 
 
-% TODO \comment{not clear why such condition is required. This would be clear if we
-% would have introduced the theorem concerning existence and uniqueness of
-% solutions of SDEs in the preliminaries. }
+  We also assume a trading strategy $h(\cdot)$ satisfies the integrability condition
 
-% TODO: Trading Strategy Integrability Conditions - Add to Definitions - or remove for now.
-%  We also assume a trading strategy $h(\cdot)$ satisfies the integrability condition
-%
-%  \begin{equation*}
-%    \sum_{i=1}^{n} \int_{0}^{T} 
-%    \left(
-%    \abs{(h_{i}(t)b_{i}(t)} + h_{i}^2(t)a_{ii}(t)
-%      \right) \d{t} < \infty
-%    \quad \almostsurely.
-%  \end{equation*}
+  \begin{equation*}
+    \sum_{i=1}^{n} \int_{0}^{T} 
+    \left(
+    \abs{(h_{i}(t)b_{i}(t)} + h_{i}^2(t)a_{ii}(t)
+      \right) \d{t} < \infty
+    \quad \almostsurely.
+  \end{equation*}
 
 \end{defn}
 
@@ -1206,6 +1201,7 @@ write, for the market portfolio $\mu(\cdot)$
   The weight $\mu_{i}(\cdot)$ process of the Market Portfolio satisfies 
 
   \begin{equation} 
+    \label{eq:eqmarketportfolioweights}
     \d{\log{\mu_{i}(t)}} = (\gamma_{i}(t) - \gamma_{\mu}(t))\d{t} +
         \sum_{\nu=1}^{d} \left( \sigma_{i\nu}(t) - \sigma_{\mu\nu}(t) \right) \d{W_{\nu}(t)} 
   \end{equation}
@@ -1318,14 +1314,18 @@ Where we define
 
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Relative Return}
+\section{Relative Return and Arbitrage}
 
 % TODO rewrite this introduction
 We have now defined the core features of SPT, namely the constituent stocks and
 portfolios. So we can now turn our attention to the how the relative performance of
 two portfolio under our market model evolve.
 
-\begin{lem} [Relative Return of Two Portfolio]
+\begin{lem} 
+  [
+    {\cite[Lemma 3.2]{fernholz2009}}
+    Relative Return of Two Portfolio
+  ]
   \label{lem:relativereturnoftwoportfolios}
 
   For any two arbitrary portfolios $\pi(\cdot)$ and $\rho(\cdot)$, we have the
@@ -1349,7 +1349,7 @@ two portfolio under our market model evolve.
       &= \gamma_{\pi}^{*}(t)\d{t} + 
             \sum_{i=1}^{n} \pi_{i}(t)  \d{ \log{\mu_{i}(t)} } \\ 
       &= (\gamma_{\pi}^{*}(t) - \gamma_{\mu}^{*}(t)) \d{t} +
-            \sum_{i=1}^{n} (\pi_{i}(t) - \mu_{i}(t)) \d{\log{\mu_{i}(t)} } \\ 
+            \sum_{i=1}^{n} (\pi_{i}(t) - \mu_{i}(t)) \d{\log{\mu_{i}(t)} }.
     \end{split} 
   \end{gather}
 
@@ -1384,46 +1384,65 @@ two portfolio under our market model evolve.
 
   The first equation of (\ref{eq:rrdynamics2}) is a simple extension of
   (\ref{eq:rrdynamics}) noting again (from proof of Proposition
-\ref{prop:dynamicsofmarketweights}) that,
+  \ref{prop:dynamicsofmarketweights}) and with $\rho(\cdot)=\mu(\cdot)$ that,
 
   \begin{equation*} 
       \d{\log{\mu_{i}(t)}} 
-        = \d{\log{ \left( \frac{ X_{i}(t) }{ \Vmu(t) } \right)}} 
+        = \d{\log{ \left( \frac{ X_{i}(t) }{ \Vmu(t) } \right)}},
   \end{equation*}
 
-% TODO: Prove second equation: Relative Return of Two Portfolios
-%  The second 
-%
-% \begin{equation} 
-%    \d{\log{\mu_{i}(t)}} = (\gamma_{i}(t) - \gamma_{\mu}(t))\d{t} +
-%        \sum_{\nu=1}^{d} \left( \sigma_{i\nu}(t) - \sigma_{\mu\nu}(t) \right) \d{W_{\nu}(t)} 
-%  \end{equation}
-%
-%
-%  \begin{gather*} 
-%    \begin{split} 
-%     \d{ \log{ \left( \frac{V^{\pi}(t) }{ V^{\mu}(t) } \right) } } 
-%      &= \gamma_{\pi}^{*}(t)\d{t} + 
-%            \sum_{i=1}^{n} \pi_{i}(t)  \d{ \log{\mu_{i}(t)} } \\ 
-%     \end{split} 
-%  \end{gather*}
-%
-%  noting from (\ref{eq:portfoliogrowthrate}) that 
-%
-%  \begin{equation}
-%    \label{eq:portfoliogrowthrate}
-%    \gamma_{\mu}(t) \defeq 
-%      \sum_{i=1}^{n} \mu_{i}(t)\gamma_{i}(t) + 
-%      \gamma_{\mu}^{*}(t),
-%  \end{equation}
-%
-%  with some rearranging we have
-%
-%  \begin{equation}
-%    \gamma_{\mu}(t) = 
-%      \sum_{i=1}^{n} \mu_{i}(t)\gamma_{i}(t) + 
-%      \gamma_{\mu}^{*}(t),
-%  \end{equation}
+  then
+
+  \begin{gather} 
+    \label{eq:eqrrdynamicseq1}
+    \begin{split} 
+      \d{\log{ \left( \frac{ V^{\pi}(t) }{V^{\rho}(t) } \right) }} 
+      &=  \gamma_{\pi}^{*}(t)\d{t} + \sum_{i=1}^{n}\pi_{i}(t)\d{\log{\mu_{i}(t)}},
+    \end{split} 
+  \end{gather}
+
+  which completes the proof of the first equality in (\ref{eq:rrdynamics2}). We now 
+  prove the second equality in (\ref{eq:rrdynamics2}), starting from
+  (\ref{eq:eqrrdynamicseq1}), so that
+
+  \begin{gather*} 
+    \begin{split} 
+     \d{ \log{ \left( \frac{V^{\pi}(t) }{ V^{\mu}(t) } \right) } } 
+      &= \gamma_{\pi}^{*}(t)\d{t} + 
+            \sum_{i=1}^{n} \pi_{i}(t)  \d{ \log{\mu_{i}(t)} } \\ 
+    \end{split} 
+  \end{gather*}
+
+  Using the dynamics of the market portfolio weights (\ref{eq:eqmarketportfolioweights}), we have
+
+  \begin{gather*} 
+    \begin{split} 
+      \sum_{i=1}^{n} \mu_{i}(t) \d{\log{\mu_{i}(t)}} 
+    &= 
+      \sum_{i=1}^{n} \mu_{i}(t) \left( \gamma_{i}(t) - \gamma_{\mu}(t) \right)\d{t} \\
+    &= 
+      -\gamma^{*}_{\mu}(t)\d{t}.
+    \end{split}
+  \end{gather*}
+
+  Therefore (working backwards), we have
+
+  \begin{gather*} 
+    \begin{split} 
+     \d{ \log{ \left( \frac{V^{\pi}(t) }{ V^{\mu}(t) } \right) } } 
+      &= (\gamma_{\pi}^{*}(t) - \gamma_{\mu}^{*}(t)) \d{t} +
+            \sum_{i=1}^{n} (\pi_{i}(t) - \mu_{i}(t)) \d{\log{\mu_{i}(t)} } \\
+      &= (\gamma_{\pi}^{*}(t) - \gamma_{\mu}^{*}(t)) \d{t} +
+            \sum_{i=1}^{n} \pi_{i}(t) \d{\log{\mu_{i}(t)} } - 
+            \sum_{i=1}^{n} \mu_{i}(t) \d{\log{\mu_{i}(t)} } \\
+      &= (\gamma_{\pi}^{*}(t) - \gamma_{\mu}^{*}(t)) \d{t} +
+            \sum_{i=1}^{n} \pi_{i}(t) \d{\log{\mu_{i}(t)} } 
+            + \gamma^{*}_{\mu}(t)\d{t} \\
+      &= \gamma_{\pi}^{*}(t) \d{t} + \sum_{i=1}^{n} \pi_{i}(t) \d{\log{\mu_{i}(t)} } 
+    \end{split} 
+  \end{gather*}
+
+  which completes the proof.
 
 \end{proof}
 
