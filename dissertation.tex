@@ -11,6 +11,7 @@
 \usepackage{amstext} \usepackage{amsthm} \usepackage{amssymb}
 \usepackage{subfiles}
 \usepackage{graphicx}
+\usepackage{booktabs}
 
 \makeatletter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
@@ -67,16 +68,16 @@
 %%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\title{Functionally Generated Portfolios in Stochastic Portfolio Theory}
+\title{Empirical analysis of the performance of Diverse portfolios}
 \author{Lawrence Edwards} \maketitle
 
 \newpage
 
 \tableofcontents{}
 
-\newpage
+\listoftables
 
-%\section{Introduction} \include{introduction} \section{Preliminaries}
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
@@ -375,11 +376,11 @@ relations between these two types of integrals.
     \int_{a}^{b} F_t \d{W}(t)
   \end{equation*}
 
-  exists if the process $F_t = f(W(t),t)$ satifies the following properties:
+  exists if the process $F_t = f(W(t),t)$ satisfies the following properties:
 
   \begin{enumerate}
     \item the paths $t \to F_t(\omega)$ are continuous on $[a,b]$ for any $\omega in \Omega$
-    \item the process $F_t$ is nonanticipating for $t \in [a,b]$
+    \item the process $F_t$ is non-anticipating for $t \in [a,b]$
     \item 
       \begin{equation*}
         \mathbb{E} \left( \int_{a}^{b} F^{2}_{t} \d{t} \right) < \infty.
@@ -389,7 +390,7 @@ relations between these two types of integrals.
 
 \subsection{Itos Formula/Lemma}
 
-Ito's formula is the analog of the chain rule from elementary Calculus, we
+Ito's formula is the analogue of the chain rule from elementary Calculus, we
 present the multidimensional case.
 
 \begin{thm} [Multidimensional Ito formula/Lemma]
@@ -416,7 +417,7 @@ present the multidimensional case.
   \end{gather}
 \end{thm}
 
-\begin{cor} [Multidimentional Ito formula/Lemma where $n=1$]
+\begin{cor} [Multidimensional Ito formula/Lemma where $n=1$]
   Where we are interested in the dynamics of a single process
   with $d$-dimensional Brownian motion, as above, with
 
@@ -534,7 +535,7 @@ where the first ratio defined as
 
 is referred to as the \textit{instantaneous} return on the stock.
 
-We now introduce the formal definition of a market (\market) by 
+We now introduce the formal definition of a market ($\market$).
 
 \begin{defn} 
 [
@@ -559,9 +560,9 @@ transposition.
 
 \end{defn}
 
-The \textit{strong nondegeneracy} condition (\ref{eq:strongnondegeneracy}) is a 
+The \textit{strong non-degeneracy} condition (\ref{eq:strongnondegeneracy}) is a 
 common condition regarding market volatility, sometimes known as \textit{strict
-nondegeneracy}, and can be found, for example, in \cite{shreve1991}. It 
+non-degeneracy}, and can be found, for example, in \cite{shreve1991}. It 
 expresses the requirement that the eigenvalues of the market covariation 
 matrix be bounded away from zero. 
 
@@ -830,9 +831,11 @@ portfolio weights $\pi_{i}(\cdot)$.
 Since SPT is interested in the long term behaviour of portfolios, solutions of
 (\ref{eq:arithmeticreturnofportfolio}) are of great interest. 
 
-\begin{prop} [
-  {\cite[Equation 1.10]{fernholz2009}} 
-  Strong Solution of Arithmetic Return of Portfolio]
+\begin{prop} 
+  [
+    {\cite[Equation 1.10]{fernholz2009}} 
+    Strong Solution of Arithmetic Return of Portfolio
+  ]
   \label{prop:solutionofarithmeticreturnofportfolio}
 
   Let $\pi(\cdot)$ be a portfolio, then the solution of
@@ -943,9 +946,9 @@ Since SPT is interested in the long term behaviour of portfolios, solutions of
               \left( 
                 \sum_{\nu=1}^{d} \sigma_{i\nu}(t) \sigma_{j\nu}(t) 
               \right) \pi_{j}(t) \right) \d{t} \\
-        &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \right) \d{t} 
+        &= \sum_{i=1}^{n} \pi_{i}(t) b_{i}(t) \d{t} 
             + \sum_{\nu=1}^d \sigma_{\pi\nu}(t) \d{W_{\nu}(t)} 
-            - \frac{1}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) a_{ij}(t) \pi_{j}(t) \d{t}. \\
+            - \frac{2}{2} \sum_{i=1}^{n} \sum_{j=1}^{n} \pi_{i}(t) a_{ij}(t) \pi_{j}(t) \d{t}. \\
    \end{split}
   \end{gather*}
 
@@ -1270,7 +1273,7 @@ where we define $\tau_{ij}^{\pi}$, the matrix-valued \textit{covariance process}
 of the stocks relative to the portfolio $\pi(\cdot)$ as
 
 \begin{equation}
-  \label{eq:deftau}
+  \label{eq:eqtau}
   \tau_{ij}^{\pi}(t) \defeq
             \sum_{\nu=1}^{d}
             \left(
@@ -1317,9 +1320,13 @@ Where we define
 \section{Relative Return and Arbitrage}
 
 % TODO rewrite this introduction
-We have now defined the core features of SPT, namely the constituent stocks and
-portfolios. So we can now turn our attention to the how the relative performance of
-two portfolio under our market model evolve.
+Having defined stocks and portfolios, and in particular the important market
+portfolios, this section examines the relationship between portfolios, in 
+a \textit{relative} sense. We prove an important proposition that relates
+the relative return of a portfolio against the market portfolio in terms
+of purely the weights of the market portfolio.
+
+\subsection{Relative Return of two Portfolios}
 
 \begin{lem} 
   [
@@ -1467,30 +1474,33 @@ in the market weights.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Relative Arbitrage}
 
-The theory examines \textit{relative arbitrage} relationships between investment
-strategies, both in a \textit{strong arbitrage} and \textit{weak arbitrage}
-form.
+One of the objectives of SPT is to examine \textit{relative arbitrage}
+relationships between investment strategies. Of major importance then is to
+define mathematically what is meant by arbitrage. We provide short definitions
+of both \textit{strong} and \textit{weak} arbitrage.
 
 \begin{defn} [Relative Arbitrage]
-  \label{def:defstrongrelativearbitrage}
+  \label{def:defrelativearbitrage}
 
-  Let $h(\cdot)$ and $k(\cdot)$ be trading strategies. Then
-  $h(\cdot)$ is called a \textbf{relative arbitrage} (RA) over
-  $[0,T]$ with respect to $k(\cdot)$ is their associated wealth
-  processes satisfy
+  Let $h(\cdot)$ and $k(\cdot)$ be trading strategies. Then $h(\cdot)$ is called
+  a relative arbitrage over $[0,T]$ with respect to $k(\cdot)$ is their associated
+  wealth processes satisfy
 
   \begin{equation}
     V^{h}(T)\ge V^{k}(T)\;\;\text{a.s},\;\;\;\mathbb{P}(V^{h}(T)>V^{k}(T))>0.
   \end{equation}
+
 \end{defn}
 
 \begin{defn} [Strong Relative Arbitrage]
   \label{def:defstrongrelativearbitrage}
 
-  A \textbf{strong relative arbitrage} has the following stronger inequality
+  A strong relative arbitrage has the following stronger inequality
+
   \begin{equation}
     \mathbb{P}(V^{h}(T)>V^{k}(T))=1.
   \end{equation}
+
 \end{defn}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1521,10 +1531,10 @@ following property
         \right)
   \end{equation}
 
-  and in particular, for a long-only portolio $\pi(\cdot)$ we have that
+  and in particular, for a long-only portfolio $\pi(\cdot)$ we have that
 
   \begin{equation} 
-    \label{eq:numeraireinvarianceproperty}
+    \label{eq:numeraireinvariancepropertylongonly}
     \gamma_{\pi}^{*}(t) = \frac{1}{2} 
           \sum_{i=1}^{n} \pi_{i}(t)\tau_{ii}^{\pi}(t) 
      \ge 0. 
@@ -1534,7 +1544,7 @@ following property
 
 \begin{proof}
 
-  From definition of $\tau(\cdot)$ (\ref{def:deftau}) we have
+  From definition of $\tau(\cdot)$ (\ref{eq:eqtau}) we have
 
   \begin{equation} 
     \gamma_{\pi}^{*}(t) = \frac{1}{2} 
@@ -1562,10 +1572,10 @@ portfolio.
 In addition to being used for studying theoretical questions such as market
 diversity and arbitrage, these portfolios have been used for actual equity
 investments. An institutional investment product based on a functionally
-generated portfolio of the stocks in the S&P 500 Index was introduced in 1996 by
+generated portfolio of the stocks in the S\&P 500 Index was introduced in 1996 by
 Intech (now part of Janus Capital). The theory has also been used by Fernholz
 \cite{fernholz1999diversity} to investigate the well known size factor, the
-historical tendancy of smaller stocks to have higher returns than larger stocks.
+historical tendency of smaller stocks to have higher returns than larger stocks.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Generating Function}
@@ -1672,7 +1682,7 @@ portfolios that we investigate in later sections.
 % TODO: Add more detail to intro to Master Equation
 
 \begin{lem} [Fernholz's Master Equation]
-  \label{lem:masterequationlemma}
+  \label{lem:lemmamasterequation}
 
   For a portfolio $\pi(\cdot)$ satisfying \ref{prop:generatingfunction}, then the
   generating function $\G{}$ generates the portfolio $\pi(\cdot)$, i.e.
@@ -1712,10 +1722,10 @@ For the first part of the proof we derive a useful expression for the LHS of
     \end{split} 
   \end{gather}
 
-and expressions (\ref{eq:dynamicsofmarketweights}) and (\ref{eq:relativemarketweights})
-and applying the numeraire-invariance property
-(\ref{eq:numeraireinvarianceproperty}) to get
-  
+  and expressions (\ref{eq:eqmarketportfolioweights}) and (\ref{eq:relativemarketweights})
+  and applying the numeraire-invariance property
+  (\ref{eq:numeraireinvarianceproperty}) to get
+    
   \begin{gather} 
     \label{eq:masterstep1}
     \begin{split} 
@@ -1727,7 +1737,7 @@ and applying the numeraire-invariance property
     \end{split} 
   \end{gather}
 
-Now we derive the dynamics of $\log{\G{\mu(\cdot)}}$. Note the relation
+  Now we derive the dynamics of $\log{\G{\mu(\cdot)}}$. Note the relation
 
   \begin{gather} 
     \begin{split} 
@@ -1735,7 +1745,7 @@ Now we derive the dynamics of $\log{\G{\mu(\cdot)}}$. Note the relation
     \end{split} 
   \end{gather}
 
-To simplify notation we set
+  To simplify notation we set
 
   \begin{gather} 
     \begin{split} 
@@ -1744,7 +1754,7 @@ To simplify notation we set
     \end{split} 
   \end{gather}
 
-then from (\ref{eq:tau}) we have that
+then from (\ref{eq:eqtau}) we have that
  
   \begin{gather} 
     \begin{split} 
@@ -1797,7 +1807,7 @@ and then the second term of (\ref{eq:masterstep1}) as
    \end{split} 
   \end{gather}
 
-since from the definition of $\tau(\cdot)$ (\ref{eq:deftau}), we have
+since from the definition of $\tau(\cdot)$ (\ref{eq:eqtau}), we have
 
 \newcommand{\apii}{\sum_{j=1}^{n}\pi_{j}(t)a_{ij}(t)}
 \newcommand{\apipi}{\sum_{i=1}^{n}\sum_{j=1}^{n}\pi_{i}(t)\pi_{j}(t)a_{ij}(t)}
@@ -1833,7 +1843,6 @@ equation (\ref{eq:masterstep1}) as
   \end{gather}
 
   \begin{equation}
-    \label{eq:masterequation}
     \log \left( \frac{V^{\pi}(t)}{V^{\mu}(t)} \right) = 
     \log \left( \frac{\G{\mu(T)}}{\G{\mu(0)}} \right) + 
       \int_{0}^{T} \g \d{t}
@@ -1874,10 +1883,10 @@ lead to a relative arbitrage.
 We now turn our attention to a consequence of the theory that has preceded this
 section, by looking at diverse models. These are portfolios generated by a
 generating function (Definition \ref{def:generatingfunction}), which can be
-shown using the master equation (Lemma \ref{lem:masterequationlemma}) to
+shown using the master equation (Lemma \ref{lem:lemmamasterequation}) to
 generate a relative arbitrage over the market portfolio.
 
-\subsection{Diversity}
+\subsection{Definition of Diversity}
 
 An equity market is called \textit{diverse} if no single stock is ever allowed
 to dominate the entire market in terms of relative capitalization. In this
@@ -1955,7 +1964,7 @@ diversity if all stocks in the market have the same {\cite[Corollary
 
 Fernholz \cite{fernholz1999diversity} and \cite{fernholz2009} show that if the
 model $\market$ of (\ref{eq:marketmodel}) is weakly diverse over the
-time-interval $[0,T]$, and if the strong nondegeneracy condition
+time-interval $[0,T]$, and if the strong non-degeneracy condition
 (\ref{eq:strongnondegeneracy}) holds, then $\market$ contains arbitrage
 opportunities relative to the market portfolio, at least for sufficiently long
 time horizons $T \in (0,\infty)$. They provide an example of a portfolio, called
@@ -1977,7 +1986,7 @@ in terms of the market portfolio $\mu(\cdot)$ (\ref{def:marketportfolio}) by
 \newcommand{\Gp}[1]{\mathbf{G}_{p}(#1)}
 
 Fernholz \cite[Equation 7.3]{fernholz2009} shows that the portfolio
-$\pi^{(p)}(\cdot)$ is generated by the $\matchcal{C}^2$, symettric, concave
+$\pi^{(p)}(\cdot)$ is generated by the $\mathcal{C}^2$, symmetric, concave
 function $\Gp{x}$, which can be interpreted as a \textit{measure of diversity}
 
 \begin{equation}
@@ -2030,88 +2039,112 @@ relative arbitrage (Definition \ref{def:defstrongrelativearbitrage}) is met.
 
 Using a subset of a proprietary dataset we perform an analysis of the market and
 diversity weighted portfolio introduced in the sections above. The dataset
-covers the 4-year period 2014-2017 of European equities that compromise the
+covers the 4-year period 2014-2017 for European equities that compromise the
 Eurostoxx 600 Index. We ensure there is no survivorship bias by using the
 composition of the index on each day of the simulation. If an equity falls out
-of the index, the weight of the equity is set to zero in the portfolios.
-
-The returns are corrected for stock splits and other corporate actions such as
+of the index, the weight of the equity is set to zero in the portfolios. The
+returns are corrected for stock splits and other corporate actions such as
 dividends and buybacks.
 
-\subsection{Diversity}
+\subsection{Diversity of Eurostoxx 600 Index}
 
-In Figure 1 we see the cumulative changes in the diversity of the Eurostoxx 600
-index over the period 2014-2017, as measured by $\Gp{\cdot}$ with $p=0.5$,
-normalised so the average over the whole range is 0.
+In Figure \ref{fig:figdiversity} we see the cumulative changes in the diversity
+of the Eurostoxx 600 index over the period 2014-2017, as measured by
+$\Gp{\cdot}$ with $p=0.5$, normalised so the average over the whole range is 0.
 
-% TODO: periods of diversity corresponding to major market events?
+The chart replicates \cite[Figure 1]{fernholz2009}, and shows the cumulative 
+changes in diversity due to capital gains and losses, for the Eurostoxx 600
+index. Fernholz performs a similar analysis in \cite[Chapter 7]{fernholz2002}
+for S\&P500 index. The values used in are normalized so that the average over the analysis
+is zero. Similarly to Fernholz's observation we do see indications that 
+diversity is mean-reverting, however with only 4 years of data, it is hard to
+see the longer term trends of around 10 to 20 years. 
 
+Fernholz \cite{fernholz2009} notes that for extreme lows for diversity seem to
+accompany bubbles, and we can see that over the bull-market of 2016-2017,
+diversity is low.
+
+\begin{figure}[!ht]
+  \label{fig:figdiversity}
+  \caption{Diversity of Euro Stoxx - using the diversity measure $\Gp{\cdot}$
+  with $p=0.5$ normalised so average over the range is $0$.}
+  \includegraphics[width=350pt,height=250pt]{diversity.pdf}
+\end{figure}
+
+\newpage
 \subsection{Simple Return Analysis}
 
-We begin our analysis by looking at the performance of the portfolios as
-formulated by the SPT framework, not accounting for any market frictions such as
-transaction and market impact costs.
+We begin our analysis by looking at the performance of the diversity weighted
+portfolios as formulated by the SPT framework. Initially we do not account for
+any market frictions such as transaction and market impact costs.
 
-Using the formula for the weights of the DWP (\ref{eq:dwpweights}) we generated
-the weights corresponding to different values of $p \in [-1,1]$. We explicitly
+Using the formula for the weights of the DWP (\ref{eq:DWP}) we generated the
+weights corresponding to different values of $p \in [-1,1]$. We explicitly
 expand the original formulation of the DWP with $p > 0$ \cite{fernholz2005} with
-the negative values proposed by Vurvuurt \cite{vervuurt2015}.
+the negative values proposed by Vervuurt \cite{vervuurt2015}.
 
 Using corporate action adjusted one day forward returns we can then compute the
-value process of each strategy (using (\ref{eq:wealthprocessofportfolio})). The
-daily returns are accumulated through the year and presented as an annualised
-return. This is the theoretical frictionless return as predicted by the SPT
-framework.
+value process of each strategy. The daily returns are accumulated through the
+year and presented as an annualised return. This is the theoretical frictionless
+return as predicted by the SPT framework.
 
-\includegraphics[width=350]{performance.pdf}
+\begin{figure}[!ht]
+  \label{fig:figsimpleperformance}
+  \caption{Theoretical performance of the market portfolio (red) vs diversity weighted
+portfolios generated using the diversity measure $\Gp{\cdot}$ for a range of
+  values of $p \in [-1.0, 1.0]$.}
+  \includegraphics[width=400pt,height=350pt]{performance.pdf}
+\end{figure}
 
-\begin{table}[!h]
-  \begin{tabular}{lrrrr}
+\begin{table}[!ht]
+  \caption{Annualised Return of market vs diversity weighted portfolios}
+  \begin{tabular}{lrrrrrr}
     \toprule
-    \bf  & \bf 2014 & \bf 2015 & \bf 2016 & \bf 2017 \bf Annualised Return & \bf
-Annualised Std Dev & Annualized Sharpe \\
+    \bf  & \bf 2014 & \bf 2015 & \bf 2016 & \bf 2017 \bf Total \\
     \midrule
-    market & \color{red}-5.2 & 0.4 & \color{red}-0.8 & 4.9   \\
-    dwp(-1.0) & \color{red}-4.4 & 1.6 & 1.2 & 4.9\\
-    dwp(-0.7) & \color{red}-4.4 & 1.4 & 1.1 & 4.9\\
-    dwp(-0.4) & \color{red}-4.4 & 1.2 & 0.9 & 4.9\\
-    dwp(-0.2) & \color{red}-4.4 & 1.1 & 0.7 & 5.0\\
-    dwp(+0.4) & \color{red}-4.7 & 0.6 & 0.0 & 5.0\\
-    dwp(+0.7) & \color{red}-4.9 & 0.5 & \color{red}-0.4 & 5.0\\
-    dwp(+1.0) & \color{red}-5.2 & 0.4 & \color{red}-0.8 & 4.9\\
+    market & \color{red}-5.2 & 0.4 & \color{red}-0.8 & 4.9 & \color{red}-0.7 \\
+    dwp(-1.0) & \color{red}-4.4 & 1.6 & 1.2 & 4.9 & 0\\
+    dwp(-0.7) & \color{red}-4.4 & 1.4 & 1.1 & 4.9 & 0\\
+    dwp(-0.4) & \color{red}-4.4 & 1.2 & 0.9 & 4.9 & 0\\
+    dwp(-0.2) & \color{red}-4.4 & 1.1 & 0.7 & 5.0 & 0\\
+    dwp(+0.4) & \color{red}-4.7 & 0.6 & 0.0 & 5.0 & 0\\
+    dwp(+0.7) & \color{red}-4.9 & 0.5 & \color{red}-0.4 & 5.0 & 0\\
+    dwp(+1.0) & \color{red}-5.2 & 0.4 & \color{red}-0.8 & 4.9 & 0\\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\centering
-\resizebox{\linewidth}{!}{\begin{tabular}{lrrrrrrrr}
+From \ref{fig:figsimpleperformance} we can see that 
+
+\begin{table}[!ht]
+\begin{tabular}{lrrrrrrrr}
 \toprule
   & market & dwp.m1.0.1 & dwp.m0.7.0.1 & dwp.m0.4.0.1 & dwp.m0.2.0.1 & dwp.0.4.0.1 & dwp.0.7.0.1 & dwp.1.0.1\\
-\midrule
-Semi Deviation & 0.0067 & 0.0075 & 0.0070 & 0.0069 & 0.0068 & 0.0067 & 0.0067 & 0.0067\\
-Gain Deviation & 0.0060 & 0.0061 & 0.0060 & 0.0059 & 0.0059 & 0.0060 & 0.0060 & 0.0060\\
-Loss Deviation & 0.0069 & 0.0083 & 0.0075 & 0.0073 & 0.0072 & 0.0071 & 0.0070 & 0.0069\\
-Downside Deviation (MAR=210\%) & 0.0118 & 0.0124 & 0.0120 & 0.0118 & 0.0118 & 0.0118 & 0.0118 & 0.0118\\
-Downside Deviation (Rf=0\%) & 0.0066 & 0.0074 & 0.0069 & 0.0067 & 0.0067 & 0.0066 & 0.0066 & 0.0066\\
-\addlinespace
-Downside Deviation (0\%) & 0.0066 & 0.0074 & 0.0069 & 0.0067 & 0.0067 & 0.0066 & 0.0066 & 0.0066\\
-Maximum Drawdown & 0.2321 & 0.3392 & 0.2697 & 0.2400 & 0.2314 & 0.2281 & 0.2306 & 0.2321\\
-Historical VaR (95\%) & -0.0144 & -0.0158 & -0.0153 & -0.0153 & -0.0150 & -0.0146 & -0.0146 & -0.0144\\
-Historical ES (95\%) & -0.0220 & -0.0244 & -0.0227 & -0.0221 & -0.0220 & -0.0220 & -0.0220 & -0.0220\\
-Modified VaR (95\%) & -0.0152 & -0.0173 & -0.0161 & -0.0157 & -0.0155 & -0.0153 & -0.0153 & -0.0152\\
-Modified ES (95\%) & -0.0257 & -0.0406 & -0.0337 & -0.0315 & -0.0306 & -0.0281 & -0.0269 & -0.0257\\
-\bottomrule
-\end{tabular}}
+  \midrule
+  Semi Deviation & 0.0067 & 0.0075 & 0.0070 & 0.0069 & 0.0068 & 0.0067 & 0.0067 & 0.0067\\
+  Gain Deviation & 0.0060 & 0.0061 & 0.0060 & 0.0059 & 0.0059 & 0.0060 & 0.0060 & 0.0060\\
+  Loss Deviation & 0.0069 & 0.0083 & 0.0075 & 0.0073 & 0.0072 & 0.0071 & 0.0070 & 0.0069\\
+  Downside Deviation (MAR=210\%) & 0.0118 & 0.0124 & 0.0120 & 0.0118 & 0.0118 & 0.0118 & 0.0118 & 0.0118\\
+  Downside Deviation (Rf=0\%) & 0.0066 & 0.0074 & 0.0069 & 0.0067 & 0.0067 & 0.0066 & 0.0066 & 0.0066\\
+  \addlinespace
+  Downside Deviation (0\%) & 0.0066 & 0.0074 & 0.0069 & 0.0067 & 0.0067 & 0.0066 & 0.0066 & 0.0066\\
+  Maximum Drawdown & 0.2321 & 0.3392 & 0.2697 & 0.2400 & 0.2314 & 0.2281 & 0.2306 & 0.2321\\
+  Historical VaR (95\%) & -0.0144 & -0.0158 & -0.0153 & -0.0153 & -0.0150 & -0.0146 & -0.0146 & -0.0144\\
+  Historical ES (95\%) & -0.0220 & -0.0244 & -0.0227 & -0.0221 & -0.0220 & -0.0220 & -0.0220 & -0.0220\\
+  Modified VaR (95\%) & -0.0152 & -0.0173 & -0.0161 & -0.0157 & -0.0155 & -0.0153 & -0.0153 & -0.0152\\
+  Modified ES (95\%) & -0.0257 & -0.0406 & -0.0337 & -0.0315 & -0.0306 & -0.0281 & -0.0269 & -0.0257\\
+  \bottomrule
+\end{tabular}
 \end{table}
 
-
+\newpage
 \subsection{Simulation with Market Impact}
 
 We extend the analysis to show how the exact same portfolios would perform if
-run through a simulator that accounts for market impact using a model whos
+run through a simulator that accounts for market impact using a model with
 coefficients on parameters such as volatility, average daily volume, and
-turnover have been fitted on institutional trade data in a similar manner as
-discussed by Almgren \cite{almgren2005direct}.
+turnover that have been fitted on institutional trade data in a similar manner
+as discussed by Almgren \cite{almgren2005direct}.
 
 % Account for varying book sizes to see how that effects market impact
 % and profitability
